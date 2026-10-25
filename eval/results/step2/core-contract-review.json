@@ -1,0 +1,850 @@
+{
+  "reviewer": "Coding assistant semantic inspection against CSV references and the Step 1 written contract",
+  "independent_human_review": false,
+  "scope": "Core order facts and clarification behavior only; not a full claim-faithfulness audit or calibrated LLM judge.",
+  "method": "Read all baseline replies and compare required meanings to the saved independent references. Keep original bounded-checker flags unchanged. Inspect all improved fields against the same references.",
+  "results_files_sha256": {
+    "baseline-v1": "0ccfad53984f16e3820853ec63c24178487e631abe9f68af711955216dbc291f",
+    "live-v1": "1c08a843fbeba4f7ef72f98a03d620008f93b3eedf65ba4ae6bab4ff72e4b474"
+  },
+  "rows": [
+    {
+      "run": "baseline-v1",
+      "id": "D02",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ID, packing stage, deadline 2026-03-16 and 16 days overdue are present; additional context does not replace them.",
+      "headline_excerpt": "ORD-107 is in PACKING, but overdue by 16 days.",
+      "details_excerpt": "Northwind Apparel’s 2,000-cardigan order is not quiet (0 idle working days). Projected finish: **2026-04-04 (P50)** or **2026-04-12 (P80)**. Risk: **OVERDUE**; the due date was 2026-03-16."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S01",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "deadline",
+        "timing"
+      ],
+      "note": "ID, packing stage, deadline 2026-03-16 and 16 days overdue are present. Equivalent overdue phrasing is valid.",
+      "headline_excerpt": "ORD-107 is in PACKING and overdue by 16 days.",
+      "details_excerpt": "Northwind Apparel · Cardigan · 2,000 pieces. Last activity: 2026-04-01; idle working days: 0. Due date: 2026-03-16. PACKING is the only stage remaining."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S02",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-099, washing, deadline 2026-04-05 and four days remaining are present. A date preceding the word deadline is valid.",
+      "headline_excerpt": "ORD-099 is in WASHING; 4 days until its 2026-04-05 deadline.",
+      "details_excerpt": "Northwind Apparel · Polo shirt · 1,500 pieces. It is not overdue; the last activity was 2026-03-31, and 1 working day idle."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S03",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "deadline"
+      ],
+      "note": "ORD-029, washing, deadline 2026-04-01 and due today are present; packing is identified as a later stage, not the current one.",
+      "headline_excerpt": "Yes—ORD-029 is due today, 2026-04-01. It is currently in WASHING.",
+      "details_excerpt": "It is still in progress, with 0 days to due and no days late. PACKING remains after WASHING."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S04",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "deadline"
+      ],
+      "note": "ORD-058 is complete, due 2026-02-20, completed 2026-03-12 and 20 days late. Colon punctuation does not invalidate the deadline.",
+      "headline_excerpt": "Yes—ORD-058 was finished on 2026-03-12, 20 days late.",
+      "details_excerpt": "It is complete. Due date: 2026-02-20."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S05",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "guessed_order"
+      ],
+      "note": "Clarification identifies all six real open TrendCart candidates without selecting one. Candidate-specific context is not a guessed resolution.",
+      "headline_excerpt": "Which TrendCart order do you mean?",
+      "details_excerpt": "There are 6 open TrendCart orders. Choose one below; I’ll give its current stage, due status, and risk."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S06",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "request_identifier"
+      ],
+      "note": "The absent order is disclosed and clarification offers real alternative IDs; an ID-selecting button is a usable identifier request.",
+      "headline_excerpt": "ORD-999 does not exist.",
+      "details_excerpt": "Please choose the intended order from the available candidates."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S07",
+      "repeat": 1,
+      "core_contract_pass": false,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "note": "FAIL: blank deadline causes a lookup failure; the answer loses the known packing stage and does not preserve the partial status answer.",
+      "headline_excerpt": "I couldn’t retrieve ORD-107’s deadline or current stage.",
+      "details_excerpt": "The order lookup failed, and the activity record contains no order-status details. Please retry the request."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S08",
+      "repeat": 1,
+      "core_contract_pass": false,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "note": "FAIL: invalid deadline causes a lookup failure; the answer loses the known packing stage instead of retaining it with an unavailable date.",
+      "headline_excerpt": "I can’t verify ORD-107 right now.",
+      "details_excerpt": "The order record lookup is failing because of an invalid date in the underlying data, so I can’t reliably state its overdue status, stage, or due date."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S09",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "deadline",
+        "missing_stage_disclosure",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-107, deadline 2026-03-16 and 16 days overdue are retained; a blank/not-returned current stage is disclosed explicitly.",
+      "headline_excerpt": "ORD-107 is OVERDUE by 16 days against its 2026-03-16 deadline.",
+      "details_excerpt": "- Customer: Northwind Apparel · Cardigan · 2,000 pieces\n- Projected finish: P50 **2026-04-04**; P80 **2026-04-12**.\n- No activity gap is flagged; idle working days: **0**. The current stage was not returned, so I can’t report stage progress reliably."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S10",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-120, assembly, deadline 2026-03-17 and 15 days overdue are present. Listed remaining stages are not claims of the current stage.",
+      "headline_excerpt": "ORD-120 is in ASSEMBLY and overdue by 15 days.",
+      "details_excerpt": "TrendCart · Vest · 1,500 pieces. Last activity: 2026-03-30. Remaining stages: Assembly, Washing and Packing. Due date: 2026-03-17; idle for 2 working days."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "D02",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "unexpected_date"
+      ],
+      "note": "ID, packing stage, deadline 2026-03-16 and 16 days overdue are present; additional context does not replace them.",
+      "headline_excerpt": "ORD-107 is overdue, but moving: 2,000 cardigans are in PACKING.",
+      "details_excerpt": "Due 2026-03-16, it is 16 days overdue. Activity is current (0 idle working days). Projected finish: 2026-04-04 at P50, or 2026-04-12 at P80."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S01",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "timing"
+      ],
+      "note": "ID, packing stage, deadline 2026-03-16 and 16 days overdue are present. Equivalent overdue phrasing is valid.",
+      "headline_excerpt": "ORD-107 is in PACKING and overdue.",
+      "details_excerpt": "Northwind Apparel · Cardigan · 2,000 pieces. Due 2026-03-16; the order is 16 days past due. Last activity was 2026-04-01, and PACKING is the only stage remaining."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S02",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-099, washing, deadline 2026-04-05 and four days remaining are present. A date preceding the word deadline is valid.",
+      "headline_excerpt": "ORD-099 is in WASHING; 4 days remain until its 2026-04-05 deadline.",
+      "details_excerpt": "Northwind Apparel’s 1,500-piece Polo shirt order is in progress. Last activity was 2026-03-31; it is not overdue."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S03",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "deadline",
+        "timing"
+      ],
+      "note": "ORD-029, washing, deadline 2026-04-01 and due today are present; packing is identified as a later stage, not the current one.",
+      "headline_excerpt": "Yes—ORD-029 is due today, 2026-04-01.",
+      "details_excerpt": "It has reached **WASHING**. It is still in progress and is not overdue; 0 days late and 0 days to due."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S04",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "ORD-058 is complete, due 2026-02-20, completed 2026-03-12 and 20 days late. Colon punctuation does not invalidate the deadline.",
+      "headline_excerpt": "Yes—ORD-058 was finished on 2026-03-12, 20 days late.",
+      "details_excerpt": "It was due on 2026-02-20 and is complete."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S05",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "guessed_order"
+      ],
+      "note": "Clarification identifies all six real open TrendCart candidates without selecting one. Candidate-specific context is not a guessed resolution.",
+      "headline_excerpt": "Which TrendCart order do you mean?",
+      "details_excerpt": "There are 6 open TrendCart orders. Choose one below and I’ll give its current stage, due status, and risk."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S06",
+      "repeat": 2,
+      "core_contract_pass": false,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "not_found_disclosure",
+        "request_identifier"
+      ],
+      "note": "FAIL behavior: absence is correctly disclosed, but kind=reject and no clarification question are used for a status lookup; reject is reserved for actions. Follow-up suggestions are present.",
+      "headline_excerpt": "ORD-999 does not exist in the order records.",
+      "details_excerpt": "The closest available order IDs are ORD-120, ORD-119 and ORD-118. No status is available for ORD-999."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S07",
+      "repeat": 2,
+      "core_contract_pass": false,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "note": "FAIL: blank deadline causes a lookup failure; the answer loses the known packing stage and does not preserve the partial status answer.",
+      "headline_excerpt": "I couldn’t retrieve ORD-107’s deadline or current stage.",
+      "details_excerpt": "The order record lookup failed, so I won’t guess. The order data is available, but this record could not be read in this turn."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S08",
+      "repeat": 2,
+      "core_contract_pass": false,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "note": "FAIL: invalid deadline causes a lookup failure; the answer loses the known packing stage instead of retaining it with an unavailable date.",
+      "headline_excerpt": "I couldn’t retrieve ORD-107’s status.",
+      "details_excerpt": "The order record lookup failed because of an internal date-data error, so I can’t reliably state whether it is overdue, its stage, or its due date."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S09",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "missing_stage_disclosure",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-107, deadline 2026-03-16 and 16 days overdue are retained; a blank/not-returned current stage is disclosed explicitly.",
+      "headline_excerpt": "ORD-107 is overdue by 16 days; projected finish is 2026-04-04 (P50) or 2026-04-12 (P80).",
+      "details_excerpt": "Northwind Apparel’s 2,000-piece Cardigan order was due 2026-03-16 and is still open. It is assessed OVERDUE, not quiet; the current stage field is blank in the available risk record."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S10",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-120, assembly, deadline 2026-03-17 and 15 days overdue are present. Listed remaining stages are not claims of the current stage.",
+      "headline_excerpt": "ORD-120 is in ASSEMBLY and overdue by 15 days.",
+      "details_excerpt": "TrendCart · Vest · 1,500 pieces. Due 2026-03-17; last activity was 2026-03-30. It has 2 idle working days, with ASSEMBLY, WASHING and PACKING remaining."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "D02",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "timing"
+      ],
+      "note": "ID, packing stage, deadline 2026-03-16 and 16 days overdue are present; additional context does not replace them.",
+      "headline_excerpt": "ORD-107 is in PACKING, with activity recorded today.",
+      "details_excerpt": "Northwind Apparel’s 2,000-cardigan order was due 2026-03-16 and is overdue by 16 days. Only PACKING remains; idle working days: 0. It is not complete yet."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S01",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "timing"
+      ],
+      "note": "ID, packing stage, deadline 2026-03-16 and 16 days overdue are present. Equivalent overdue phrasing is valid.",
+      "headline_excerpt": "ORD-107 is in PACKING and overdue by 16 days.",
+      "details_excerpt": "Northwind Apparel · Cardigan · 2,000 pieces\nDue 2026-03-16; last activity 2026-04-01. Packing is the only stage remaining, and the order had activity today."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S02",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-099, washing, deadline 2026-04-05 and four days remaining are present. A date preceding the word deadline is valid.",
+      "headline_excerpt": "ORD-099 is in WASHING; 4 days until its 2026-04-05 deadline.",
+      "details_excerpt": "Northwind Apparel · Polo shirt · 1,500 pieces. Last activity: 2026-03-31. It is not overdue; WASHING and PACKING remain."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S03",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "deadline",
+        "timing"
+      ],
+      "note": "ORD-029, washing, deadline 2026-04-01 and due today are present; packing is identified as a later stage, not the current one.",
+      "headline_excerpt": "ORD-029 is due today, 2026-04-01, and is not overdue.",
+      "details_excerpt": "It has reached WASHING. Packing remains after washing; last activity was today."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S04",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "ORD-058 is complete, due 2026-02-20, completed 2026-03-12 and 20 days late. Colon punctuation does not invalidate the deadline.",
+      "headline_excerpt": "Yes—ORD-058 was finished on 2026-03-12, 20 days late.",
+      "details_excerpt": "It was due on 2026-02-20 and is marked COMPLETE."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S05",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Clarification identifies all six real open TrendCart candidates without selecting one. Candidate-specific context is not a guessed resolution.",
+      "headline_excerpt": "TrendCart has 6 open orders— which one do you mean?",
+      "details_excerpt": "The most urgent are ORD-120 (Vest, 1,500 pieces, ASSEMBLY, overdue by 15 days) and ORD-020 (Vest, 1,200 pieces, WASHING, overdue by 1 day). Other open orders: ORD-017 (Cardigan, 800 pieces), ORD-096 (Beanie, 1,000 pieces), ORD-005 (Scarf, 500 pieces), and ORD-082 (Beanie, 600 pieces)."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S06",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "request_identifier"
+      ],
+      "note": "The absent order is disclosed and clarification offers real alternative IDs; an ID-selecting button is a usable identifier request.",
+      "headline_excerpt": "ORD-999 does not exist.",
+      "details_excerpt": "Which order did you mean?"
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S07",
+      "repeat": 3,
+      "core_contract_pass": false,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "note": "FAIL: blank deadline causes a lookup failure; the answer loses the known packing stage and does not preserve the partial status answer.",
+      "headline_excerpt": "I couldn’t retrieve ORD-107’s deadline or current stage.",
+      "details_excerpt": "The order lookup failed, so I can’t reliably state its status."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S08",
+      "repeat": 3,
+      "core_contract_pass": false,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "note": "FAIL: invalid deadline causes a lookup failure; the answer loses the known packing stage instead of retaining it with an unavailable date.",
+      "headline_excerpt": "I couldn’t retrieve ORD-107’s order record.",
+      "details_excerpt": "The order lookup failed because of a date-data error, so I can’t reliably confirm whether it is overdue, its stage, or its due date."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S09",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "deadline",
+        "missing_stage_disclosure",
+        "timing",
+        "unexpected_date"
+      ],
+      "note": "ORD-107, deadline 2026-03-16 and 16 days overdue are retained; a blank/not-returned current stage is disclosed explicitly.",
+      "headline_excerpt": "ORD-107 is overdue by 16 days; projected P50 finish is 2026-04-04.",
+      "details_excerpt": "- Customer: Northwind Apparel · Cardigan · 2,000 pieces\n- Risk: **OVERDUE**; no recorded activity gap (0 idle working days)\n- Projected finish: P50 **2026-04-04**; P80 **2026-04-12**\n- Due date: **2026-03-16**. The current stage was not returned in the risk record."
+    },
+    {
+      "run": "baseline-v1",
+      "id": "S10",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": false,
+      "bounded_checker_flags": [
+        "contradictory_stage",
+        "unexpected_date"
+      ],
+      "note": "ORD-120, assembly, deadline 2026-03-17 and 15 days overdue are present. Listed remaining stages are not claims of the current stage.",
+      "headline_excerpt": "ORD-120 is overdue in ASSEMBLY, 15 days late.",
+      "details_excerpt": "TrendCart · Vest · 1,500 pieces. Due 2026-03-17; last activity 2026-03-30. Idle for 2 working days. Remaining stages: ASSEMBLY, WASHING and PACKING."
+    },
+    {
+      "run": "live-v1",
+      "id": "D02",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S01",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S02",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-099 is in washing. Due date 2026-04-05. 4 calendar days remaining.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S03",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-029 is in washing. Due date 2026-04-01. Due today.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S04",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-058 is complete. Due date 2026-02-20. Completed on 2026-03-12. 20 calendar days late.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S05",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "Which order do you mean? Please select a candidate or provide its order ID.",
+      "details_excerpt": "Candidates: ORD-005, ORD-017, ORD-020, ORD-082, ORD-096, ORD-120."
+    },
+    {
+      "run": "live-v1",
+      "id": "S06",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "No matching order was found. Please provide the order ID or its customer and product.",
+      "details_excerpt": null
+    },
+    {
+      "run": "live-v1",
+      "id": "S07",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date is unavailable. Timing cannot be calculated from the available dates.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S08",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date is unavailable. Timing cannot be calculated from the available dates.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S09",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in progress; stage is unavailable. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S10",
+      "repeat": 1,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-120 is in assembly. Due date 2026-03-17. 15 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "D02",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S01",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S02",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-099 is in washing. Due date 2026-04-05. 4 calendar days remaining.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S03",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-029 is in washing. Due date 2026-04-01. Due today.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S04",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-058 is complete. Due date 2026-02-20. Completed on 2026-03-12. 20 calendar days late.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S05",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "Which order do you mean? Please select a candidate or provide its order ID.",
+      "details_excerpt": "Candidates: ORD-005, ORD-017, ORD-020, ORD-082, ORD-096, ORD-120."
+    },
+    {
+      "run": "live-v1",
+      "id": "S06",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "No matching order was found. Please provide the order ID or its customer and product.",
+      "details_excerpt": null
+    },
+    {
+      "run": "live-v1",
+      "id": "S07",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date is unavailable. Timing cannot be calculated from the available dates.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S08",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date is unavailable. Timing cannot be calculated from the available dates.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S09",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in progress; stage is unavailable. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S10",
+      "repeat": 2,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-120 is in assembly. Due date 2026-03-17. 15 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "D02",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S01",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S02",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-099 is in washing. Due date 2026-04-05. 4 calendar days remaining.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S03",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-029 is in washing. Due date 2026-04-01. Due today.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S04",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-058 is complete. Due date 2026-02-20. Completed on 2026-03-12. 20 calendar days late.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S05",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "Which order do you mean? Please select a candidate or provide its order ID.",
+      "details_excerpt": "Candidates: ORD-005, ORD-017, ORD-020, ORD-082, ORD-096, ORD-120."
+    },
+    {
+      "run": "live-v1",
+      "id": "S06",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "No matching order was found. Please provide the order ID or its customer and product.",
+      "details_excerpt": null
+    },
+    {
+      "run": "live-v1",
+      "id": "S07",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date is unavailable. Timing cannot be calculated from the available dates.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S08",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in packing. Due date is unavailable. Timing cannot be calculated from the available dates.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S09",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-107 is in progress; stage is unavailable. Due date 2026-03-16. 16 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    },
+    {
+      "run": "live-v1",
+      "id": "S10",
+      "repeat": 3,
+      "core_contract_pass": true,
+      "bounded_checker_pass": true,
+      "bounded_checker_flags": [],
+      "note": "Validated rendered fields and clarification match the saved independent reference; bounded contract check also passes.",
+      "headline_excerpt": "ORD-120 is in assembly. Due date 2026-03-17. 15 calendar days overdue.",
+      "details_excerpt": "As of 2026-04-01 (dataset clock)."
+    }
+  ],
+  "totals": {
+    "baseline-v1": {
+      "passed": 26,
+      "n": 33
+    },
+    "live-v1": {
+      "passed": 33,
+      "n": 33
+    }
+  }
+}

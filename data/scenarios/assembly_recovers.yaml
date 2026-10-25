@@ -1,0 +1,8 @@
+name: assembly_recovers
+title: "Assembly recovers on day 3"
+description: >
+  ASSEMBLY returns to its pre-slump normal output from the third simulated day. Use it to see alerts stop and
+  at-risk orders improve.
+seed: 7
+events:
+  - {type: stage_level, stage: ASSEMBLY, from_day: 2, level: normal}

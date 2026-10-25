@@ -1,0 +1,347 @@
+{
+  "planned": 33,
+  "attempted": 33,
+  "passed": 3,
+  "by_case": {
+    "D02": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S01": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S02": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S03": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S04": {
+      "passed": 2,
+      "attempted": 3
+    },
+    "S05": {
+      "passed": 1,
+      "attempted": 3
+    },
+    "S06": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S07": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S08": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S09": {
+      "passed": 0,
+      "attempted": 3
+    },
+    "S10": {
+      "passed": 0,
+      "attempted": 3
+    }
+  },
+  "failures": [
+    {
+      "id": "D02",
+      "repeat": 1,
+      "errors": [
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S01",
+      "repeat": 1,
+      "errors": [
+        "deadline",
+        "timing"
+      ],
+      "error": null
+    },
+    {
+      "id": "S02",
+      "repeat": 1,
+      "errors": [
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S03",
+      "repeat": 1,
+      "errors": [
+        "contradictory_stage",
+        "deadline"
+      ],
+      "error": null
+    },
+    {
+      "id": "S04",
+      "repeat": 1,
+      "errors": [
+        "deadline"
+      ],
+      "error": null
+    },
+    {
+      "id": "S05",
+      "repeat": 1,
+      "errors": [
+        "guessed_order"
+      ],
+      "error": null
+    },
+    {
+      "id": "S06",
+      "repeat": 1,
+      "errors": [
+        "request_identifier"
+      ],
+      "error": null
+    },
+    {
+      "id": "S07",
+      "repeat": 1,
+      "errors": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "error": null
+    },
+    {
+      "id": "S08",
+      "repeat": 1,
+      "errors": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "error": null
+    },
+    {
+      "id": "S09",
+      "repeat": 1,
+      "errors": [
+        "deadline",
+        "missing_stage_disclosure",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S10",
+      "repeat": 1,
+      "errors": [
+        "contradictory_stage",
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "D02",
+      "repeat": 2,
+      "errors": [
+        "contradictory_stage",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S01",
+      "repeat": 2,
+      "errors": [
+        "timing"
+      ],
+      "error": null
+    },
+    {
+      "id": "S02",
+      "repeat": 2,
+      "errors": [
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S03",
+      "repeat": 2,
+      "errors": [
+        "deadline",
+        "timing"
+      ],
+      "error": null
+    },
+    {
+      "id": "S05",
+      "repeat": 2,
+      "errors": [
+        "guessed_order"
+      ],
+      "error": null
+    },
+    {
+      "id": "S06",
+      "repeat": 2,
+      "errors": [
+        "not_found_disclosure",
+        "request_identifier"
+      ],
+      "error": null
+    },
+    {
+      "id": "S07",
+      "repeat": 2,
+      "errors": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "error": null
+    },
+    {
+      "id": "S08",
+      "repeat": 2,
+      "errors": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "error": null
+    },
+    {
+      "id": "S09",
+      "repeat": 2,
+      "errors": [
+        "missing_stage_disclosure",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S10",
+      "repeat": 2,
+      "errors": [
+        "contradictory_stage",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "D02",
+      "repeat": 3,
+      "errors": [
+        "contradictory_stage",
+        "timing"
+      ],
+      "error": null
+    },
+    {
+      "id": "S01",
+      "repeat": 3,
+      "errors": [
+        "timing"
+      ],
+      "error": null
+    },
+    {
+      "id": "S02",
+      "repeat": 3,
+      "errors": [
+        "contradictory_stage",
+        "deadline",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S03",
+      "repeat": 3,
+      "errors": [
+        "contradictory_stage",
+        "deadline",
+        "timing"
+      ],
+      "error": null
+    },
+    {
+      "id": "S06",
+      "repeat": 3,
+      "errors": [
+        "request_identifier"
+      ],
+      "error": null
+    },
+    {
+      "id": "S07",
+      "repeat": 3,
+      "errors": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "error": null
+    },
+    {
+      "id": "S08",
+      "repeat": 3,
+      "errors": [
+        "behavior",
+        "missing_deadline_disclosure",
+        "stage"
+      ],
+      "error": null
+    },
+    {
+      "id": "S09",
+      "repeat": 3,
+      "errors": [
+        "deadline",
+        "missing_stage_disclosure",
+        "timing",
+        "unexpected_date"
+      ],
+      "error": null
+    },
+    {
+      "id": "S10",
+      "repeat": 3,
+      "errors": [
+        "contradictory_stage",
+        "unexpected_date"
+      ],
+      "error": null
+    }
+  ],
+  "api_calls": 89,
+  "usage": {
+    "input_tokens": 419457,
+    "cached_tokens": 382813,
+    "output_tokens": 8519,
+    "reasoning_tokens": 1455
+  },
+  "cost_estimate_usd": 0.02520786000000001,
+  "p50_seconds": 6.822,
+  "p90_seconds": 11.604,
+  "unconfirmed_actions": 0,
+  "completed_utc": "2026-10-20T09:19:26.573903+00:00"
+}

@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Gemini-like palette and type. Colours are tokens so the whole UI stays consistent. */
+@theme {
+  --font-sans: "Google Sans", "Google Sans Text", Roboto, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Roboto Mono", Consolas, monospace;
+  --color-ink: #1f1f1f;
+  --color-ink-2: #444746;
+  --color-ink-3: #747775;
+  --color-line: #e3e3e3;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0f4f9;
+  --color-surface-3: #e9eef6;
+  --color-accent: #0b57d0;
+  --color-accent-soft: #d3e3fd;
+  --color-good: #146c2e;
+  --color-good-soft: #c4eed0;
+  --color-warn: #b06000;
+  --color-warn-soft: #ffe7c2;
+  --color-bad: #b3261e;
+  --color-bad-soft: #f9dedc;
+}
+
+html, body, #root { height: 100%; }
+body { margin: 0; background: var(--color-surface); color: var(--color-ink); font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased; }
+
+.gem-gradient-text {
+  background: linear-gradient(74deg, #4285f4 0%, #9b72cb 22%, #d96570 45%, #9b72cb 70%, #4285f4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.gem-shimmer {
+  background: linear-gradient(90deg, #747775 0%, #c4c7c5 40%, #747775 80%);
+  background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: gem-shimmer 1.6s linear infinite;
+}
+@keyframes gem-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.gem-spin { animation: gem-spin 1.4s linear infinite; transform-origin: center; }
+@keyframes gem-spin { to { transform: rotate(360deg); } }
+
+.prose-gm p { margin: 0.35rem 0; line-height: 1.6; }
+.prose-gm ul, .prose-gm ol { margin: 0.35rem 0; padding-left: 1.25rem; }
+.prose-gm ul { list-style: disc; } .prose-gm ol { list-style: decimal; }
+.prose-gm li { margin: 0.15rem 0; line-height: 1.55; }
+.prose-gm strong { font-weight: 600; }
+.prose-gm code { font-family: var(--font-mono); font-size: 0.85em; background: var(--color-surface-2);
+  padding: 0.1rem 0.3rem; border-radius: 0.3rem; }
+.prose-gm table { border-collapse: collapse; margin: 0.5rem 0; font-size: 0.9em; }
+.prose-gm th, .prose-gm td { border-bottom: 1px solid var(--color-line); padding: 0.3rem 0.6rem; text-align: left; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #c4c7c5; border-radius: 8px; }

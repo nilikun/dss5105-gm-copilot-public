@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "status": "blank_template_not_frozen",
+  "author": null,
+  "checker": null,
+  "authored_before_outputs": null,
+  "exposure_declaration": null,
+  "frozen_at_with_timezone": null,
+  "custodian": null,
+  "private_package_location": null,
+  "questions_and_references": {
+    "filename": null,
+    "sha256": null,
+    "schema_version": 2,
+    "item_count": 20,
+    "category_counts": {
+      "lookup": 3,
+      "aggregation": 2,
+      "judgement": 2,
+      "tracing": 2,
+      "discovery": 1,
+      "feasibility": 3,
+      "action": 3,
+      "ambiguous": 2,
+      "unanswerable": 2
+    }
+  },
+  "independent_calculations": [
+    {
+      "filename": null,
+      "sha256": null,
+      "method": null,
+      "checked_by": null
+    }
+  ],
+  "data": {
+    "snapshot_sha256": null,
+    "files": [
+      {
+        "path": null,
+        "sha256": null
+      }
+    ]
+  },
+  "clock": {
+    "simulated_now": "2026-04-01T07:00:00",
+    "convention": "timezone-naive factory simulation"
+  },
+  "versions": {
+    "baseline_commit": null,
+    "improved_commit": null,
+    "scorer_commit": null,
+    "rubric_sha256": null,
+    "scoring_files_sha256": null,
+    "baseline_prompts_sha256": null,
+    "improved_prompts_sha256": null,
+    "dependency_lock_sha256": null,
+    "python_version": null,
+    "sdk_versions": null
+  },
+  "agent_settings": {
+    "provider": null,
+    "model": null,
+    "reasoning_effort": null,
+    "temperature_or_omitted": null,
+    "seed_or_unsupported": null,
+    "max_output_tokens": null,
+    "critic_enabled": null,
+    "max_tool_steps": null,
+    "repair_limit": null
+  },
+  "judge_settings": {
+    "provider": null,
+    "model": null,
+    "reasoning_effort": null,
+    "temperature_or_omitted": null,
+    "max_output_tokens": null,
+    "prompt_sha256": null,
+    "rubric_sha256": null
+  },
+  "calibration": {
+    "development_labels_sha256": null,
+    "reviewers": null,
+    "agreement": null,
+    "confusion_counts": null,
+    "disagreement_log_sha256": null,
+    "acceptance_threshold": null,
+    "accepted_before_release": null
+  },
+  "execution": {
+    "repetitions_per_item_per_version": null,
+    "order": null,
+    "randomization_seed": null,
+    "concurrency": null,
+    "fresh_database_per_item": true,
+    "reset_clock_per_item": true,
+    "context_policy": "replay prior user turns; generate each version own replies",
+    "timeout_seconds": null,
+    "retry_policy": null,
+    "budget_usd": null,
+    "on_budget_exhaustion": null
+  },
+  "reporting": {
+    "metrics": [
+      "correctness",
+      "completeness",
+      "unsupported_claims",
+      "appropriate_clarification_refusal",
+      "behavior",
+      "latency_p50_p90",
+      "actual_api_usage"
+    ],
+    "metric_definitions_sha256": null,
+    "all_attempts_preserved": true,
+    "error_and_exclusion_policy": null,
+    "human_review_sampling_plan": null,
+    "uncertainty_method": null,
+    "usage_fields": [
+      "input_tokens",
+      "cached_input_tokens",
+      "output_tokens",
+      "reasoning_tokens_when_available"
+    ],
+    "usage_includes": [
+      "context",
+      "retries",
+      "agent",
+      "critic_if_enabled",
+      "judge"
+    ],
+    "pricing_source_and_date": null,
+    "missing_usage_policy": "report unavailable; never assume zero"
+  },
+  "release": {
+    "scorer_and_settings_frozen_before_question_release": null,
+    "operator": null,
+    "released_at": null
+  }
+}

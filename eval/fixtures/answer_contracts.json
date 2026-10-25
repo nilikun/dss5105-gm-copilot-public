@@ -1,0 +1,2383 @@
+{
+  "version": 1,
+  "split": "development_only",
+  "as_of": "2026-04-01",
+  "cases": [
+    {
+      "id": "D02",
+      "question": "how's the big northwind cardigan order going",
+      "source": "data/orders.csv: ORD-107",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-107",
+        "stage": "PACKING",
+        "status": "IN_PROGRESS",
+        "due_date": "2026-03-16",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in packing. Due 2026-03-16. 16 days overdue."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in packing. The deadline is 16 March 2026. 16 days overdue."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing.  16 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Due 2026-03-15. 16 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Last activity 2026-03-16. 16 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Due 2026-03-16. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in packing. Due 2026-03-16. 16 days overdue."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is not in packing. Due 2026-03-16. 16 days overdue."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "negated deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Not due 2026-03-16. 16 days overdue."
+          },
+          "must_fail": "deadline"
+        }
+      ]
+    },
+    {
+      "id": "O01",
+      "question": "What is happening with ORD-120?",
+      "source": "data/orders.csv: ORD-120",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-120",
+        "stage": "ASSEMBLY",
+        "status": "IN_PROGRESS",
+        "due_date": "2026-03-17",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-120 is in assembly. Due 2026-03-17. 15 days overdue."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-120 is in assembly. The deadline is 17 March 2026. 15 days overdue."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-120 is in assembly.  15 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-120 is in assembly. Due 2026-03-15. 15 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-120 is in assembly. Last activity 2026-03-17. 15 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-120 is in assembly. Due 2026-03-17. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in assembly. Due 2026-03-17. 15 days overdue."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-120 is not in assembly. Due 2026-03-17. 15 days overdue."
+          },
+          "must_fail": "stage"
+        }
+      ]
+    },
+    {
+      "id": "O02",
+      "question": "How long until the Northwind polo deadline?",
+      "source": "data/orders.csv: ORD-099",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-099",
+        "stage": "WASHING",
+        "status": "IN_PROGRESS",
+        "due_date": "2026-04-05",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-099 is in washing. Due 2026-04-05. 4 days remaining."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-099 is in washing. The deadline is 5 April 2026. 4 days left."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-099 is in washing.  4 days remaining."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-099 is in washing. Due 2026-03-15. 4 days remaining."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-099 is in washing. Last activity 2026-04-05. 4 days remaining."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-099 is in washing. Due 2026-04-05. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in washing. Due 2026-04-05. 4 days remaining."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-099 is not in washing. Due 2026-04-05. 4 days remaining."
+          },
+          "must_fail": "stage"
+        }
+      ]
+    },
+    {
+      "id": "O03",
+      "question": "Did ORD-058 finish, and was it late?",
+      "source": "data/orders.csv: ORD-058",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-058",
+        "stage": "COMPLETE",
+        "status": "COMPLETE",
+        "due_date": "2026-02-20",
+        "completed_date": "2026-03-12"
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-058 is complete; completed on 2026-03-12. Due 2026-02-20. 20 days late."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-058 is complete; finished on 2026-03-12. The deadline is 20 February 2026. 20 days late."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-03-12.  20 days late."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-03-12. Due 2026-03-15. 20 days late."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-03-12. Last activity 2026-02-20. 20 days late."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-03-12. Due 2026-02-20. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is complete; completed on 2026-03-12. Due 2026-02-20. 20 days late."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "completed order treated as currently overdue",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-03-12. Due 2026-02-20. 20 days overdue."
+          },
+          "must_fail": "completed_not_currently_overdue"
+        }
+      ]
+    },
+    {
+      "id": "O04",
+      "question": "Update on the Maple hoodie order?",
+      "source": "data/orders.csv: ORD-083",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-083",
+        "stage": "WASHING",
+        "status": "IN_PROGRESS",
+        "due_date": "2026-03-23",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-083 is in washing. Due 2026-03-23. 9 days overdue."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-083 is in washing. The deadline is 23 March 2026. 9 days overdue."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-083 is in washing.  9 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-083 is in washing. Due 2026-03-15. 9 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-083 is in washing. Last activity 2026-03-23. 9 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-083 is in washing. Due 2026-03-23. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in washing. Due 2026-03-23. 9 days overdue."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-083 is not in washing. Due 2026-03-23. 9 days overdue."
+          },
+          "must_fail": "stage"
+        }
+      ]
+    },
+    {
+      "id": "O05",
+      "question": "Cotton Club crewneck status please",
+      "source": "data/orders.csv: ORD-002",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-002",
+        "stage": "WASHING",
+        "status": "IN_PROGRESS",
+        "due_date": "2026-03-29",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-002 is in washing. Due 2026-03-29. 3 days overdue."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-002 is in washing. The deadline is 29 March 2026. 3 days overdue."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-002 is in washing.  3 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-002 is in washing. Due 2026-03-15. 3 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-002 is in washing. Last activity 2026-03-29. 3 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-002 is in washing. Due 2026-03-29. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in washing. Due 2026-03-29. 3 days overdue."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-002 is not in washing. Due 2026-03-29. 3 days overdue."
+          },
+          "must_fail": "stage"
+        }
+      ]
+    },
+    {
+      "id": "O06",
+      "question": "Where is the Maple beanie order?",
+      "source": "data/orders.csv: ORD-093",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-093",
+        "stage": "WASHING",
+        "status": "IN_PROGRESS",
+        "due_date": "2026-03-29",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-093 is in washing. Due 2026-03-29. 3 days overdue."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-093 is in washing. The deadline is 29 March 2026. 3 days overdue."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-093 is in washing.  3 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-093 is in washing. Due 2026-03-15. 3 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-093 is in washing. Last activity 2026-03-29. 3 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-093 is in washing. Due 2026-03-29. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in washing. Due 2026-03-29. 3 days overdue."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-093 is not in washing. Due 2026-03-29. 3 days overdue."
+          },
+          "must_fail": "stage"
+        }
+      ]
+    },
+    {
+      "id": "O07",
+      "question": "Is this order due today?",
+      "source": "synthetic edge case based on ORD-107",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-107",
+        "stage": "PACKING",
+        "status": "IN_PROGRESS",
+        "due_date": "2026-04-01",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in packing. Due 2026-04-01. Due today."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in packing. The deadline is 1 April 2026. The deadline is today."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing.  Due today."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Due 2026-03-15. Due today."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Last activity 2026-04-01. Due today."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Due 2026-04-01. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in packing. Due 2026-04-01. Due today."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is not in packing. Due 2026-04-01. Due today."
+          },
+          "must_fail": "stage"
+        }
+      ]
+    },
+    {
+      "id": "O08",
+      "question": "Status when the due date has not been recorded?",
+      "source": "synthetic edge case based on ORD-107",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-107",
+        "stage": "PACKING",
+        "status": "IN_PROGRESS",
+        "due_date": null,
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in packing. The deadline is unavailable."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in packing. The deadline is unavailable."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "invented deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Due 2026-04-05."
+          },
+          "must_fail": "missing_deadline_disclosure"
+        },
+        {
+          "label": "invented lateness",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. The deadline is unavailable. 16 days overdue."
+          },
+          "must_fail": "unsupported_timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in packing. The deadline is unavailable."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "stage negated",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is not in packing. The deadline is unavailable."
+          },
+          "must_fail": "stage"
+        }
+      ]
+    },
+    {
+      "id": "O09",
+      "question": "Status when the stage has not been recorded?",
+      "source": "synthetic edge case based on ORD-107",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-107",
+        "stage": null,
+        "status": "IN_PROGRESS",
+        "due_date": "2026-03-16",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in progress; stage is unavailable. Due 2026-03-16. 16 days overdue."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-107 is in progress; stage is unavailable. The deadline is 16 March 2026. 16 days overdue."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in progress; stage is unavailable.  16 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in progress; stage is unavailable. Due 2026-03-15. 16 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in progress; stage is unavailable. Last activity 2026-03-16. 16 days overdue."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in progress; stage is unavailable. Due 2026-03-16. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is in progress; stage is unavailable. Due 2026-03-16. 16 days overdue."
+          },
+          "must_fail": "order_id"
+        }
+      ]
+    },
+    {
+      "id": "O10",
+      "question": "Did this example finish early?",
+      "source": "synthetic edge case based on ORD-058",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-058",
+        "stage": "COMPLETE",
+        "status": "COMPLETE",
+        "due_date": "2026-02-20",
+        "completed_date": "2026-02-18"
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-058 is complete; completed on 2026-02-18. Due 2026-02-20. 2 days early."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-058 is complete; finished on 2026-02-18. The deadline is 20 February 2026. 2 days early."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-02-18.  2 days early."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong deadline",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-02-18. Due 2026-03-15. 2 days early."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "due date appears only as activity date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-02-18. Last activity 2026-02-20. 2 days early."
+          },
+          "must_fail": "deadline"
+        },
+        {
+          "label": "wrong day count",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-02-18. Due 2026-02-20. 99 days overdue."
+          },
+          "must_fail": "timing"
+        },
+        {
+          "label": "wrong order",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-999 is complete; completed on 2026-02-18. Due 2026-02-20. 2 days early."
+          },
+          "must_fail": "order_id"
+        },
+        {
+          "label": "completed order treated as currently overdue",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete; completed on 2026-02-18. Due 2026-02-20. 2 days overdue."
+          },
+          "must_fail": "completed_not_currently_overdue"
+        }
+      ]
+    },
+    {
+      "id": "O11",
+      "question": "How is the order going?",
+      "source": "synthetic ambiguous request; candidate IDs exist in data/orders.csv",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "candidates": [
+          "ORD-107",
+          "ORD-120"
+        ]
+      },
+      "accepted": [
+        {
+          "kind": "clarify",
+          "text": "Which order do you mean: ORD-107 or ORD-120?"
+        },
+        {
+          "kind": "clarify",
+          "text": "Which one should I check, ORD-120 or ORD-107?"
+        }
+      ],
+      "rejected": [
+        {
+          "label": "guessed entity",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-107 is in packing. Due 2026-03-16. 16 days overdue."
+          },
+          "must_fail": "clarification"
+        },
+        {
+          "label": "unreal candidate",
+          "answer": {
+            "kind": "clarify",
+            "text": "Which order: ORD-107 or ORD-999?"
+          },
+          "must_fail": "candidates"
+        }
+      ]
+    },
+    {
+      "id": "D35",
+      "question": "why did assembly drop on 25 March?",
+      "source": "data/production_log.csv; prior 20 working-day median",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 394,
+        "baseline": 766.5,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": -48.59752120026093,
+        "cause": "unknown",
+        "expected_kind": "refuse",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "refuse",
+          "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "refuse",
+          "text": "Assembly produced 394 pieces on March 25, 2026, a decrease of 48.6% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 766.5 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "refuse",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 999 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-24, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "refuse",
+            "text": "Packing output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the mean of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "day and period percentage swapped",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "unrecognized causal claim needs review",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data. Rain stopped work."
+          },
+          "must_fail": "unreviewed_claim"
+        },
+        {
+          "label": "negated percentage",
+          "answer": {
+            "kind": "refuse",
+            "text": "Assembly output was 394 pieces on 2026-03-25, not 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        }
+      ]
+    },
+    {
+      "id": "P01",
+      "question": "How much lower was average assembly output over 25\u201331 March?",
+      "source": "data/production_log.csv; fixed pre-25-March median; Sunday excluded",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-31",
+        "statistic": "mean",
+        "observed_days": 6,
+        "actual": 425.5,
+        "baseline": 766.5,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": -44.487932159165034,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.5,
+        "actual_tolerance": 0.5
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly averaged 425.5 pieces per working day from March 25, 2026 to March 31, 2026, a decrease of 44% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 766.5 pieces/day. These records do not explain why."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly averaged 426 pieces per working day from 2026-03-25 to 2026-03-31, 44.5% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 999 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-24 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the mean of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "day and period percentage swapped",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per working day from 2026-03-25 to 2026-03-31, 48.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "period mean mislabelled total",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 425.5 pieces per working day total from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "statistic"
+        },
+        {
+          "label": "wrong averaging denominator",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 425.5 pieces per calendar day from 2026-03-25 to 2026-03-31, 44% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "units"
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "question": "Compare assembly output on 2026-03-31 with its previous 20 working days.",
+      "source": "data/production_log.csv; rolling prior 20 working-day median",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-31",
+        "end": "2026-03-31",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 455,
+        "baseline": 761.5,
+        "baseline_start": "2026-03-07",
+        "baseline_end": "2026-03-30",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": -40.249507550886406,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly output was 455 pieces on 2026-03-31, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly produced 455 pieces on March 31, 2026, a decrease of 40.2% relative to baseline. The baseline was the median of 20 working days from March 7, 2026 to March 30, 2026: 761.5 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 999 pieces on 2026-03-31, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-24, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 455 pieces on 2026-03-31, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-31, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-31, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-31, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-31. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-31, 40.2% above baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-31, 40.2% below baseline. The baseline was the median of 20 working days from 2026-03-07 to 2026-03-30: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 455 pieces on 2026-03-31, 40.2% below baseline. The baseline was the mean of 20 working days from 2026-03-07 to 2026-03-30: 761.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "question": "Compare knitting output on 2026-03-25 with its previous 20 working days.",
+      "source": "data/production_log.csv; rolling prior 20 working-day median",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "KNITTING",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 915,
+        "baseline": 874.5,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": 4.631217838765012,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Knitting produced 915 pieces on March 25, 2026, a increase of 4.6% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 874.5 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 999 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-24, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the mean of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "question": "Compare washing output on 2026-03-25 with its previous 20 working days.",
+      "source": "data/production_log.csv; rolling prior 20 working-day median",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "WASHING",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 801,
+        "baseline": 716.0,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": 11.871508379888262,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Washing produced 801 pieces on March 25, 2026, a increase of 11.9% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 716 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 999 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-24, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-25, 11.9% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the mean of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "question": "Compare packing output on 2026-03-25 with its previous 20 working days.",
+      "source": "data/production_log.csv; rolling prior 20 working-day median",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "PACKING",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 658,
+        "baseline": 673.5,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": -2.3014105419450592,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Packing produced 658 pieces on March 25, 2026, a decrease of 2.3% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 673.5 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 999 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-24, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-25, 2.3% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the mean of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "question": "Compare assembly average over the range that spans Sunday, 28\u201331 March.",
+      "source": "data/production_log.csv; Sunday excluded",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-28",
+        "end": "2026-03-31",
+        "statistic": "mean",
+        "observed_days": 3,
+        "actual": 432,
+        "baseline": 762.0,
+        "baseline_start": "2026-03-05",
+        "baseline_end": "2026-03-27",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": -43.30708661417323,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.5
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly averaged 432 pieces per working day from March 28, 2026 to March 31, 2026, a decrease of 43% relative to baseline. The baseline was the median of 20 working days from March 5, 2026 to March 27, 2026: 762 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 999 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-24 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% above baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per working day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the mean of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "period mean mislabelled total",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 432 pieces per working day total from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "statistic"
+        },
+        {
+          "label": "wrong averaging denominator",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly averaged 432 pieces per calendar day from 2026-03-28 to 2026-03-31, 43% below baseline. The baseline was the median of 20 working days from 2026-03-05 to 2026-03-27: 762 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "units"
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "question": "Synthetic case: zero baseline; what can we report?",
+      "source": "synthetic edge case; not a claim about the source CSV",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 394,
+        "baseline": 0,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": null,
+        "cause": "unknown",
+        "expected_kind": "answer"
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly output was 394 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly produced 394 pieces on March 25, 2026. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 0 pieces/day. Percentage change cannot be computed. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 999 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-24. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 394 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "invented percentage with unavailable denominator",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 100% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 0 pieces/day. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "undefined_percentage"
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "question": "Synthetic case: missing baseline; what can we report?",
+      "source": "synthetic edge case; not a claim about the source CSV",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 394,
+        "baseline": null,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": null,
+        "cause": "unknown",
+        "expected_kind": "answer"
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly output was 394 pieces on 2026-03-25. The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly produced 394 pieces on March 25, 2026. The baseline is unavailable. Percentage change cannot be computed. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 999 pieces on 2026-03-25. The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-24. The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 394 pieces on 2026-03-25. The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline is unavailable. Percentage change cannot be computed. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "invented percentage with unavailable denominator",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 100% below baseline. The baseline is unavailable. Percentage change cannot be computed. The cause is unknown from these data."
+          },
+          "must_fail": "undefined_percentage"
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "question": "Synthetic case: output increased; what can we report?",
+      "source": "synthetic edge case; not a claim about the source CSV",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 120,
+        "baseline": 100,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": 20,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly output was 120 pieces on 2026-03-25, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly produced 120 pieces on March 25, 2026, a increase of 20.0% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 100 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 999 pieces on 2026-03-25, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-24, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 120 pieces on 2026-03-25, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-25, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-25, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-25, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "missing percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "reversed direction",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-25, 20.0% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-25, 20.0% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 120 pieces on 2026-03-25, 20.0% above baseline. The baseline was the mean of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "question": "Synthetic case: no change; what can we report?",
+      "source": "synthetic edge case; not a claim about the source CSV",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 100,
+        "baseline": 100,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": 0,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly output was 100 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly produced 100 pieces on March 25, 2026, 0.0% versus baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 100 pieces/day. These records do not explain why."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing actual",
+          "answer": {
+            "kind": "answer",
+            "text": " The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 999 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        },
+        {
+          "label": "wrong observation date",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 100 pieces on 2026-03-24, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "observation_window"
+        },
+        {
+          "label": "wrong stage",
+          "answer": {
+            "kind": "answer",
+            "text": "Packing output was 100 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "stage"
+        },
+        {
+          "label": "cause invented",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 100 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data. A machine breakdown caused the drop."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "hedged speculation",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 100 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
+          },
+          "must_fail": "unsupported_cause"
+        },
+        {
+          "label": "cause qualification missing",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 100 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. "
+          },
+          "must_fail": "cause_disclosure"
+        },
+        {
+          "label": "invented change",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 100 pieces on 2026-03-25, 10.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "wrong baseline",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 100 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 999 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        },
+        {
+          "label": "wrong baseline method",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 100 pieces on 2026-03-25, 0.0% versus baseline. The baseline was the mean of 20 working days from 2026-03-02 to 2026-03-24: 100 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "baseline"
+        }
+      ]
+    },
+    {
+      "id": "O12",
+      "question": "The order is marked complete, but when did it finish?",
+      "source": "synthetic missing completion date",
+      "reference": {
+        "type": "order",
+        "as_of": "2026-04-01",
+        "order_id": "ORD-058",
+        "stage": "COMPLETE",
+        "status": "COMPLETE",
+        "due_date": "2026-02-20",
+        "completed_date": null
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "ORD-058 is complete. Due 2026-02-20. The completion date is unavailable."
+        },
+        {
+          "kind": "answer",
+          "text": "ORD-058 is finished. Due 2026-02-20. The completion date is not recorded."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "missing completion disclosure",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete. Due 2026-02-20."
+          },
+          "must_fail": "missing_completion_disclosure"
+        },
+        {
+          "label": "invented completion date",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete. Due 2026-02-20. The completion date is unavailable. Completed on 2026-03-12."
+          },
+          "must_fail": "missing_completion_disclosure"
+        },
+        {
+          "label": "invented completion timing",
+          "answer": {
+            "kind": "answer",
+            "text": "ORD-058 is complete. Due 2026-02-20. The completion date is unavailable. 20 days late."
+          },
+          "must_fail": "unsupported_timing"
+        }
+      ]
+    },
+    {
+      "id": "P11",
+      "question": "What was assembly output on the date with a missing observation?",
+      "source": "synthetic missing production observation",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": null,
+        "baseline": 766.5,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": null,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly output is unavailable on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. Percentage change cannot be computed. No cause is recorded."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly output is unavailable on 25 March 2026. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. Percentage change cannot be computed. No cause is recorded."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "invented actual",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. Percentage change cannot be computed. No cause is recorded."
+          },
+          "must_fail": "missing_actual_disclosure"
+        },
+        {
+          "label": "invented percentage",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output is unavailable on 2026-03-25. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. Percentage change cannot be computed. No cause is recorded. Output fell 48.6%."
+          },
+          "must_fail": "undefined_percentage"
+        },
+        {
+          "label": "missing disclosure",
+          "answer": {
+            "kind": "answer",
+            "text": "The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. Percentage change cannot be computed. No cause is recorded."
+          },
+          "must_fail": "missing_actual_disclosure"
+        }
+      ]
+    },
+    {
+      "id": "P12",
+      "question": "What if observed output is zero against a positive baseline?",
+      "source": "synthetic observed zero, not a missing record",
+      "reference": {
+        "type": "production",
+        "as_of": "2026-04-01",
+        "stage": "ASSEMBLY",
+        "start": "2026-03-25",
+        "end": "2026-03-25",
+        "statistic": "daily",
+        "observed_days": 1,
+        "actual": 0,
+        "baseline": 766.5,
+        "baseline_start": "2026-03-02",
+        "baseline_end": "2026-03-24",
+        "baseline_days": 20,
+        "baseline_method": "median",
+        "pct_change": -100,
+        "cause": "unknown",
+        "expected_kind": "answer",
+        "pct_tolerance_pp": 0.05
+      },
+      "accepted": [
+        {
+          "kind": "answer",
+          "text": "Assembly output was 0 pieces on 2026-03-25, 100% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+        },
+        {
+          "kind": "answer",
+          "text": "Assembly output was 0 pieces on 2026-03-25, -100% versus baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+        }
+      ],
+      "rejected": [
+        {
+          "label": "reversed zero-output drop",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 0 pieces on 2026-03-25, 100% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "percentage"
+        },
+        {
+          "label": "missing zero value",
+          "answer": {
+            "kind": "answer",
+            "text": "Assembly output was 394 pieces on 2026-03-25, 100% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is unknown from these data."
+          },
+          "must_fail": "actual"
+        }
+      ]
+    }
+  ]
+}

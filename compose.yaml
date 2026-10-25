@@ -1,0 +1,32 @@
+# GM Co-Pilot deployment — see docs/DEPLOY.md.
+#   docker compose up -d --build                      # app only, on http://localhost:8000
+#   docker compose --profile tunnel up -d --build     # app + Cloudflare Tunnel (needs TUNNEL_TOKEN)
+services:
+  app:
+    build: .
+    image: gm-copilot
+    restart: unless-stopped
+    env_file:                      # later files override earlier ones
+      - path: backend/.env.team    # team OpenAI key and model settings (private repo only)
+        required: false
+      - path: backend/.env         # a personal key, if you use one (git-ignored)
+        required: false
+      - deploy/deploy.env          # ACCESS_CODE, TRUST_PROXY, TUNNEL_TOKEN (git-ignored)
+    ports:
+      - "127.0.0.1:8000:8000"      # local only; the public reaches it through the tunnel
+    volumes:
+      - gm-var:/app/backend/var    # database, traces and logs survive restarts and rebuilds
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    profiles: ["tunnel"]
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    env_file:
+      - deploy/deploy.env          # TUNNEL_TOKEN from the Cloudflare dashboard
+    depends_on:
+      app:
+        condition: service_healthy
+
+volumes:
+  gm-var:

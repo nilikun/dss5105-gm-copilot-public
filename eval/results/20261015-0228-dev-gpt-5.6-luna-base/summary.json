@@ -1,0 +1,77 @@
+{
+  "run_id": "20261015-0228-dev-gpt-5.6-luna-base",
+  "set": "dev",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "low",
+  "critic": false,
+  "prompt_version": "3",
+  "commit": "03f5a01",
+  "date": "2026-10-15 02:28:48",
+  "workers": 3,
+  "n": 36,
+  "decision_accuracy": 0.8333333333333334,
+  "behavior_accuracy": 0.9722222222222222,
+  "faithfulness": 1.0,
+  "unconfirmed_side_effects": 0,
+  "headline_le_3_lines": 1.0,
+  "verifier_rejections": 1,
+  "latency_p50_s": 6.8149999999999995,
+  "latency_p90_s": 10.69,
+  "cost_total_usd": 0.02689,
+  "cost_per_item_usd": 0.00075,
+  "per_category": {
+    "lookup": {
+      "n": 5,
+      "decision_ok": 3
+    },
+    "aggregation": {
+      "n": 4,
+      "decision_ok": 4
+    },
+    "judgement": {
+      "n": 3,
+      "decision_ok": 2
+    },
+    "tracing": {
+      "n": 3,
+      "decision_ok": 3
+    },
+    "discovery": {
+      "n": 3,
+      "decision_ok": 3
+    },
+    "feasibility": {
+      "n": 5,
+      "decision_ok": 4
+    },
+    "action": {
+      "n": 5,
+      "decision_ok": 5
+    },
+    "ambiguous": {
+      "n": 3,
+      "decision_ok": 3
+    },
+    "unanswerable": {
+      "n": 5,
+      "decision_ok": 3
+    }
+  },
+  "confusion": {
+    "answer->answer": 18,
+    "clarify->clarify": 3,
+    "estimate->clarify": 1,
+    "estimate->estimate": 4,
+    "propose->propose": 4,
+    "refuse->refuse": 5,
+    "reject->reject": 1
+  },
+  "failures": [
+    "D01",
+    "D02",
+    "D10",
+    "D23",
+    "D35",
+    "D36"
+  ]
+}

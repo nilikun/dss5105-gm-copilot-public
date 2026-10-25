@@ -1,0 +1,321 @@
+# PUBLIC BLANK AUTHORING TEMPLATE — no real questions or answers.
+# Copy OUTSIDE the development checkout. See docs/HELDOUT_GUIDE.md.
+# Step 4 must validate/consume this version; current eval/run.py does not support it.
+version: 2
+status: authoring_template_not_runnable
+split: heldout
+author: ""
+independent_checker: ""
+written_on: ""
+as_of: "2026-04-01T07:00:00"
+clock_convention: timezone-naive factory simulation
+exposure_declaration: ""  # state whether author saw tuning examples/outputs
+
+# Fill every item; retain category coverage. Each required_facts entry should name
+# criterion_id, subject, field, expected_value, unit, dates/window, calculation,
+# and tolerance (absolute or percentage points; never erase sign/direction).
+# Each reference_evidence entry should name source_file, row_filter, calculation,
+# result, workbook_cells_or_script, and independent_checker.
+# context_turns: only prior user messages, each a mapping with a user field.
+# expected_behavior: answer | clarify | refuse | estimate | propose_action | reject_action
+# Frozen bytes are immutable; later exclusions go in a separate adjudication log.
+items:
+  - id: H01
+    category: lookup
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H02
+    category: lookup
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H03
+    category: lookup
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H04
+    category: aggregation
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H05
+    category: aggregation
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H06
+    category: judgement
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H07
+    category: judgement
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H08
+    category: tracing
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H09
+    category: tracing
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H10
+    category: discovery
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H11
+    category: feasibility
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H12
+    category: feasibility
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H13
+    category: feasibility
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H14
+    category: action
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H15
+    category: action
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H16
+    category: action
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H17
+    category: ambiguous
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H18
+    category: ambiguous
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H19
+    category: unanswerable
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""
+
+  - id: H20
+    category: unanswerable
+    context_turns: []
+    question: ""
+    expected_behavior: ""
+    reference_answer: ""
+    required_facts: []
+    prohibited_claims: []
+    reference_evidence: []
+    tolerance: ""
+    assumptions_and_missing_data: ""
+    verification: ""
+    difficulty: ""
+    notes: ""

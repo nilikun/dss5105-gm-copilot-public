@@ -1,0 +1,7 @@
+name: baseline
+title: "As things stand"
+description: >
+  No surprises. Each stage keeps its current run-rate (median of its last 5 working days), so the ASSEMBLY
+  slump that began on 25 March continues. Orders progress at the pace the completion model implies.
+seed: 42
+events: []

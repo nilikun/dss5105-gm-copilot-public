@@ -1,0 +1,9 @@
+name: trendcart_reorder
+title: "Urgent TrendCart reorder"
+description: >
+  A 1,200-piece TrendCart hoodie reorder arrives on day 1, due 12 days later, while ASSEMBLY is still slow.
+  Ask whether it can be done in time, and watch it appear among the at-risk orders.
+seed: 23
+events:
+  - {type: new_order, day: 1, order: {customer: TrendCart, product: Hoodie, category: TOPS, pieces: 1200, due_in_days: 12}}
+  - {type: stuck_order, order_id: ORD-120, from_day: 0, to_day: 6}

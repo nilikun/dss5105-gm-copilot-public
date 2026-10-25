@@ -1,0 +1,9 @@
+name: packing_drop
+title: "Packing drops, ORD-120 stuck"
+description: >
+  PACKING falls to 60% of normal on days 1-3, and ORD-120 records no activity. Set "tell me if ORD-120 hasn't
+  moved by Friday" and advance two days to see the watch fire; a PACKING interrupt alert also appears.
+seed: 11
+events:
+  - {type: stage_level, stage: PACKING, from_day: 1, to_day: 3, level: 0.6}
+  - {type: stuck_order, order_id: ORD-120, from_day: 0, to_day: 10}

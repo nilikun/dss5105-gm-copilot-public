@@ -1,0 +1,40 @@
+[project]
+name = "gm-copilot"
+version = "0.1.0"
+description = "GM Co-Pilot backend: tools, agent runtime, workflows (DSS5105 Track 1)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "pydantic>=2.7",
+    "numpy>=1.26",
+    "openai>=3.31.0",
+    "python-dotenv>=1.2.4",
+    "pyyaml>=6.0.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "pandas>=2.2",
+    "pyyaml>=6",
+    "httpx>=0.28.1",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+# B008: FastAPI resolves Depends(...) in parameter defaults by design
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI resolves Depends(...) in parameter defaults by design
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]

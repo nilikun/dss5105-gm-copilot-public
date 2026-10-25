@@ -1,0 +1,18 @@
+{
+  "scope": "Public development cases; frozen before Step 2 live runs; not held-out evidence",
+  "clock": "2026-04-01",
+  "repetitions": 3,
+  "cases": [
+    {"id": "D02", "question": "how's the big northwind cardigan order going", "order_id": "ORD-107", "tool_args": {"customer": "northwind", "product": "cardigan"}},
+    {"id": "S01", "question": "Give me the current status of ORD-107.", "order_id": "ORD-107", "tool_args": {"order_id": "ORD-107"}},
+    {"id": "S02", "question": "Where is order 99 now, and how long until its deadline?", "order_id": "ORD-099", "tool_args": {"order_id": "99"}},
+    {"id": "S03", "question": "Is ORD-029 due today? What stage has it reached?", "order_id": "ORD-029", "tool_args": {"order_id": "ORD-029"}},
+    {"id": "S04", "question": "Was ORD-058 finished, and was it late?", "order_id": "ORD-058", "tool_args": {"order_id": "ORD-058"}},
+    {"id": "S05", "question": "How is the TrendCart order doing?", "customer": "TrendCart", "behavior": "ambiguous", "tool_args": {"customer": "TrendCart"}},
+    {"id": "S06", "question": "What is the status of ORD-999?", "behavior": "not_found", "tool_args": {"order_id": "ORD-999"}},
+    {"id": "S07", "question": "What is ORD-107's deadline and current stage?", "order_id": "ORD-107", "synthetic": "Missing deadline", "override": {"due_date": ""}, "tool_args": {"order_id": "ORD-107"}},
+    {"id": "S08", "question": "Is ORD-107 overdue? Include its stage and due date.", "order_id": "ORD-107", "synthetic": "Invalid deadline", "override": {"due_date": "2026-02-30"}, "tool_args": {"order_id": "ORD-107"}},
+    {"id": "S09", "question": "How is ORD-107 progressing against its deadline?", "order_id": "ORD-107", "synthetic": "Missing stage", "override": {"current_stage": ""}, "tool_args": {"order_id": "ORD-107"}},
+    {"id": "S10", "question": "And ORD-120?", "order_id": "ORD-120", "context": "What is the status of ORD-107?", "context_order_id": "ORD-107", "tool_args": {"order_id": "ORD-120"}}
+  ]
+}

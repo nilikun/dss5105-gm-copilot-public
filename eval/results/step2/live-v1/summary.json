@@ -1,0 +1,64 @@
+{
+  "planned": 33,
+  "attempted": 33,
+  "passed": 33,
+  "by_case": {
+    "D02": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S01": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S02": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S03": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S04": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S05": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S06": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S07": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S08": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S09": {
+      "passed": 3,
+      "attempted": 3
+    },
+    "S10": {
+      "passed": 3,
+      "attempted": 3
+    }
+  },
+  "failures": [],
+  "api_calls": 72,
+  "usage": {
+    "input_tokens": 339246,
+    "cached_tokens": 317897,
+    "output_tokens": 5140,
+    "reasoning_tokens": 391
+  },
+  "cost_estimate_usd": 0.01679573999999999,
+  "p50_seconds": 4.778,
+  "p90_seconds": 7.431,
+  "unconfirmed_actions": 0,
+  "completed_utc": "2026-10-20T09:18:12.012394+00:00"
+}
