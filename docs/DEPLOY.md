@@ -34,7 +34,8 @@ Needs access to the Cloudflare account that holds the group's domain (ask the re
 ## 3. Run it on the host
 
 ```bash
-git clone https://github.com/nilikun/dss5105-gm-copilot.git && cd dss5105-gm-copilot
+git clone https://github.com/nilikun/dss5105-gm-copilot.git && cd dss5105-gm-copilot   # private: team key included
+# or the public repo (no key): git clone https://github.com/nilikun/dss5105-gm-copilot-public.git, then put OPENAI_API_KEY=… in backend/.env
 cp deploy/deploy.env.example deploy/deploy.env
 #   edit deploy/deploy.env: ACCESS_CODE=<pick one>, TUNNEL_TOKEN=<token from step 2>, TRUST_PROXY=true
 docker compose --profile tunnel up -d --build
