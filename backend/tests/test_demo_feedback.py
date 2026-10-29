@@ -1,4 +1,4 @@
-"""Fixes from the Sprint 2 demo review (demo问题.docx, 29 Oct): briefing refresh, deleting chats, read/unread
+"""Fixes from the demo usability review (29 Oct): briefing refresh, deleting chats, read/unread
 alerts, jumping the clock (also backwards), cancelling watches from the UI, outsourcing as an action, and a fixed
 layout for feasibility answers. Independent checks use the CSVs (pandas) or the database directly."""
 

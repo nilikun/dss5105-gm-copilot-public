@@ -1,97 +1,142 @@
-# GM Co-Pilot
+<div align="center">
 
-An AI co-pilot for the general manager of a quick-response knitwear factory. It gives a morning briefing,
-answers questions over the production data all day, keeps standing watches and raises alerts, estimates whether
-a new order is feasible, and drafts actions (chase-ups, notes, reminders) that run only after the manager
-confirms them. **Tools compute, the model narrates**: every number in a reply is checked against the tool outputs
-of that turn and links back to the source rows.
+# ✦ GM Co-Pilot
 
-NUS DSS5105 Capstone, Track 1 — **Group 23**: CAI Ruixin · HE Wenxin · IAO Ngan Chun · LIU Boxuan · NI Likun ·
-ZENG Zihao
+**A grounded, tool-using AI assistant for a factory's general manager — every number it states is checked
+against the data before you see it.**
 
-![Architecture](docs/figures/fig1_architecture.png)
+[Live demo](https://35.213.154.170) · [How it works](#how-it-works) · [Evaluation](#how-we-know-it-works) ·
+[Design notes](docs/DESIGN.md) · [Engineering journal](docs/JOURNAL.md)
 
-## Public Demo — Sprint 2
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-data-003B57?logo=sqlite&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-deploy-2496ED?logo=docker&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-472%20passing-2ea44f)
 
-**[Open GM Co-Pilot](https://35.213.154.170)** ·
-[Source code](https://github.com/nilikun/dss5105-gm-copilot-public)
+<img src="docs/images/demo_thinking.gif" alt="Asking whether yesterday's assembly output was normal: the agent plans, calls a tool, drafts, and the verifier traces every fact before the answer appears" width="820">
 
-1. Open the Demo and enter the access code in **Settings**. The team shares the code privately with graders
-   and invited users; no credentials are published here.
-2. Ask **"What is the status of order ORD-120? Cite your evidence."**
-3. Expand **Show thinking** to see streamed steps, then open an evidence reference to inspect its source.
+</div>
 
-FastAPI, the built React app, SQLite and the Watch Engine run on a Google Cloud VM; no local installation is
-needed. All visitors share one factory state and clock. The initial **As things stand** scenario starts at
-**1 Apr 2026, 07:00** in simulation mode: watches run when the simulated clock advances. Coordinate changes
-and resets with the team.
+## The problem
 
-Public HTTPS, real Q&A, Watch execution and restart persistence were verified on **27 Oct 2026 (UTC+8)**.
-The VM uses time-limited trial credit; this is not a permanently free hosting guarantee.
-See [deployment and operations](docs/DEPLOY.md) for the reproducible Google Cloud setup and its limits.
+A quick-response knitwear factory runs 120 orders through four stages — knitting, assembly, washing, packing —
+with eight outside workshops for overflow. Its general manager spends the day asking questions that each cost a
+call to a planner and a wait:
+
+> *"Did anything go wrong yesterday?"* · *"How is the TrendCart order doing?"* ·
+> *"A customer wants 800 hoodies by the 25th — can we take it?"* · *"Tell me if ORD-120 hasn't moved by Friday."* ·
+> *"Chase it up."*
+
+An LLM can answer all of these fluently — and that is the danger. The worst failure is a **confident wrong
+number**, and the most common cause is the model doing arithmetic or recalling a figure it never looked up. The
+data also has hard edges: it has workshop costs but no prices, revenue, worker names or causes of delays, so some
+questions must be refused honestly while similar-sounding ones can be answered.
+
+GM Co-Pilot is built around one rule: **tools compute, the model narrates.**
 
 ## What it does
 
-| Capability | How |
+| | |
 |---|---|
-| Answer anything, any time | ReAct loop over 19 typed tools (retrieval, judgement, tracing, discovery, feasibility, actions); a code verifier rejects any number, date or id not in this turn's tool outputs; one repair, then a raw-data fallback |
-| "Is that normal?" | Robust z-score against the trailing 20 working days; thresholds chosen by backtest ([analysis](analysis/results/threshold_backtest.md)) |
-| Morning briefing | Built by code at 07:00 (yesterday, at risk, decisions today); the optional written summary is checked against the structured briefing |
-| Watches and alerts | "Tell me if ORD-120 hasn't moved by Friday" becomes a typed watch evaluated on every clock tick; P1/P2 alerts with a daily interrupt cap |
-| Feasibility | In-house P50/P80 from a log-linear size model ([backtest](analysis/results/projection_backtest.md)) plus every outside workshop's finish date, cost and defect rate |
-| Actions | The model can only propose; the manager confirms in the UI; every execution is audited and can be undone; messages go to an outbox |
-| Observability | Every step (plan, tool call, draft, verifier verdict, cost, latency) is traced to the console, a JSONL log and the "Thinking logs" page |
+| **Answers any question, with sources** — 19 typed tools do every count, comparison and date calculation; each figure links to the rows behind it. | <img src="docs/images/evidence.png" alt="Evidence drawer showing the twenty source rows behind a baseline" width="440"> |
+| **Asks instead of guessing** — "the TrendCart order" matches six open orders, so it asks which one, with buttons. | <img src="docs/images/clarify.png" alt="A clarifying question with one button per candidate order" width="440"> |
+| **Estimates feasibility, never a bare yes** — in-house P50/P80 dates from a backtested forecast, plus every outside workshop's return date, cost and defect rate. | <img src="docs/images/estimate.png" alt="Feasibility estimate with a table of workshops, return dates, costs and defect rates" width="440"> |
+| **Acts only when you confirm** — chase-ups, notes, watches and outsourcing requests are proposals; confirmed actions are audited and can be undone. | <img src="docs/images/outsourcing.png" alt="An outsourcing request proposal waiting for confirmation" width="440"> |
+| **Watches and alerts on its own** — "tell me if ORD-120 hasn't moved by Friday" becomes a standing check; alerts are prioritised and capped per day. | <img src="docs/images/alerts.png" alt="Alerts page with a watch alert and system alerts" width="440"> |
+| **Briefs you every morning** — what went wrong yesterday, what is at risk, what needs a decision; the summary is checked against the structured briefing. | <img src="docs/images/briefing.png" alt="Morning briefing with summary, yesterday, at-risk and decisions" width="440"> |
+| **Shows its work** — every plan, tool call, draft, verifier verdict, cost and latency is logged and visible. | <img src="docs/images/logs.png" alt="Thinking logs in a console-style trace" width="440"> |
 
-## Results (development set; held-out results follow in Sprint 3)
+A simulated factory clock (with scenarios that generate the following days) lets alerts and watches fire in a
+demo; it can jump to any date, and going back replays the scenario exactly.
 
-| Metric | Value |
+## How it works
+
+![Architecture](docs/figures/fig1_architecture.png)
+
+1. **ReAct agent** — one model plans and calls typed tools (≤ 6 steps), then ends the turn with a structured
+   reply: *answer, estimate, clarify, refuse, propose* or *reject*.
+2. **Grounding verifier (plain code)** — every number, date and ID in the reply must appear in this turn's tool
+   outputs; a claim that an action "was done" is rejected. One repair attempt, then the raw tool output is shown
+   instead of an unverified sentence.
+3. **Rendered answers where omissions matter** — order status and feasibility estimates are built from the
+   validated tool fields, so a deadline or a workshop option cannot be dropped.
+4. **Action gateway** — the model can only propose; the manager's click executes deterministically, writes an
+   audit entry, and can be undone. Messages go to an outbox, never a real channel.
+5. **Workflows on a clock** — the morning briefing, the alert policy and the watch engine are code, not prompts.
+
+## How we know it works
+
+![Evaluation](docs/figures/fig5_evaluation.png)
+
+| Measure | Result |
 |---|---|
-| Decision accuracy, dev set (36 items; tuned on, held-out follows) | 97–100% |
-| Replies that passed the grounding verifier | 100% |
-| Red-team action-safety prompts (12) | 12/12, **0** actions executed without confirmation |
-| Median latency / cost | 6.7 s / ≈ $0.75 per 1,000 questions (`gpt-5.6-luna`) |
-| LLM critic ablation | +1.4 points for 63% more cost and doubled p90 latency → off by default |
+| Decision accuracy, development set (36 questions, answers computed by pandas from the CSVs) | **100%** on the final build (97–100% across runs) |
+| Replies whose every figure passed the verifier | **100%** |
+| Red-team prompts trying to execute actions without confirmation (12) | **12/12 handled, 0 executions** |
+| Median latency · model cost | ≈ 6 s · ≈ $0.75 per 1,000 questions |
+| LLM critic ablation | +1.4 points for 63% more cost and 2× p90 latency → kept off |
+| Automated tests | 194 backend + 278 evaluation |
 
-Details, every reply and all corrections: [eval/results](eval/results/README.md). Method: [EVAL_PLAN](docs/EVAL_PLAN.md).
+The development set was used for tuning, so these are not held-out numbers; a held-out set written separately is
+the real test. Every reply, every run and every scorer correction: [eval/results](eval/results/README.md) ·
+method: [EVAL_PLAN.md](docs/EVAL_PLAN.md).
+
+## Design highlights
+
+- **Decisions backed by backtests on the factory's own data** — "abnormal output" is a two-tier robust z-score
+  that catches 88% of 20% drops at 0.37 false alerts a week; the completion forecast cuts date error from 6.9 to
+  4.6 days versus promised dates. ([DESIGN.md](docs/DESIGN.md), [analysis](analysis/results))
+- **Narrow tools instead of text-to-SQL** — the failure mode is an honest "I can't answer that", not a plausible
+  wrong join.
+- **A code verifier instead of LLM self-review** — measured, not assumed: the critic did not earn its cost.
+- **The model never does arithmetic** — tools return display-ready figures (totals, day counts, percentages).
+- **Safe to put online** — access code, per-visitor rate limit, a daily model budget that no reset can lift.
 
 ## Run it
 
 Prerequisites: Python ≥ 3.11 with [uv](https://docs.astral.sh/uv/), Node ≥ 20, an OpenAI API key.
 
 ```bash
-cp backend/.env.example backend/.env        # put your key in it; the file is git-ignored
+cp backend/.env.example backend/.env          # add your key; the file is git-ignored
 cd frontend && npm install && npm run build && cd ..
 cd backend && uv sync && uv run uvicorn app.main:app --port 8000
-# open http://127.0.0.1:8000 — the clock starts at Wed 1 Apr 2026 07:00 (the dataset's "today")
+# open http://127.0.0.1:8000 — the factory clock starts at Wed 1 Apr 2026, 07:00
 ```
 
-For the hosted Demo, follow [Google Cloud deployment](docs/DEPLOY.md). For a separate local container:
+As a container: `cp deploy/deploy.env.example deploy/deploy.env` (set an access code), then
+`docker compose up -d --build`. Cloud setup and operations: [DEPLOY.md](docs/DEPLOY.md).
 
 ```bash
-cp deploy/deploy.env.example deploy/deploy.env   # set a private ACCESS_CODE; TRUST_PROXY=false without a proxy
-docker compose up -d --build                     # http://localhost:8000
+cd backend && uv run pytest -q && uv run ruff check . ../eval      # backend tests and lint
+cd .. && uv run --project backend python -m pytest -q eval/tests    # evaluation contracts
+uv run --project backend python eval/run.py --set dev               # live evaluation (≈ $0.03)
 ```
 
-Tests and evaluation:
-
-```bash
-cd backend && uv sync && uv run pytest -q && uv run ruff check . ../eval
-cd .. && uv run --project backend python -m pytest -q eval/tests    # evaluation contracts and fixtures
-uv run --project backend python eval/run.py --set dev                # ≈ $0.03 of model calls
-uv run --project backend python eval/run.py --set redteam
-```
+The [live demo](https://35.213.154.170) needs an access code, shared privately.
 
 ## Repository
 
 | Path | Contents |
 |---|---|
-| `backend/app/tools/` | The 19 tools, one folder per family; each has Pydantic models and a test against an independent pandas computation |
-| `backend/app/agent/` | ReAct runtime, `respond` contract, grounding verifier, optional critic, fallback |
-| `backend/prompts/` | Every prompt, versioned |
-| `backend/app/workflows/` | Briefing, watch engine, alert policy, scheduler; `app/clock/` simulated and real clock, scenario data advancer |
-| `backend/app/actions/` | Confirm / cancel / undo gateway and audit log |
-| `frontend/` | React web app: chat with live thinking, evidence drawer, briefing, alerts, actions, watches, logs, settings, voice |
-| `data/` | The factory dataset and simulation scenarios |
-| `eval/` | Dev and red-team sets, ground-truth script, runner, scorer, results |
-| `analysis/` | Backtests behind the alert thresholds and the completion forecast |
-| `docs/` | [Deployment and operations](docs/DEPLOY.md), [tool specification](docs/TOOL_SPEC.md), [evaluation plan](docs/EVAL_PLAN.md), figures |
+| [`backend/app/tools/`](backend/app/tools) | 19 tools by family (retrieval, judgement, tracing, discovery, feasibility, actions), each tested against pandas |
+| [`backend/app/agent/`](backend/app/agent) | ReAct runtime, `respond` contract, grounding verifier, renderers, optional critic |
+| [`backend/prompts/`](backend/prompts) | Every prompt, versioned with a change note |
+| [`backend/app/workflows/`](backend/app/workflows) · [`app/clock/`](backend/app/clock) | Briefing, alert policy, watch engine, scheduler · simulated clock and scenario data advancer |
+| [`backend/app/actions/`](backend/app/actions) | Confirm / cancel / undo gateway and audit log |
+| [`frontend/`](frontend) | React web app |
+| [`eval/`](eval) | Development and red-team sets, ground truth, runner, scorer, every result |
+| [`analysis/`](analysis) | Backtests behind the alert thresholds and the completion forecast |
+| [`docs/`](docs) | [Design notes](docs/DESIGN.md) · [engineering journal](docs/JOURNAL.md) · [tool specification](docs/TOOL_SPEC.md) · [evaluation plan](docs/EVAL_PLAN.md) · [deployment](docs/DEPLOY.md) |
+
+## Team
+
+Built by **Group 23**, NUS DSS5105 Capstone (Track 1, "The General Manager's Co-Pilot"), October–November 2026:
+CAI Ruixin · HE Wenxin · IAO Ngan Chun · LIU Boxuan · NI Likun · ZENG Zihao.
+The step-by-step story — including what went wrong and how it was fixed — is in the
+[engineering journal](docs/JOURNAL.md).
+
+<sub>The factory dataset is course material provided for the capstone. Screenshots show the real application
+running against it.</sub>

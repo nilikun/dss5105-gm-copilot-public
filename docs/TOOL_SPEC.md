@@ -16,7 +16,7 @@
 3. **Evidence on every result.** Each tool registers the rows it used and returns `evidence_id`s. Any
    number in a reply must come from a result produced in the same turn (checked by the verifier).
 4. **Definitions are data, not prompt text.** Judgement tools return the definition and parameters they
-   applied, so the manager (and graders) can inspect them.
+   applied, so the manager (and reviewers) can inspect them.
 5. **Ambiguity is detected in tools.** If a request that should name one entity matches several, the tool
    says so and returns the candidates; it never picks one silently.
 6. **Time comes from the clock.** `as_of` is injected by the runtime, never chosen by the LLM. Relative dates
@@ -315,7 +315,7 @@ is the confirmation, so the same `cancel_watch` action is recorded and executed 
   recorded this morning.
 - Open pieces now: 32,850 (34 orders) — above the typical 25,000–30,000 of Feb–Mar.
 
-## 7. Open definitions — to be settled by backtest (Sprint 1–2)
+## 7. Open definitions — settled by backtest
 
 ### 7.1 QUIET threshold
 v1: ≥ 3 working days idle (gap in the current distribution). Weakness: one snapshot, no activity history.

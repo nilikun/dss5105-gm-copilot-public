@@ -60,7 +60,7 @@ export function Thinking({ steps, running, onEvidence }: { steps: TraceEvent[]; 
   const label = running ? (last ? lastLabel(last) : "Thinking") : "Show thinking";
   return (
     <div className="mb-2">
-      <button onClick={() => setOpen((o) => !o)}
+      <button onClick={() => setOpen((o) => !o)} aria-expanded={open}
         className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm text-ink-2 hover:bg-surface-2">
         <span className={clsx(running && "gem-shimmer font-medium")}>{label}</span>
         <ChevronDown size={16} className={clsx("transition-transform", open && "rotate-180")} />

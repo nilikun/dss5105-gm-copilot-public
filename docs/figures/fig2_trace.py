@@ -2,7 +2,7 @@
 
 The tool calls and observations are produced by running the implemented tools at build time, so the figure
 cannot drift from the code. The thought, the rejected draft and the final reply are illustrative until the
-agent loop exists (Sprint 2); the figure says so.
+agent loop exists; the figure says so.
 
 Run from the repo root:
     uv run --project backend --with playwright --with pillow python docs/figures/fig2_trace.py

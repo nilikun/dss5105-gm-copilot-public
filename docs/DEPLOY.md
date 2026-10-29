@@ -1,6 +1,6 @@
 # Deploying GM Co-Pilot on Google Cloud
 
-**Sprint 2 Demo: [https://35.213.154.170](https://35.213.154.170)**
+**Live demo: [https://35.213.154.170](https://35.213.154.170)**
 
 Open **Settings**, enter the access code supplied privately by the team, and ask:
 **"What is the status of order ORD-120? Cite your evidence."** Expand **Show thinking** and open an evidence
@@ -462,19 +462,10 @@ build/start commands. Never copy a workstation database over the production data
 planned stop, after backing up the current state and handling SQLite WAL/SHM files together; do not overwrite
 a running database.
 
-## 9. Sprint 2 publication and troubleshooting
+## 9. Sharing the demo and troubleshooting
 
-The public slide/repository can contain the **Demo URL and public GitHub URL**. Give graders the access code
-separately through the private course/team channel. A public site can use access control; no credential belongs
-in the public README. Check the links and trial availability before recording and before grading.
-
-When working from the private development repository, the public README source is `scripts/public/README.md`.
-Use the export allowlist rather than making private Git history public: the private repository has a legacy
-tracked environment file. The exporter without `--push` still writes/commits a local export, so use a dedicated
-review directory and inspect its output. Publication requires a separate approval; this documentation change
-does not push either repository. Keep real environment files, tokens, SSH keys, databases and private evaluation
-material out of the staged/exported changes. Public `.env.example` files contain non-secret defaults and blank
-credential fields only.
+The demo URL can be shared publicly; give the access code separately and privately. No credential belongs in a
+README, a slide or a screenshot. Check the link and the VM's availability before a demonstration.
 
 | Symptom | Check |
 |---|---|

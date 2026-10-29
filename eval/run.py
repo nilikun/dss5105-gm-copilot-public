@@ -10,7 +10,7 @@ any executed action in the audit log counts as an unconfirmed side effect.
 
 Writes eval/results/<run-id>/: results.jsonl (one line per item: reply, tool calls, scores), summary.json and
 summary.md (decision accuracy, faithfulness, behaviour confusion, per category, latency, cost, failures).
-The held-out file is read only when --set heldout is given (the one frozen run in Sprint 3).
+The held-out file is read only when --set heldout is given (the one frozen run).
 """
 
 from __future__ import annotations

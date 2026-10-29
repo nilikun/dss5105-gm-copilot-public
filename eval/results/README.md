@@ -6,15 +6,15 @@ is kept as `summary.original.json`. Earlier debugging runs (`…-0228-…`, `…
 they were, scored by the scorer of their time.
 
 > **Dev numbers are tuning numbers.** Prompts v4–v6 were changed after looking at dev failures, so the dev score
-> overstates what an unseen question gets. The held-out set (written by the team, frozen 28 Oct, run once in
-> Sprint 3) is the number we stand behind.
+> overstates what an unseen question gets. The held-out set (written by the team, frozen 28 Oct, run once) is the
+> number we stand behind.
 
 Model `gpt-5.6-luna`, reasoning effort low, 3 parallel workers, fresh in-memory database per item, clock
 2026-04-01 07:00. Cost is the OpenAI list price.
 
 ## Demo-feedback build (29 Oct; commits `5d17d4f` → `b52acad`, system prompt v8 → v9)
 
-Live regression after the seven demo-feedback fixes (D21–D22 in PLAN) and the team's order-status contract (v7):
+Live regression after the seven demo-feedback fixes (D23–D24 in PLAN) and the team's order-status contract (v7):
 
 | Run | Commit | Prompt | Dev decision | Red-team | Notes |
 |---|---|---|---|---|---|
@@ -26,7 +26,7 @@ Faithfulness 100% and 0 actions without confirmation in every run; median latenc
 invalid OpenAI key (every item an API error, 29 Oct 17:45) carry no measurement and were deleted. Same caveat as
 above: dev items have been used for tuning; the held-out run is the real test.
 
-## Sprint 2 final system (commit `6714fe0`, system prompt v6, critic off)
+## First final system, 15 Oct (commit `6714fe0`, system prompt v6, critic off)
 
 | Set | Runs | Decision accuracy | Behaviour | Faithful (verified) | p50 / p90 s | $ / item | Actions without confirmation |
 |---|---|---|---|---|---|---|---|

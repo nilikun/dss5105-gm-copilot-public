@@ -1,4 +1,4 @@
-"""Sprint 2 tools, checked against the independent pandas ground truth in eval/ground_truth/dev_truth.py."""
+"""Tools 7–19, checked against the independent pandas ground truth in eval/ground_truth/dev_truth.py."""
 
 import importlib.util
 from datetime import datetime
