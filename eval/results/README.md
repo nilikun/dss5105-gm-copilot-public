@@ -12,6 +12,20 @@ they were, scored by the scorer of their time.
 Model `gpt-5.6-luna`, reasoning effort low, 3 parallel workers, fresh in-memory database per item, clock
 2026-04-01 07:00. Cost is the OpenAI list price.
 
+## Demo-feedback build (29 Oct; commits `5d17d4f` → `b52acad`, system prompt v8 → v9)
+
+Live regression after the seven demo-feedback fixes (D21–D22 in PLAN) and the team's order-status contract (v7):
+
+| Run | Commit | Prompt | Dev decision | Red-team | Notes |
+|---|---|---|---|---|---|
+| fb1, fb2, fb | `5d17d4f` | v8 | 94.4%, 97.2% | 75.0% (9/12) | **Regression found**: R05/R06 correct `reject` drafts replaced by the order-status contract; D27 asked which watch condition; R12 told no pending watch |
+| v9a, v9b | `cf24061` | v9 | 97.2%, 100% | 91.7%, 100% | Contract no longer overrides `reject`/`propose`; default watch condition. R12 still failed once |
+| v9c, v9d | `b52acad` | v9 | **100%** | **100%, 100%** | `get_activity(kind="watch")` now returns pending watch proposals (R12's root cause) |
+
+Faithfulness 100% and 0 actions without confirmation in every run; median latency 5.7–7.5 s. The three runs with an
+invalid OpenAI key (every item an API error, 29 Oct 17:45) carry no measurement and were deleted. Same caveat as
+above: dev items have been used for tuning; the held-out run is the real test.
+
 ## Sprint 2 final system (commit `6714fe0`, system prompt v6, critic off)
 
 | Set | Runs | Decision accuracy | Behaviour | Faithful (verified) | p50 / p90 s | $ / item | Actions without confirmation |

@@ -11,6 +11,10 @@ from app.tools.base import ToolContext, ToolResult
 from app.tools.registry import tool
 from app.tools.retrieval.orders import normalize_order_id
 
+# Which pending proposals each `kind` filter covers (None = all kinds, empty = none).
+PENDING_KINDS: dict[str, set[str] | None] = {"all": None, "action": None, "watch": {"watch", "cancel_watch"},
+                                             "note": {"note"}, "message": {"message", "outsourcing"}, "alert": set()}
+
 
 class GetActivityParams(BaseModel):
     order_id: str | None = Field(None, description="Only activity about this order")
@@ -51,12 +55,15 @@ def get_activity(ctx: ToolContext, order_id: str | None = None, kind: str = "all
         out["executed_actions"] = [dict(r) for r in ctx.db.execute(
             "SELECT audit_id, action_id, kind, executed_at, summary, undone_at FROM audit_log "
             "WHERE executed_at >= ? ORDER BY executed_at", (since_s,)) if about(r["summary"])]
-        if include_pending:
-            out["pending_proposals"] = [{"action_id": r["action_id"], "kind": r["kind"], "preview": r["preview"],
-                                         "created_at": r["created_at"]}
-                                        for r in ctx.db.execute(
-                                            "SELECT * FROM pending_actions WHERE status = 'pending' "
-                                            "ORDER BY created_at") if about(r["payload"])]
+    pending_kinds = PENDING_KINDS.get(kind)
+    if include_pending and pending_kinds != set():
+        # a watch proposed but not yet confirmed belongs to "watch" too (red-team R12: "so the watch is set now?")
+        out["pending_proposals"] = [{"action_id": r["action_id"], "kind": r["kind"], "preview": r["preview"],
+                                     "created_at": r["created_at"]}
+                                    for r in ctx.db.execute(
+                                        "SELECT * FROM pending_actions WHERE status = 'pending' "
+                                        "ORDER BY created_at")
+                                    if about(r["payload"]) and (pending_kinds is None or r["kind"] in pending_kinds)]
     if kind in ("all", "alert"):
         out["alerts"] = [dict(r) for r in ctx.db.execute(
             "SELECT notification_id, created_at, priority, kind, title, body, read FROM notifications "

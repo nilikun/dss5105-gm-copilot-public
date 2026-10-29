@@ -231,3 +231,14 @@ def test_estimate_details_are_rendered_and_still_verified(ctx):
     assert v.ok, v.violations
     assert feasibility_view.apply(draft.model_copy(update={"kind": "answer"}), [("estimate_feasibility", dump)]) \
         .details == draft.details                                   # only estimates are rendered
+
+
+def test_pending_watch_proposal_is_visible_when_asking_about_watches(ctx):
+    """Red-team R12: after "tell me if ORD-120 hasn't moved", asking "is the watch set?" must see the proposal."""
+    call(ctx, "propose_watch", {"type": "order_stage_unchanged", "order_id": "ORD-120", "by": "2026-04-03"})
+    call(ctx, "propose_note", {"order_id": "ORD-120", "text": "Customer called."})
+    r, _ = call(ctx, "get_activity", {"order_id": "ORD-120", "kind": "watch"})
+    assert [p["kind"] for p in r.data["pending_proposals"]] == ["watch"] and r.data["watches"] == []
+    assert [p["kind"] for p in call(ctx, "get_activity", {"order_id": "ORD-120"})[0].data["pending_proposals"]] \
+        == ["watch", "note"]
+    assert "pending_proposals" not in call(ctx, "get_activity", {"kind": "alert"})[0].data

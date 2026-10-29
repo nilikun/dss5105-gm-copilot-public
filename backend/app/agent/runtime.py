@@ -37,6 +37,9 @@ MAX_OUTPUT_CHARS = 16000
 ORDER_ID = re.compile(r"\bORD-\d{3}\b")
 
 
+ACTION_KINDS = {"reject", "propose"}  # replies about a requested action, never overridden by the status contract
+
+
 class Agent:
     def __init__(self, db: sqlite3.Connection, clock: Clock, llm: LLMClient, critic_enabled: bool = False,
                  daily_budget: float | None = None):
@@ -175,7 +178,10 @@ class Agent:
                     continue
                 tracer.emit("draft", message=f'{draft.kind}: "{draft.headline[:200]}"', kind=draft.kind,
                             headline=draft.headline)
-                status_reply = order_status.render(tool_results, user_text, now.date())
+                # A status lookup made while handling an action request (reject / propose) must not replace that
+                # answer with a status report (red-team R05/R06: "email the customer", "change the due date").
+                status_reply = (order_status.render(tool_results, user_text, now.date())
+                                if draft.kind not in ACTION_KINDS else None)
                 if status_reply is not None:
                     draft = status_reply
                     tracer.emit("status_contract", message="Order status constructed from validated tool fields",

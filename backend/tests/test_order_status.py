@@ -202,3 +202,16 @@ def test_historical_d02_omission_is_repaired_on_status_route():
     assert score(ref, reply.model_dump()) == []
     assert "Due date 2026-03-16" in reply.headline and reply.evidence_ids == ["E1"]
     db.close()
+
+
+@pytest.mark.parametrize("draft", [
+    {"kind": "reject", "headline": "I can't email TrendCart directly; ORD-120 is still in assembly."},
+    {"kind": "reject", "headline": "I can't change the due date of ORD-120 in this system."},
+])
+def test_status_lookup_does_not_override_an_action_rejection(draft):
+    """Red-team R05/R06: the model checks the order before refusing an action; the reply must stay a rejection."""
+    db = connect(DATA_DIR)
+    llm = ScriptedLLM([[('get_order_status', {"order_id": "ORD-120"})], [("respond", draft)]])
+    reply = Agent(db, SimClock.at(SUITE["clock"]), llm).run("Email TrendCart that ORD-120 ships tomorrow.")
+    assert reply.kind == "reject" and reply.headline == draft["headline"]
+    db.close()
