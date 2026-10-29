@@ -77,6 +77,7 @@ result reports `matched_as` so the interpretation is visible.
 | 16 | Action | `propose_watch` | "Tell me if ORD-xxx hasn't moved by Thursday." / "Remind me tomorrow…" |
 | 17 | Action | `propose_cancel_watch` | "Stop watching that." |
 | 18 | Retrieval | `get_order_status` | "How is this order progressing against its deadline?" |
+| 19 | Action | `propose_outsourcing` | "Draft an outsourcing order with SteadyHands for the 800 hoodies." |
 
 Not LLM tools (runtime components): verifier, action executor, watch evaluator, briefing pipeline,
 clock / data advancer. They are specified in `docs/PLAN.md` §6–§7.
@@ -273,6 +274,19 @@ clock / data advancer. They are specified in `docs/PLAN.md` §6–§7.
 | **Purpose / non-goals** | Cancel a standing check; does not delete its history. |
 | **Blast radius** | A wanted alert stops. Confirm before; reversible (re-activate). |
 
+The manager can also cancel an active watch from the Watches page (`POST /api/watches/{id}/cancel`): their click
+is the confirmation, so the same `cancel_watch` action is recorded and executed in one step — audited and undoable.
+
+### 19. `propose_outsourcing` — Action (demo-feedback addition, 2026-10-29)
+
+| | |
+|---|---|
+| **Input** | `workshop` (name or id), `pieces`, `product` or `category`, optional `due_date` (resolved), optional `order_id` (only if the manager named one) |
+| **Output** | `proposal_id`, preview, and the chosen workshop's `finish_date`, `meets_due`, `cost`, `cost_per_piece`, `defect_rate_pct` — computed by `estimate_feasibility`, whose evidence it cites |
+| **Purpose / non-goals** | Turn "draft / arrange an outsourcing order" into an action instead of prose. Does not book anything or contact a workshop; a confirmed request goes to the outbox (`intent = outsource`). |
+| **Failure modes** | Unknown workshop → `NOT_FOUND` (candidates: all workshops); workshop cannot take the batch (wrong category, SUSPENDED, over batch cap) → `PRECONDITION_FAILED` with the eligible workshops as candidates; unknown order → `NOT_FOUND`. A late return is allowed but warned. |
+| **Blast radius** | A wrong request in the outbox. Confirm before; undo retracts it. |
+
 ---
 
 ## 5. Boundaries between tools (why they are split this way)
@@ -337,5 +351,6 @@ definition and its remaining time is reported as unknown rather than invented.
 | 2026-10-08 | Risk levels split: AT_RISK (P50 > due) vs WATCH (P80 > due only) |
 | 2026-10-08 | Implemented with tests: resolve_time, get_order, find_orders, summarize_orders, get_stage_output, compare_to_normal |
 | 2026-10-14 | All 17 tools implemented and tested against `eval/ground_truth/dev_truth.py`; strict JSON schemas (optional fields nullable, nulls dropped before the call); `compare_to_normal` rejects `value` together with `on_date`; `assess_order_risk` returns `total_open_orders` so the model never counts; `find_orders(expect_single)` resolves a single open match directly |
+| 2026-10-29 | Demo feedback: `propose_outsourcing` (tool 19); manager cancels watches from the UI through the gateway; estimate answers' details are rendered from the `estimate_feasibility` result (`app/agent/feasibility_view.py`) so every estimate has one layout |
 | 2026-10-15 | `get_workshops` and `estimate_feasibility` also return `defect_rate_pct` (display-ready, so the model never converts a fraction) |
 | 2026-10-15 | `estimate_feasibility`: `due_date` optional (fastest workshop and subcontract cost without a deadline) — found by dev items D23 and D36; `scan_exceptions` overdue text states the total pieces separately from the most overdue order |

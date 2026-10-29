@@ -49,12 +49,16 @@ export interface Watch { watch_id: string; type: string; description: string; pr
 export interface AuditEntry { audit_id: string; action_id: string; kind: string; executed_at: string; summary: string;
   undone_at: string | null }
 
-export interface PendingAction { action_id: string; kind: string; preview: string; status: string; created_at: string }
+export interface PendingAction { action_id: string; kind: string; preview: string; status: string; created_at: string;
+  payload?: Record<string, any> }
 
 export interface Scenario { name: string; title: string; description: string }
 
 export interface TurnSummary { turn_id: string; started: number; duration_s: number; steps: number;
   first: Record<string, any>; last: Record<string, any> }
+
+export interface ClockInfo { now: string; mode: "sim" | "real"; scenario: string; data_through: string;
+  processed_through: string | null; next_boundary: string; min: string; max: string }
 
 export interface Conversation { conversation_id: string; created_at: number; title: string }
 

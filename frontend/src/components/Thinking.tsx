@@ -1,10 +1,10 @@
 import clsx from "clsx";
-import { AlertTriangle, Brain, CheckCircle2, ChevronDown, PenLine, RotateCcw, ShieldCheck, Wrench, XCircle } from "lucide-react";
+import { AlertTriangle, Brain, CheckCircle2, ChevronDown, LayoutList, PenLine, RotateCcw, ShieldCheck, Wrench, XCircle } from "lucide-react";
 import { useState } from "react";
 import type { TraceEvent } from "../types";
 import { EvidenceChip } from "./ui";
 
-const SHOWN = new Set(["plan", "action", "draft", "verifier", "repair", "critic", "fallback"]);
+const SHOWN = new Set(["plan", "action", "draft", "render", "status_contract", "verifier", "repair", "critic", "fallback"]);
 
 function short(v: unknown, n = 90): string {
   const s = typeof v === "string" ? v : JSON.stringify(v);
@@ -34,6 +34,9 @@ function Step({ e, onEvidence }: { e: TraceEvent; onEvidence: (id: string) => vo
       </>);
     case "draft":
       return row(<PenLine size={15} />, <><span className="font-medium text-ink">Draft</span> · {short(d.headline, 140)}</>);
+    case "render":
+    case "status_contract":
+      return row(<LayoutList size={15} />, <><span className="font-medium text-ink">Formatted</span> · {d.message}</>);
     case "verifier":
       return d.ok
         ? row(<CheckCircle2 size={15} className="text-good" />, <><span className="font-medium text-ink">Verified</span> · {d.checked} facts traced to tool outputs</>)

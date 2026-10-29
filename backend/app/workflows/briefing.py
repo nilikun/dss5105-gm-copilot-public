@@ -96,9 +96,10 @@ def ensure(db: sqlite3.Connection, clock: Clock, rebuild: bool = False) -> dict[
     return _row(db.execute("SELECT * FROM briefings WHERE date = ?", (today,)).fetchone())
 
 
-def narrate(db: sqlite3.Connection, clock: Clock, llm: LLMClient) -> dict[str, Any]:
+def narrate(db: sqlite3.Connection, clock: Clock, llm: LLMClient, force: bool = False) -> dict[str, Any]:
+    """Write today's summary from the structured briefing; an existing one is kept unless force is set."""
     b = ensure(db, clock)
-    if b["narrative_status"] in ("ok",):
+    if b["narrative_status"] == "ok" and not force:
         return b
     s = b["structured"]
     text_json = json.dumps({k: s[k] for k in ("date", "yesterday", "at_risk", "decisions")}, ensure_ascii=False,

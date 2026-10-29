@@ -1,12 +1,14 @@
 // Alerts, actions, watches and the "thinking" logs — the co-pilot's working memory, one click from the chat.
 
 import clsx from "clsx";
-import { BellRing, CheckCheck, Undo2 } from "lucide-react";
+import { BellOff, BellRing, Check, CheckCheck, Circle, CircleDot, Undo2, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../api";
 import { Badge, Button, Empty, EvidenceChip, SectionTitle, fmtTime } from "../components/ui";
 import type { AuditEntry, Notification, PendingAction, TraceEvent, TurnSummary, Watch } from "../types";
 
+/** Load once, and again whenever `deps` change (the app passes a stamp of the clock and counters, so a list
+ * refreshes after the clock moves or an action elsewhere changes it); old data stays visible while reloading. */
 function useLoad<T>(fn: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -19,9 +21,11 @@ const Page = ({ children }: { children: React.ReactNode }) => (
   <div className="h-full overflow-y-auto"><div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">{children}</div></div>
 );
 
-export function AlertsView({ onEvidence, onChanged }: { onEvidence: (id: string) => void; onChanged: () => void }) {
-  const { data, err, load } = useLoad(api.notifications);
+export function AlertsView({ onEvidence, onChanged, stamp }: { onEvidence: (id: string) => void; onChanged: () => void;
+  stamp?: string }) {
+  const { data, err, load } = useLoad(api.notifications, [stamp]);
   const readAll = async () => { await api.markRead(); load(); onChanged(); };
+  const toggle = async (n: Notification) => { await api.markRead([n.notification_id], !n.read); load(); onChanged(); };
   return (
     <Page>
       <SectionTitle right={<Button variant="outline" onClick={readAll}><CheckCheck size={16} /> Mark all read</Button>}>Alerts</SectionTitle>
@@ -35,6 +39,11 @@ export function AlertsView({ onEvidence, onChanged }: { onEvidence: (id: string)
               <Badge tone={n.priority === "P1" ? "bad" : "neutral"}>{n.priority}</Badge>
               <span className="font-medium text-ink">{n.title}</span>
               <span className="ml-auto text-xs text-ink-3">{fmtTime(n.created_at)}</span>
+              <button onClick={() => toggle(n)} title={n.read ? "Mark as unread" : "Mark as read"}
+                aria-label={n.read ? "Mark as unread" : "Mark as read"}
+                className="grid size-7 place-items-center rounded-full text-ink-3 hover:bg-surface-3 hover:text-ink">
+                {n.read ? <Circle size={14} /> : <CircleDot size={14} className="text-accent" />}
+              </button>
             </div>
             <p className="text-[15px] text-ink-2">{n.body}</p>
             {n.evidence_ids.length > 0 && <div className="mt-2 flex gap-1.5">{n.evidence_ids.map((e) => <EvidenceChip key={e} id={e} onOpen={onEvidence} />)}</div>}
@@ -45,10 +54,10 @@ export function AlertsView({ onEvidence, onChanged }: { onEvidence: (id: string)
   );
 }
 
-export function ActionsView({ onChanged }: { onChanged: () => void }) {
-  const pending = useLoad(api.proposals);
-  const audit = useLoad(api.audit);
-  const outbox = useLoad(api.outbox);
+export function ActionsView({ onChanged, stamp }: { onChanged: () => void; stamp?: string }) {
+  const pending = useLoad(api.proposals, [stamp]);
+  const audit = useLoad(api.audit, [stamp]);
+  const outbox = useLoad(api.outbox, [stamp]);
   const refresh = () => { pending.load(); audit.load(); outbox.load(); onChanged(); };
   const run = async (fn: () => Promise<unknown>) => { try { await fn(); } finally { refresh(); } };
   return (
@@ -87,7 +96,9 @@ export function ActionsView({ onChanged }: { onChanged: () => void }) {
       <ul className="space-y-2">
         {outbox.data?.map((m: any) => (
           <li key={m.message_id} className="rounded-2xl bg-surface-2 p-4 text-[15px]">
-            <div className="mb-1 flex items-center gap-2 text-xs text-ink-3">To {m.recipient_role.replace("_", " ")} · {m.order_id} · {fmtTime(m.created_at)}
+            <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-ink-3">
+              {m.intent === "outsource" ? "Outsourcing request" : `To ${m.recipient_role.replace("_", " ")}`}
+              {m.order_id ? ` · ${m.order_id}` : ""} · {fmtTime(m.created_at)}
               <Badge tone={m.status === "retracted" ? "neutral" : "good"}>{m.status.replace("_", " ")}</Badge></div>
             <p className={clsx(m.status === "retracted" && "line-through text-ink-3")}>{m.body}</p>
           </li>
@@ -97,23 +108,57 @@ export function ActionsView({ onChanged }: { onChanged: () => void }) {
   );
 }
 
-export function WatchesView() {
-  const { data } = useLoad(api.watches);
+export function WatchesView({ onChanged, stamp }: { onChanged: () => void; stamp?: string }) {
+  const watches = useLoad(api.watches, [stamp]);
+  const pending = useLoad(api.proposals, [stamp]);
+  const [err, setErr] = useState<string | null>(null);
   const tone = (s: string) => (s === "active" ? "accent" : s === "fired" ? "bad" : s === "satisfied" ? "good" : "neutral") as any;
+  const run = async (fn: () => Promise<unknown>) => {
+    setErr(null);
+    try { await fn(); } catch (e: any) { setErr(e.message); } finally { watches.load(); pending.load(); onChanged(); }
+  };
+  const proposed = (pending.data ?? []).filter((p: PendingAction) => p.kind === "watch" || p.kind === "cancel_watch");
+  const cancel = (w: Watch) => {
+    if (confirm(`Cancel ${w.watch_id}? You can undo it from Actions → Audit log.`)) run(() => api.cancelWatch(w.watch_id));
+  };
   return (
     <Page>
       <SectionTitle>Watches</SectionTitle>
-      <p className="mb-4 text-sm text-ink-3">Standing checks you asked for. They are evaluated on every tick of the clock and fire on their own.</p>
-      {data?.length === 0 && <Empty>No watches. Try “Tell me if ORD-120 hasn't moved by Friday.”</Empty>}
+      <p className="mb-4 text-sm text-ink-3">Standing checks you asked for. They are evaluated on every tick of the clock and fire on their own.
+        The co-pilot can only propose a watch; it starts once you confirm it here or in the chat. Cancelling is your own action, logged and undoable.</p>
+      {err && <p className="mb-3 text-sm text-bad">{err}</p>}
+      {proposed.length > 0 && (
+        <>
+          <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-ink-3">Awaiting your confirmation</h3>
+          <ul className="mb-6 space-y-2">
+            {proposed.map((p: PendingAction) => (
+              <li key={p.action_id} className="rounded-2xl border border-accent/40 bg-accent-soft/30 p-4">
+                <div className="mb-1 text-xs uppercase tracking-wide text-ink-3">{p.kind.replace("_", " ")} · {p.action_id} · {fmtTime(p.created_at)}</div>
+                <p className="text-[15px] text-ink">{p.preview}</p>
+                <div className="mt-3 flex gap-2">
+                  <Button variant="filled" onClick={() => run(() => api.confirm(p.action_id))}><Check size={16} /> Confirm</Button>
+                  <Button variant="outline" onClick={() => run(() => api.cancel(p.action_id))}><X size={16} /> Dismiss</Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {watches.data?.length === 0 && proposed.length === 0 && <Empty>No watches. Try “Tell me if ORD-120 hasn't moved by Friday.”</Empty>}
       <ul className="space-y-2">
-        {data?.map((w: Watch) => (
+        {watches.data?.map((w: Watch) => (
           <li key={w.watch_id} className="flex items-start gap-3 rounded-2xl border border-line p-4">
             <BellRing size={18} className="mt-0.5 text-ink-2" />
             <div className="flex-1">
               <p className="text-[15px] text-ink">{w.description}</p>
               <p className="text-xs text-ink-3">{w.watch_id} · set {fmtTime(w.created_at)} · expires {fmtTime(w.expires_at)}{w.fired_at && ` · fired ${fmtTime(w.fired_at)}`}</p>
             </div>
-            <Badge tone={tone(w.status)}>{w.status}</Badge>
+            <div className="flex shrink-0 flex-col items-end gap-2">
+              <Badge tone={tone(w.status)}>{w.status}</Badge>
+              {w.status === "active" && (
+                <Button variant="text" onClick={() => cancel(w)}><BellOff size={15} /> Cancel</Button>
+              )}
+            </div>
           </li>
         ))}
       </ul>

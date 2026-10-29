@@ -70,12 +70,27 @@ export default function App() {
   }, [conversationId, running, refresh]);
 
   const newChat = () => { setItems([]); setConversationId(null); };
+  // Lists reload when the clock or a counter changes (e.g. after jumping the clock or confirming in the chat)
+  const stamp = state ? [state.now, state.mode, state.unread_alerts, state.pending_actions, state.active_watches].join("|") : "";
   const openConv = async (id: string) => { setItems(fromStored(await api.conversation(id))); setConversationId(id); };
+  const deleteConv = async (id: string) => {
+    if (running && id === conversationId) return;
+    await api.deleteConversation(id);
+    if (id === conversationId) newChat();
+    refresh();
+  };
+  const clearConvs = async () => {
+    if (running || !confirm("Delete all chats? The thinking logs are kept.")) return;
+    await api.deleteAllConversations();
+    newChat();
+    refresh();
+  };
 
   return (
     <div className="flex h-full overflow-hidden bg-surface">
       <Sidebar open={sidebar} setOpen={setSidebar} view={view} setView={setView} state={state}
-        conversations={conversations} activeConv={conversationId} onNewChat={newChat} onOpenConv={openConv} />
+        conversations={conversations} activeConv={conversationId} onNewChat={newChat} onOpenConv={openConv}
+        onDeleteConv={deleteConv} onClearConvs={clearConvs} />
       <main className="flex min-w-0 flex-1 flex-col">
         <TopBar state={state} onMenu={() => setSidebar(true)} onChanged={refresh} onAlerts={() => setView("alerts")} />
         {offline && <div className="mx-4 mb-2 rounded-2xl bg-warn-soft px-4 py-2 text-sm text-warn">{offline}</div>}
@@ -83,9 +98,9 @@ export default function App() {
           {view === "chat" && <ChatView items={items} running={running} onSend={send} onEvidence={setEvidence}
             onChanged={refresh} state={state} briefing={briefing} openBriefing={() => setView("briefing")} />}
           {view === "briefing" && <BriefingView briefing={briefing} onReload={refresh} onEvidence={setEvidence} onAsk={send} />}
-          {view === "alerts" && <AlertsView onEvidence={setEvidence} onChanged={refresh} />}
-          {view === "actions" && <ActionsView onChanged={refresh} />}
-          {view === "watches" && <WatchesView />}
+          {view === "alerts" && <AlertsView onEvidence={setEvidence} onChanged={refresh} stamp={stamp} />}
+          {view === "actions" && <ActionsView onChanged={refresh} stamp={stamp} />}
+          {view === "watches" && <WatchesView onChanged={refresh} stamp={stamp} />}
           {view === "logs" && <LogsView />}
           {view === "settings" && <SettingsView state={state} onChanged={refresh} />}
         </div>

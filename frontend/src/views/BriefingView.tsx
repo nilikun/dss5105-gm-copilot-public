@@ -11,9 +11,14 @@ export function BriefingView({ briefing, onReload, onEvidence, onAsk }: { briefi
   const [err, setErr] = useState<string | null>(null);
   if (!briefing) return <p className="p-8 text-ink-3">Loading briefing…</p>;
   const s = briefing.structured;
-  const narrate = async () => {
+  const [rebuilding, setRebuilding] = useState(false);
+  const narrate = async (force = false) => {
     setBusy(true); setErr(null);
-    try { await api.narrate(); onReload(); } catch (e: any) { setErr(e.message); } finally { setBusy(false); }
+    try { await api.narrate(force); onReload(); } catch (e: any) { setErr(e.message); } finally { setBusy(false); }
+  };
+  const rebuild = async () => {
+    setRebuilding(true); setErr(null);
+    try { await api.rebuildBriefing(); onReload(); } catch (e: any) { setErr(e.message); } finally { setRebuilding(false); }
   };
   const Section = ({ title, items, empty }: { title: string; items: BriefingItem[]; empty: string }) => (
     <section className="mt-6">
@@ -43,13 +48,22 @@ export function BriefingView({ briefing, onReload, onEvidence, onAsk }: { briefi
             <p className="mt-1 text-sm text-ink-3">Generated {briefing.created_at.replace("T", " ")} · data through {s.data_through}
               {s.suppressed_findings > 0 && ` · ${s.suppressed_findings} lower-priority findings not shown`}</p>
           </div>
-          <Button variant="outline" onClick={onReload}><RefreshCw size={16} /> Refresh</Button>
+          <Button variant="outline" onClick={rebuild} disabled={rebuilding}
+            title="Rebuild today's briefing from the current data (the written summary is cleared)">
+            <RefreshCw size={16} className={rebuilding ? "gem-spin" : undefined} /> {rebuilding ? "Rebuilding…" : "Refresh"}
+          </Button>
         </div>
 
         <Card className="mt-6">
           <div className="mb-2 flex items-center gap-2 text-sm font-medium text-ink-2"><Sparkle size={18} /> Summary</div>
           {briefing.narrative ? (
-            <p className="whitespace-pre-line text-[16px] leading-relaxed text-ink">{briefing.narrative}</p>
+            <div>
+              <p className="whitespace-pre-line text-[16px] leading-relaxed text-ink">{briefing.narrative}</p>
+              <Button variant="text" className="mt-2 -ml-3" disabled={busy} onClick={() => narrate(true)}>
+                <Sparkles size={16} /> {busy ? "Rewriting…" : "Rewrite summary"}
+              </Button>
+              {err && <p className="mt-2 text-sm text-bad">{err}</p>}
+            </div>
           ) : (
             <div>
               <p className="text-[15px] text-ink-2">
@@ -57,7 +71,7 @@ export function BriefingView({ briefing, onReload, onEvidence, onAsk }: { briefi
                   : briefing.narrative_status === "rejected" ? "The written summary was rejected because it stated a figure not in the briefing data; the structured briefing below stands."
                     : "The written summary is unavailable; the structured briefing below stands."}
               </p>
-              <Button variant="tonal" className="mt-3" disabled={busy} onClick={narrate}>
+              <Button variant="tonal" className="mt-3" disabled={busy} onClick={() => narrate()}>
                 <Sparkles size={16} /> {busy ? "Writing…" : "Write summary"}
               </Button>
               {err && <p className="mt-2 text-sm text-bad">{err}</p>}

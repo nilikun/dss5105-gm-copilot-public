@@ -1,7 +1,7 @@
 // Thin client for the backend API. Every request carries the access code (if one is set) from localStorage.
 
 import type {
-  AppState, AuditEntry, Briefing, Conversation, Evidence, Notification, PendingAction, Reply, Scenario,
+  AppState, AuditEntry, Briefing, ClockInfo, Conversation, Evidence, Notification, PendingAction, Reply, Scenario,
   Settings, StoredMessage, TraceEvent, TurnSummary, Watch,
 } from "./types";
 
@@ -33,13 +33,15 @@ async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
 }
 
 const post = <T,>(path: string, body?: unknown) => req<T>(path, { method: "POST", body: JSON.stringify(body ?? {}) });
+const del = <T,>(path: string) => req<T>(path, { method: "DELETE" });
 
 export const api = {
   state: () => req<AppState>("/api/state"),
   settings: () => req<Settings>("/api/settings"),
   patchSettings: (s: Partial<Settings>) => req<Settings>("/api/settings", { method: "PATCH", body: JSON.stringify(s) }),
   briefing: () => req<Briefing>("/api/briefing"),
-  narrate: () => post<Briefing>("/api/briefing/narrate"),
+  narrate: (force = false) => post<Briefing>(`/api/briefing/narrate${force ? "?force=true" : ""}`),
+  rebuildBriefing: () => post<Briefing>("/api/briefing/rebuild"),
   evidence: (id: string) => req<Evidence>(`/api/evidence/${id}`),
   proposals: () => req<PendingAction[]>("/api/proposals"),
   confirm: (id: string) => post<{ audit_id: string; summary: string }>(`/api/proposals/${id}/confirm`),
@@ -48,16 +50,21 @@ export const api = {
   undo: (id: string) => post<{ summary: string }>(`/api/audit/${id}/undo`),
   outbox: () => req<any[]>("/api/outbox"),
   watches: () => req<Watch[]>("/api/watches"),
+  cancelWatch: (id: string) => post<{ audit_id: string; summary: string }>(`/api/watches/${id}/cancel`),
   notifications: () => req<Notification[]>("/api/notifications"),
-  markRead: (ids?: number[]) => post("/api/notifications/read", { ids: ids ?? null }),
+  markRead: (ids?: number[], read = true) => post("/api/notifications/read", { ids: ids ?? null, read }),
   advance: (days: number, hours = 0) => post<any>("/api/clock/advance", { days, hours }),
-  setMode: (mode: "sim" | "real") => post<any>("/api/clock/mode", { mode }),
+  setMode: (mode: "sim" | "real") => post<ClockInfo>("/api/clock/mode", { mode }),
+  clock: () => req<ClockInfo>("/api/clock"),
+  goto: (when: string) => post<ClockInfo & { rewound: boolean; boundaries: number }>("/api/clock/goto", { when }),
   reset: (scenario: string) => post<any>("/api/clock/reset", { scenario }),
   scenarios: () => req<Scenario[]>("/api/scenarios"),
   traces: () => req<TurnSummary[]>("/api/traces?limit=50"),
   trace: (turnId: string) => req<TraceEvent[]>(`/api/traces/${turnId}`),
   conversations: () => req<Conversation[]>("/api/conversations"),
   conversation: (id: string) => req<StoredMessage[]>(`/api/conversations/${id}`),
+  deleteConversation: (id: string) => del<{ deleted: string }>(`/api/conversations/${id}`),
+  deleteAllConversations: () => del<{ deleted: number }>("/api/conversations"),
 };
 
 export interface StreamHandlers {

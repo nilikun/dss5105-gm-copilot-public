@@ -13,7 +13,8 @@ from typing import Any
 
 from app.clock import DbClock
 from app.clock.advancer import generate_day, load_scenario
-from app.db.database import get_setting, set_setting
+from app.config import DATASET_TODAY
+from app.db.database import get_setting, reset_in_place, set_setting
 from app.workflows import briefing, notifications, watch_engine
 
 
@@ -59,6 +60,44 @@ def advance(db: sqlite3.Connection, days: int = 0, hours: int = 0) -> dict[str, 
     report["watches_at_target"] = watch_engine.evaluate_all(db, clock)
     report["from"], report["to"] = start.isoformat(timespec="minutes"), target.isoformat(timespec="minutes")
     return report
+
+
+START = datetime.fromisoformat(f"{DATASET_TODAY}T07:00")  # the dataset's "today"; nothing is simulated before
+MAX_HORIZON = timedelta(days=90)
+
+
+def goto(db: sqlite3.Connection, target: datetime) -> dict[str, Any]:
+    """Move the simulated clock to `target`, forward or back.
+
+    Forward runs every 07:00 boundary on the way (as `advance` does). Back rewinds the factory timeline: the
+    world is reset to the dataset as delivered and replayed to `target`. The advancer seeds each day by
+    (scenario, date), so the replayed days are identical to the first run. Chats, their evidence, spend, traces
+    and settings are kept; watches, proposals, alerts and briefings created "in the future" are gone.
+    """
+    target = target.replace(second=0, microsecond=0)
+    if not START <= target <= START + MAX_HORIZON:
+        raise ValueError(f"choose a time between {START:%Y-%m-%d %H:%M} and {START + MAX_HORIZON:%Y-%m-%d %H:%M}")
+    clock = DbClock(db)
+    if clock.state()["mode"] != "sim":
+        clock.set_mode("sim")
+    start = clock.now()
+    rewound = target < start
+    if rewound:
+        reset_in_place(db, clock.state()["scenario"], keep_history=True)
+        start_day(db)
+        clock = DbClock(db)
+    report = catch_up(db, clock, target)
+    clock.set_now(target)
+    report["watches_at_target"] = watch_engine.evaluate_all(db, clock)
+    report["from"], report["to"] = start.isoformat(timespec="minutes"), target.isoformat(timespec="minutes")
+    report["rewound"] = rewound
+    return report
+
+
+def next_boundary(now: datetime) -> datetime:
+    """The next 07:00 at which the scheduler runs (used to explain real-time mode)."""
+    b = now.replace(hour=7, minute=0, second=0, microsecond=0)
+    return b if b > now else b + timedelta(days=1)
 
 
 def catch_up(db: sqlite3.Connection, clock: DbClock, target: datetime | None = None) -> dict[str, Any]:

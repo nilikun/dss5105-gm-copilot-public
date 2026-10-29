@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import sqlite3
 import threading
 from pathlib import Path
@@ -222,7 +223,8 @@ def initialise(conn: sqlite3.Connection, data_dir: Path = DATA_DIR, start: str |
     """Create all tables, load the base CSVs and set the clock to the dataset's 'today' at 07:00."""
     from app.config import DATASET_TODAY
 
-    conn.executescript(BASE_SCHEMA + STATE_SCHEMA)
+    # IF NOT EXISTS: a reset may keep some tables (spend, traces, chat history) and recreate the rest
+    conn.executescript(re.sub(r"CREATE (TABLE|INDEX) ", r"CREATE \g<1> IF NOT EXISTS ", BASE_SCHEMA + STATE_SCHEMA))
     for table in ("orders", "production_log", "workshops"):
         _load_csv(conn, table, data_dir / f"{table}.csv")
     conn.execute("INSERT INTO clock_state (id, mode, sim_now) VALUES (1, 'sim', ?)",
@@ -249,15 +251,31 @@ def open_db(path: str) -> sqlite3.Connection:
     return conn
 
 
-def reset_in_place(conn: sqlite3.Connection, scenario: str = "baseline") -> None:
-    """Drop all state and simulated data — back to the dataset as delivered, clock at 2026-04-01 07:00 — without
-    deleting the file (other connections may hold it open, which Windows does not allow)."""
+# Survive every reset: the day's model spend (or a reset would lift the daily budget cap), the AI execution
+# log, and the manager's preferences.
+ALWAYS_KEPT = {"llm_usage", "traces", "settings"}
+# Also kept when only the factory's timeline is rewound: the chats and the evidence their answers cite, and the
+# id counters so new evidence / proposal ids never reuse an id an old answer points to.
+HISTORY_KEPT = {"conversations", "messages", "evidence", "counters"}
+
+
+def reset_in_place(conn: sqlite3.Connection, scenario: str = "baseline", keep_history: bool = False) -> None:
+    """Back to the dataset as delivered, clock at 2026-04-01 07:00, without deleting the file (other connections
+    may hold it open, which Windows does not allow).
+
+    The factory world is always reset: orders and production (the advancer appends to them), notes, outbox,
+    watches, proposals, audit log, briefings and alerts. Spend, traces and settings are always kept; with
+    keep_history (a rewind of the clock) the conversations, their evidence and the id counters are kept too.
+    """
+    keep = ALWAYS_KEPT | (HISTORY_KEPT if keep_history else set())
     with _write_lock:
         tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND "
                                              "name NOT LIKE 'sqlite_%'")]
         conn.execute("PRAGMA foreign_keys = OFF")
         for t in tables:
-            conn.execute(f"DROP TABLE IF EXISTS {t}")
+            if t not in keep:
+                conn.execute(f"DROP TABLE IF EXISTS {t}")
+        conn.execute("DELETE FROM settings WHERE key = 'processed_through'")  # simulation progress, not a preference
         conn.commit()
         conn.execute("PRAGMA foreign_keys = ON")
         initialise(conn)

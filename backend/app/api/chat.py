@@ -87,3 +87,24 @@ def conversations(db=Depends(get_db)) -> list[dict]:
 def conversation(cid: str, db=Depends(get_db)) -> list[dict]:
     return [{"role": r["role"], "content": loads(r["content"]), "turn_id": r["turn_id"], "created_at": r["created_at"]}
             for r in db.execute("SELECT * FROM messages WHERE conversation_id = ? ORDER BY id", (cid,))]
+
+
+@router.delete("/conversations/{cid}")
+def delete_conversation(cid: str, db=Depends(get_db)) -> dict:
+    """Remove a chat and its messages from the sidebar. The thinking logs (traces) stay: they are the audit trail
+    of what the AI executed."""
+    if db.execute("SELECT 1 FROM conversations WHERE conversation_id = ?", (cid,)).fetchone() is None:
+        raise HTTPException(status_code=404, detail=f"no conversation {cid}")
+    db.execute("DELETE FROM messages WHERE conversation_id = ?", (cid,))
+    db.execute("DELETE FROM conversations WHERE conversation_id = ?", (cid,))
+    db.commit()
+    return {"deleted": cid}
+
+
+@router.delete("/conversations")
+def delete_all_conversations(db=Depends(get_db)) -> dict:
+    n = db.execute("SELECT COUNT(*) FROM conversations").fetchone()[0]
+    db.execute("DELETE FROM messages")
+    db.execute("DELETE FROM conversations")
+    db.commit()
+    return {"deleted": n}

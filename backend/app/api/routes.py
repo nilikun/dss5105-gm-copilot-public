@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -75,12 +76,14 @@ def get_briefing(db=Depends(get_db)) -> dict:
 
 
 @router.post("/briefing/narrate", dependencies=[Depends(rate_limited)])
-def narrate_briefing(db=Depends(get_db), llm=Depends(get_llm)) -> dict:
-    return briefing.narrate(db, DbClock(db), llm)
+def narrate_briefing(force: bool = False, db=Depends(get_db), llm=Depends(get_llm)) -> dict:
+    """Write the summary; force=true rewrites one that already exists."""
+    return briefing.narrate(db, DbClock(db), llm, force=force)
 
 
 @router.post("/briefing/rebuild")
 def rebuild_briefing(db=Depends(get_db)) -> dict:
+    """Recompute today's structured briefing from the current data; the written summary is cleared."""
     return briefing.ensure(db, DbClock(db), rebuild=True)
 
 
@@ -141,6 +144,16 @@ def watches(db=Depends(get_db)) -> list[dict]:
             for r in db.execute("SELECT * FROM watches ORDER BY created_at DESC")]
 
 
+@router.post("/watches/{watch_id}/cancel")
+def cancel_watch(watch_id: str, db=Depends(get_db)) -> dict:
+    """The manager cancels a watch from the Watches page: their click is the confirmation. It goes through the
+    gateway like any action, so it is audited and can be undone."""
+    try:
+        return gateway.cancel_watch_by_manager(db, DbClock(db), watch_id.strip().upper())
+    except gateway.GatewayError as e:
+        raise HTTPException(status_code=409, detail=str(e)) from e
+
+
 @router.get("/notifications")
 def list_notifications(unread_only: bool = False, db=Depends(get_db)) -> list[dict]:
     sql = "SELECT * FROM notifications" + (" WHERE read = 0" if unread_only else "") + \
@@ -150,14 +163,16 @@ def list_notifications(unread_only: bool = False, db=Depends(get_db)) -> list[di
 
 class ReadIn(BaseModel):
     ids: list[int] | None = None
+    read: bool = True  # false marks the alerts unread again
 
 
 @router.post("/notifications/read")
 def mark_read(body: ReadIn, db=Depends(get_db)) -> dict:
+    flag = 1 if body.read else 0
     if body.ids:
-        db.executemany("UPDATE notifications SET read = 1 WHERE notification_id = ?", [(i,) for i in body.ids])
+        db.executemany("UPDATE notifications SET read = ? WHERE notification_id = ?", [(flag, i) for i in body.ids])
     else:
-        db.execute("UPDATE notifications SET read = 1")
+        db.execute("UPDATE notifications SET read = ?", (flag,))
     db.commit()
     return {"ok": True}
 
@@ -167,9 +182,13 @@ def mark_read(body: ReadIn, db=Depends(get_db)) -> dict:
 def clock_info(db=Depends(get_db)) -> dict:
     clock = DbClock(db)
     s = clock.state()
-    return {"now": clock.now().isoformat(timespec="minutes"), "mode": s["mode"], "scenario": s["scenario"],
+    now = clock.now()
+    return {"now": now.isoformat(timespec="minutes"), "mode": s["mode"], "scenario": s["scenario"],
             "processed_through": get_setting(db, "processed_through"),
-            "data_through": db.execute("SELECT MAX(date) FROM production_log").fetchone()[0]}
+            "data_through": db.execute("SELECT MAX(date) FROM production_log").fetchone()[0],
+            "next_boundary": scheduler.next_boundary(now).isoformat(timespec="minutes"),
+            "min": scheduler.START.isoformat(timespec="minutes"),
+            "max": (scheduler.START + scheduler.MAX_HORIZON).isoformat(timespec="minutes")}
 
 
 class AdvanceIn(BaseModel):
@@ -182,6 +201,20 @@ def advance(body: AdvanceIn, db=Depends(get_db)) -> dict:
     if DbClock(db).state()["mode"] != "sim":
         raise HTTPException(status_code=409, detail="the clock is in real mode; switch to sim to advance it")
     return scheduler.advance(db, days=body.days, hours=body.hours)
+
+
+class GotoIn(BaseModel):
+    when: datetime = Field(description="Factory date and time to jump to, e.g. 2026-04-03T07:00")
+
+
+@router.post("/clock/goto")
+def goto(body: GotoIn, db=Depends(get_db)) -> dict:
+    """Jump the simulated clock to any time from 1 Apr 07:00; going back replays the scenario from the start."""
+    try:
+        report = scheduler.goto(db, body.when.replace(tzinfo=None))
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e)) from e
+    return {**clock_info(db), "rewound": report["rewound"], "boundaries": len(report["boundaries"])}
 
 
 class ModeIn(BaseModel):

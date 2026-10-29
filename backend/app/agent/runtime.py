@@ -20,7 +20,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from app.agent import calendar_context, fallback, order_status, prompts
+from app.agent import calendar_context, fallback, feasibility_view, order_status, prompts
 from app.agent import critic as critic_mod
 from app.agent.respond import Reply, RespondArgs, parse_respond, respond_tool_schema
 from app.agent.verifier import verify
@@ -180,6 +180,11 @@ class Agent:
                     draft = status_reply
                     tracer.emit("status_contract", message="Order status constructed from validated tool fields",
                                 headline=draft.headline)
+                else:
+                    rendered = feasibility_view.apply(draft, tool_results)
+                    if rendered is not draft:
+                        draft = rendered
+                        tracer.emit("render", message="Estimate details rendered from the feasibility result")
                 v = verify(draft, tool_outputs, user_text, now, set(ctx.evidence.issued), self.db, turn_id)
                 tracer.emit("verifier", ok=v.ok, checked=v.checked_tokens, violations=v.violations,
                             message=(f"{v.checked_tokens} factual tokens grounded" if v.ok else

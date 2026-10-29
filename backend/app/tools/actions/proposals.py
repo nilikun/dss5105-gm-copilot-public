@@ -189,3 +189,72 @@ def propose_cancel_watch(ctx: ToolContext, watch_id: str) -> ToolResult:
     return ctx.ok(_create(ctx, "cancel_watch", {"watch_id": r["watch_id"]},
                           f"Cancel watch {r['watch_id']}: {r['description']}"))
 
+
+
+# ----------------------------------------------------------------- propose_outsourcing
+class ProposeOutsourcingParams(BaseModel):
+    workshop: str = Field(description="Workshop name or id, e.g. SteadyHands or W2")
+    pieces: int = Field(gt=0, description="Pieces to send out (from the manager's request or the conversation)")
+    product: str | None = Field(None, description="Product as said, e.g. hoodies")
+    category: Literal["TOPS", "ACCESSORIES"] | None = Field(None, description="If the product is unknown")
+    due_date: str | None = Field(None, description="ISO date the pieces are needed by, if one was given")
+    order_id: str | None = Field(None, description="Only if the batch belongs to an existing order the manager "
+                                                   "named; never pick one yourself")
+
+
+@tool("propose_outsourcing", "action",
+      "Draft an outsourcing request (subcontract order) for N pieces to one outside workshop. Checks that the "
+      "workshop can take the batch (category, status, batch cap) and states its estimated return date, total cost "
+      "and defect rate, computed like estimate_feasibility. Creates a PROPOSAL only — nothing is booked; once the "
+      "manager confirms, the request goes to the outbox, never to the workshop itself.", ProposeOutsourcingParams)
+def propose_outsourcing(ctx: ToolContext, workshop: str, pieces: int, product: str | None = None,
+                        category: str | None = None, due_date: str | None = None,
+                        order_id: str | None = None) -> ToolResult:
+    from app.domain.names import match
+    from app.tools.feasibility.feasibility import estimate_feasibility
+
+    shops = [dict(r) for r in ctx.db.execute("SELECT workshop_id, name FROM workshops ORDER BY workshop_id")]
+    key = workshop.strip()
+    hit = [w for w in shops if w["workshop_id"] == key.upper()] or \
+          [w for w in shops if w["name"] in match(key, [s["name"] for s in shops])]
+    if len(hit) != 1:
+        return ctx.fail(ErrorCode.NOT_FOUND if not hit else ErrorCode.AMBIGUOUS, f"no single workshop matches "
+                        f"'{workshop}'", candidates=[{"workshop_id": w["workshop_id"], "name": w["name"]}
+                                                     for w in (hit or shops)])
+    shop = hit[0]
+    order = None
+    if order_id:
+        order = _open_order(ctx, order_id)
+        if isinstance(order, ToolResult):
+            return order
+    est = estimate_feasibility(ctx, pieces=pieces, due_date=due_date, product=product, category=category)
+    if not est.ok:
+        return est
+    d = est.data
+    opt = next(o for o in d["workshops"] if o["workshop_id"] == shop["workshop_id"])
+    eligible = [o for o in d["workshops"] if o["eligible"]]
+    if not opt["eligible"]:
+        return ctx.fail(ErrorCode.PRECONDITION_FAILED, f"{opt['workshop']} cannot take this batch: "
+                        f"{opt['reason_ineligible']}",
+                        candidates=[{"workshop": o["workshop"], "finish_date": o["finish_date"], "cost": o["cost"],
+                                     "defect_rate_pct": o["defect_rate_pct"]} for o in eligible])
+    req = d["request"]
+    what = f"{pieces} × {req['product'] or req['category']}"
+    body = (f"Outsourcing request to {opt['workshop']} ({opt['workshop_id']}): {what}"
+            + (f" for {order['order_id']} ({order['customer']})" if order else "")
+            + (f", needed by {req['due_date']}" if req["due_date"] else "")
+            + f". Estimated return {opt['finish_date']}, total cost {opt['cost']:,.2f} "
+              f"({opt['cost_per_piece']:,.2f} per piece), defect rate {opt['defect_rate_pct']:g}%. "
+              "Please confirm capacity, price and pickup.")
+    warnings = list(est.warnings)
+    if opt["meets_due"] is False:
+        warnings.append(f"{opt['workshop']} is estimated to return the batch on {opt['finish_date']}, after the "
+                        f"due date {req['due_date']}")
+    payload = {"workshop": opt["workshop"], "workshop_id": opt["workshop_id"], "pieces": pieces,
+               "product": req["product"], "category": req["category"], "due_date": req["due_date"],
+               "order_id": order["order_id"] if order else None, "finish_date": opt["finish_date"],
+               "cost": opt["cost"], "defect_rate_pct": opt["defect_rate_pct"], "body": body}
+    data = _create(ctx, "outsourcing", payload, body)
+    data["option"] = {k: opt[k] for k in ("workshop", "workshop_id", "finish_date", "meets_due", "cost",
+                                          "cost_per_piece", "defect_rate_pct", "total_days")}
+    return ctx.ok(data, est.evidence, warnings=warnings)

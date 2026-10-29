@@ -11,7 +11,8 @@ export function SettingsView({ state, onChanged }: { state: AppState | null; onC
   const s = state?.settings;
   const patch = async (body: Record<string, unknown>) => { await api.patchSettings(body as any); onChanged(); };
   const reset = async (name: string) => {
-    if (!confirm(`Reset all data, chats and actions and start scenario "${name}" at Wed 1 Apr 2026 07:00?`)) return;
+    if (!confirm(`Reset the factory data, chats and actions and start scenario "${name}" at Wed 1 Apr 2026 07:00? ` +
+      "Settings, today's model spend and the thinking logs are kept.")) return;
     await api.reset(name); setMsg(`Scenario "${name}" started.`); onChanged();
   };
   return (

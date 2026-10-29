@@ -31,7 +31,7 @@ def test_briefing_and_tools(tmp_path):
     with client:
         b = client.get("/api/briefing").json()
         assert b["date"] == "2026-04-01" and b["structured"]["at_risk"]
-        assert len(client.get("/api/tools").json()) == 18
+        assert len(client.get("/api/tools").json()) == 19
 
 
 def test_chat_streams_steps_and_reply(tmp_path):

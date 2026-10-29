@@ -13,7 +13,7 @@ services:
         required: false
       - deploy/deploy.env          # ACCESS_CODE, TRUST_PROXY, TUNNEL_TOKEN (git-ignored)
     ports:
-      - "127.0.0.1:8000:8000"      # local only; the public reaches it through the tunnel
+      - "127.0.0.1:8000:8000"      # local only; public traffic comes through trusted Nginx or the tunnel
     volumes:
       - gm-var:/app/backend/var    # database, traces and logs survive restarts and rebuilds
 

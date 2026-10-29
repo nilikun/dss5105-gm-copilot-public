@@ -49,6 +49,12 @@ def confirm(db: sqlite3.Connection, clock: Clock, action_id: str, actor: str = "
                          "VALUES (?, ?, ?, ?, ?)", (p["order_id"], p["recipient_role"], p["intent"], p["body"], now))
         after = {"message_id": cur.lastrowid}
         summary = f"Message about {p['order_id']} placed in the outbox for the {p['recipient_role'].replace('_', ' ')}"
+    elif a["kind"] == "outsourcing":
+        cur = db.execute("INSERT INTO outbox (order_id, recipient_role, intent, body, created_at) "
+                         "VALUES (?, 'workshop', 'outsource', ?, ?)", (p.get("order_id"), p["body"], now))
+        after = {"message_id": cur.lastrowid}
+        summary = (f"Outsourcing request to {p['workshop']} ({p['pieces']} × {p['product'] or p['category']}) "
+                   "placed in the outbox")
     elif a["kind"] == "watch":
         wid = next_id(db, "watch", "WT-")
         db.execute("INSERT INTO watches (watch_id, type, params, snapshot, description, priority, created_at, "
@@ -95,7 +101,7 @@ def undo(db: sqlite3.Connection, clock: Clock, audit_id: str) -> dict[str, Any]:
     after, before, now = loads(r["after"]), loads(r["before"]), _now(clock)
     if r["kind"] == "note":
         db.execute("UPDATE notes SET deleted_at = ? WHERE note_id = ?", (now, after["note_id"]))
-    elif r["kind"] == "message":
+    elif r["kind"] in ("message", "outsourcing"):
         db.execute("UPDATE outbox SET status = 'retracted' WHERE message_id = ?", (after["message_id"],))
     elif r["kind"] == "watch":
         db.execute("UPDATE watches SET status = 'cancelled' WHERE watch_id = ?", (after["watch_id"],))
@@ -104,6 +110,22 @@ def undo(db: sqlite3.Connection, clock: Clock, audit_id: str) -> dict[str, Any]:
     db.execute("UPDATE audit_log SET undone_at = ? WHERE audit_id = ?", (now, audit_id))
     db.commit()
     return {"audit_id": audit_id, "undone_at": now, "summary": f"Undone: {r['summary']}"}
+
+
+def cancel_watch_by_manager(db: sqlite3.Connection, clock: Clock, watch_id: str) -> dict[str, Any]:
+    """The manager cancels a watch from the Watches page. Their click is the confirmation, so the proposal is
+    recorded and executed in one step — still through confirm(), hence audited and undoable like any action."""
+    w = db.execute("SELECT status, description FROM watches WHERE watch_id = ?", (watch_id,)).fetchone()
+    if w is None:
+        raise GatewayError(f"no watch {watch_id}")
+    if w["status"] != "active":
+        raise GatewayError(f"watch {watch_id} is {w['status']}, not active")
+    action_id = next_id(db, "action", "A-")
+    db.execute("INSERT INTO pending_actions (action_id, kind, payload, preview, created_at, turn_id) "
+               "VALUES (?, 'cancel_watch', ?, ?, ?, 'manager')",
+               (action_id, dumps({"watch_id": watch_id}), f"Cancel watch {watch_id}: {w['description']}",
+                _now(clock)))
+    return confirm(db, clock, action_id)
 
 
 def audit_log(db: sqlite3.Connection, limit: int = 100) -> list[dict[str, Any]]:

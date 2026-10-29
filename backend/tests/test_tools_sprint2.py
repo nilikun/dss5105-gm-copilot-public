@@ -31,11 +31,11 @@ def run(ctx, name, **args):
 
 # ----------------------------------------------------------------- registry
 def test_all_18_tools_registered_with_schemas():
-    assert len(REGISTRY) == 18
+    assert len(REGISTRY) == 19
     kinds = {}
     for s in REGISTRY.values():
         kinds[s.kind] = kinds.get(s.kind, 0) + 1
-    assert kinds == {"retrieval": 9, "judgement": 2, "tracing": 1, "discovery": 1, "feasibility": 1, "action": 4}
+    assert kinds == {"retrieval": 9, "judgement": 2, "tracing": 1, "discovery": 1, "feasibility": 1, "action": 5}
     for schema in function_schemas():
         assert schema["type"] == "function" and schema["parameters"]["type"] == "object" and schema["description"]
 
