@@ -15,6 +15,7 @@ from app.agent.respond import RespondArgs
 
 SUPPORT_TOOLS = {"compare_to_normal", "resolve_time", "describe_data_coverage", "get_stage_output"}
 CAUSE_QUESTION = re.compile(r"\b(why|cause[ds]?|reasons?|because|explain)\b", re.I)
+NORMAL_QUESTION = re.compile(r"\b(normal|abnormal|usual|unusual|typical|ok|okay)\b", re.I)
 CAUSE_UNKNOWN = "The cause is unknown from these data."
 
 
@@ -31,16 +32,18 @@ def _change(pct: float | None) -> str:
 
 
 def _verdict(r: dict[str, Any]) -> str:
-    """The judgement in words. No z when the baseline did not vary: it says nothing then."""
+    """The judgement in words, for a question that asks for one. No z when the baseline did not vary: it says nothing
+    then."""
     if r["tier"] is None or not r["robust_sigma"]:
         return ""
+    z = f"z = {r['z']} against the usual spread"
     if r["tier"] != "normal" and r["direction"] == "below":
         streak = r["consecutive_low_days"]
         run = f", {streak} low working days in a row" if streak > 1 else ""
-        return f" Judged not normal: {r['tier']} tier, z = {r['z']}{run}."
+        return f" Judged not normal: {z} ({r['tier']} tier){run}."
     if r["direction"] == "above":
-        return f" Judged unusually high: z = {r['z']}."
-    return f" Judged normal: z = {r['z']}."
+        return f" Judged unusually high: {z}."
+    return f" Judged normal: {z}."
 
 
 def _single_comparison(results: list[tuple[str, dict[str, Any]]]) -> dict[str, Any] | None:
@@ -55,12 +58,13 @@ def _single_comparison(results: list[tuple[str, dict[str, Any]]]) -> dict[str, A
 
 def apply(draft: RespondArgs, results: list[tuple[str, dict[str, Any]]], user_text: str) -> RespondArgs:
     asks_cause = bool(CAUSE_QUESTION.search(user_text))
-    if not (draft.kind == "answer" or (draft.kind == "refuse" and asks_cause)):
-        return draft
-    result = _single_comparison(results)
+    result = _single_comparison(results) if draft.kind in ("answer", "refuse") else None
     if result is None:
         return draft
     r = result["data"]["results"][0]
+    # A refusal stays with the model unless the comparison is what it refused: no cause, or data missing from it.
+    if draft.kind == "refuse" and not (asks_cause or r["actual"] is None or r["baseline_median"] is None):
+        return draft
     name, start, end = r["stage"].capitalize(), r["start"], r["end"]
     if r["actual"] is None:
         head = (f"{name} output is unavailable on {start}." if r["statistic"] == "daily"
@@ -79,5 +83,6 @@ def apply(draft: RespondArgs, results: list[tuple[str, dict[str, Any]]], user_te
     if r["pct_vs_baseline"] is None:
         parts.append("Percentage change cannot be computed.")
     parts.append(CAUSE_UNKNOWN)
-    return RespondArgs(kind="refuse" if asks_cause else "answer", headline=head + _verdict(r),
+    verdict = _verdict(r) if NORMAL_QUESTION.search(user_text) else ""
+    return RespondArgs(kind="refuse" if asks_cause else "answer", headline=head + verdict,
                        details=" ".join(parts), evidence_ids=[e["id"] for e in result.get("evidence", [])])

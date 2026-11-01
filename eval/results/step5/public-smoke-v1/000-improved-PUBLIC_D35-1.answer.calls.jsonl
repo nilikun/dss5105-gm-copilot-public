@@ -1,0 +1,4 @@
+{"usage": null, "error": null, "model": "gpt-5.6-luna", "call_index": 0, "pending": true}
+{"usage": {"input_tokens": 4904, "cached_input_tokens": 4782, "output_tokens": 44, "reasoning_tokens": 0}, "error": null, "model": "gpt-5.6-luna", "call_index": 0, "latency_seconds": 3.081678166985512, "pending": false}
+{"usage": null, "error": null, "model": "gpt-5.6-luna", "call_index": 1, "pending": true}
+{"usage": {"input_tokens": 5561, "cached_input_tokens": 5439, "output_tokens": 118, "reasoning_tokens": 0}, "error": null, "model": "gpt-5.6-luna", "call_index": 1, "latency_seconds": 3.2080998749879654, "pending": false}

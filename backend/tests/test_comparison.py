@@ -82,8 +82,28 @@ def test_verdict_answers_is_it_normal():
     llm = ScriptedLLM([[("compare_to_normal", {"stage": "ASSEMBLY", "on_date": "2026-03-31"})],
                        [("respond", {"kind": "answer", "headline": "No."})]])
     r = Agent(db, SimClock.at(CLOCK), llm).run("Was assembly's output yesterday normal?")
-    assert "Judged not normal: interrupt tier, z = -6.26, 6 low working days in a row." in r.headline
+    assert ("Judged not normal: z = -6.26 against the usual spread (interrupt tier), 6 low working days in a row."
+            in r.headline)
     assert "455 pieces on 2026-03-31, 40.2% below baseline" in r.headline and "761.5 pieces/day" in r.details
+
+
+def test_verdict_only_when_the_question_asks_for_one():
+    llm = ScriptedLLM([[("compare_to_normal", {"stage": "ASSEMBLY", "on_date": "2026-03-31"})],
+                       [("respond", {"kind": "answer", "headline": "Lower."})]])
+    r = Agent(connect(), SimClock.at(CLOCK), llm).run("Compare assembly output on 2026-03-31 with its baseline.")
+    assert "455 pieces" in r.headline and "z =" not in r.headline and "Judged" not in r.headline
+
+
+def test_a_refusal_because_data_is_missing_still_gets_the_known_facts():
+    db = connect()
+    db.execute("DELETE FROM production_log WHERE stage = 'ASSEMBLY' AND date = '2026-03-27'")
+    db.commit()
+    args = {"stage": "ASSEMBLY", "on_date": "2026-03-25", "through_date": "2026-03-31"}
+    llm = ScriptedLLM([[("compare_to_normal", args)],
+                       [("respond", {"kind": "refuse", "headline": "No comparison is available."})]])
+    r = Agent(db, SimClock.at(CLOCK), llm).run("Compare average assembly output over 25-31 March with its baseline.")
+    assert r.kind == "answer" and "unavailable from 2026-03-25 to 2026-03-31" in r.headline
+    assert "766.5 pieces/day" in r.details and "cannot be computed" in r.details
 
 
 # ----------------------------------------------------------------- the renderer knows which question it owns
@@ -155,3 +175,47 @@ def test_bad_periods_are_rejected(ctx, args):
 def test_sunday_is_closed_not_abnormal(ctx):
     r, _ = call(ctx, "compare_to_normal", {"stage": "ASSEMBLY", "on_date": "2026-03-29"})
     assert r.ok and r.data["closed"] is True
+
+
+# ---------------------------------------------------------------- cases and references written for another build
+
+PRODUCTION = [c for c in json.loads((EVAL / "fixtures/step3_production.json").read_text(encoding="utf-8"))["cases"]
+              if c["tool_args"]["stage"]]
+
+
+@pytest.mark.parametrize("case", PRODUCTION, ids=lambda c: c["id"])
+def test_independent_cases_and_hard_checks_pass(case):
+    from independent_scoring import contract_rules, hard_score
+    from step3_reference import apply_overrides, reference, score
+
+    db = connect()
+    apply_overrides(db, case)
+    args, ref = case["tool_args"], reference(case, CLOCK)
+    call_args = {"stage": args["stage"], "on_date": args["date_from"]}
+    if args["date_to"]:
+        call_args["through_date"] = args["date_to"]
+    llm = ScriptedLLM([[("compare_to_normal", call_args)],
+                       [("respond", {"kind": ref["expected_kind"], "headline": "Output changed."})]])
+    reply = Agent(db, SimClock.at(CLOCK), llm).run(case["question"]).model_dump(mode="json")
+    assert score(ref, reply) == [], reply["headline"]
+    item = {"expected_behavior": ref["expected_kind"], "required_facts": contract_rules(ref)}
+    hard = hard_score(item, reply, CLOCK)
+    assert hard["pass"], [c for c in hard["criteria"] if c["issues"]]
+
+
+@pytest.mark.parametrize("args", [{"on_date": DAY}, {"on_date": DAY, "through_date": "2026-03-31"}])
+def test_a_hole_in_the_baseline_window_gives_no_baseline_rather_than_a_longer_window(args):
+    db = connect()
+    db.execute("DELETE FROM production_log WHERE stage = 'ASSEMBLY' AND date = '2026-03-10'")
+    db.commit()
+    r, _ = call(ToolContext(db, SimClock.at(CLOCK), "t1"), "compare_to_normal", {"stage": "ASSEMBLY", **args})
+    row = r.data["results"][0]
+    assert row["baseline_median"] is None and row["pct_vs_baseline"] is None and row["tier"] is None
+    assert row["actual"] is not None and r.warnings
+    assert r.evidence  # the observed rows stay traceable
+
+
+def test_a_short_log_is_still_a_shorter_window_not_a_hole(ctx):
+    r, _ = call(ctx, "compare_to_normal", {"stage": "ASSEMBLY", "on_date": "2026-01-15"})
+    row = r.data["results"][0]
+    assert 5 <= row["window_days"] < 20 and row["baseline_median"] is not None and r.warnings

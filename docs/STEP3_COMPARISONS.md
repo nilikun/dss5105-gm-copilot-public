@@ -1,8 +1,11 @@
 # Step 3: comparison replies
 
-Step 3 of the [evaluation plan](EVAL_PLAN.md), implemented on commit `5f5b43e` (system prompt v10), with the live
-gate run on `8a662e9` (the same system plus the gate runner). Development cases only; no held-out question was
-opened.
+Step 3 of the [evaluation plan](EVAL_PLAN.md), on system prompt v10. Development cases only; no held-out question was
+opened. Two implementations of this step exist: the one on `main`, described here, and one by Zihao Zeng in PR #3
+(`get_production_change`), whose pull request landed on a side branch and never reached `main`. We keep the first
+because it has no second tool for the same question and has been through the full regression. We use the second's
+cases, independent references and scorer to check it, and they found a real defect (below). Its own results are in
+[`eval/results/step3-production-change/`](../eval/results/step3-production-change/README.md).
 
 ## The problem
 
@@ -20,18 +23,24 @@ supported, not that everything needed is said. The route also had two gaps of it
 When a turn holds exactly one successful comparison of one stage, the runtime builds the reply from the tool fields
 (`app/agent/comparison_view.py`). For D35, the answer is:
 
-> Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline. Judged not normal: interrupt tier, z = -9.48.
+> Assembly output was 394 pieces on 2026-03-25, 48.6% below baseline.
 > The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 766.5 pieces/day. The cause is
 > unknown from these data.
 
 A cause question has kind `refuse`, because the cause is what the data cannot give, and the observation is still
-stated in full. Any other comparison has kind `answer`.
+stated in full. Any other comparison has kind `answer`. A question about normality also gets the verdict:
+
+> Assembly output was 455 pieces on 2026-03-31, 40.2% below baseline. Judged not normal: z = -6.26 against the usual
+> spread (interrupt tier), 6 low working days in a row.
 
 `compare_to_normal` changes:
 
 - `through_date` compares the mean per working day of a period with the 20 working days before it. Sundays inside
   the period are not counted. A period with a missing working day gets a warning and no mean, because a missing day
   is not a zero.
+- A working day missing from the baseline window gives no baseline, no percentage and no verdict. The window does not
+  move further back. A log that simply starts later keeps the disclosed shorter window. The alert and briefing paths
+  still use the existing window rule; the seeded data has no such gaps.
 - Results carry `statistic` (daily, mean or quoted), `start`, `end` and `observed_days`.
 - `actual`, `baseline_median`, `pct_vs_baseline` and `tier` can be null. A zero or absent baseline gives "Percentage
   change cannot be computed", never a division by zero. A missing day says the output is unavailable.
@@ -41,7 +50,7 @@ stated in full. Any other comparison has kind `answer`.
 
 The renderer takes the turn only if all of these hold:
 
-- the draft is an `answer`, or a `refuse` to a cause question;
+- the draft is an `answer`, or a `refuse` of a cause question or of a comparison with data missing from it;
 - there is one successful `compare_to_normal` call with one result, and it is not a quoted hypothetical value;
 - every other tool in the turn is a support tool (`resolve_time`, `describe_data_coverage`, `get_stage_output`).
 
@@ -50,38 +59,54 @@ stages, compound questions and "is 800 normal?" keep the general path. The rende
 
 ## Results
 
-| Check | Result |
-|---|---|
-| Offline (scripted model): D35 and P01–P12, three runs each, through the contract checker | all pass (`backend/tests/test_comparison.py`) |
-| Live gate: the same 13 cases, three runs each | **39/39**, all routed to `compare_to_normal` |
-| Live gate: of those, questions asked as written | 21/21 |
-| Live gate: of those, synthetic edge cases | 18/18 |
-| Unconfirmed executions in the gate | 0 |
-| Gate latency p50 / p90, total cost | 5.3 s / 6.8 s, $0.023 |
-| Full live regression on `5f5b43e`, two runs per set | dev 36/36 twice, red team 12/12 twice, faithfulness 100%, 0 unconfirmed |
+The current build is commit `3600933`. Every attempt, reply and failure code is kept in `eval/results/step3/`.
 
-Every attempt, reply and failure code is in `eval/results/step3/live-v1/`. To repeat the gate from the repository
-root (about $0.03):
+| Check | Build | Result |
+|---|---|---|
+| Our cases: D35 and twelve variations, three runs each (`live-*`) | `8a662e9`, `123fe55`, `3600933` | 39/39 each |
+| Independent cases and references from PR #3, three runs each (`independent-*`) | `f678d70`, before the fixes | **29/33; hard checks 27/33** |
+| The same | `123fe55`, hole fixed | 33/33; hard checks 33/33 |
+| The same | `3600933`, current | **33/33; hard checks 33/33** |
+| Independent judge on one real reply per case (`../step4/real-replies-*`) | `123fe55` | **7/13** |
+| The same | `3600933`, current | **13/13** |
+| Full regression, two runs per set | `3600933` | dev 36/36 twice, red team 12/12 twice, faithfulness 100%, 0 unconfirmed |
+
+No action was executed in any gate. A gate costs about $0.02 and runs at about 5.5 s p50.
+
+What the independent checks found, none of which our own 39/39 had shown:
+
+- **A hole in the baseline window (P08), a defect in the tool.** With one day missing, the window silently moved a
+  day back and still produced a percentage and a verdict. Fixed in the tool, and the scorer passes it now.
+- **A refusal could bypass the renderer (P09).** Once in three, the model refused a period with a missing day, so the
+  reply left out the baseline. A refusal caused by missing data now gets the known facts.
+- **The verdict sentence (6 of 13).** The judge failed correct z-scores that its reference package did not contain
+  and called the wording unclear. It was right on the second point: a factory manager had not asked for a z-score.
+  The verdict now appears only for a question about normality, in plainer words.
+- **One scorer false rejection (P09).** The scorer asked for a mean's statistic and unit when no mean exists. We
+  changed the rule, not the reply.
+
+To repeat from the repository root:
 
 ```sh
 uv run --project backend python eval/run_step3.py --output-dir eval/results/step3/<new-dir>
+uv run --project backend python eval/run_step3.py --suite production --output-dir eval/results/step3/<new-dir>
+uv run --project backend python eval/judge_real_replies.py --replies <run>/results.jsonl --output <new-file>.jsonl
 ```
-
-The cases are in `eval/fixtures/answer_contracts.json`. They cover daily and period comparisons, all four stages, a
-range spanning a Sunday, and P07–P12: zero baseline, missing baseline, an increase, no change, a missing observation
-and zero output.
 
 ## Limits
 
-- **These are development numbers.** Prompt v10 and the renderer were written with these cases in view, so 39/39
-  shows the contract holds on them. It does not predict unseen questions.
-- **The checker is bounded.** `eval/answer_contracts.py` checks the required facts and rejects unrecognised claims.
-  It does not judge quality; that is Step 4.
-- **Synthetic cases use a changed question.** The fixture questions for P07–P12 name no stage or date, so the live
-  model is asked "Compare assembly output on 2026-03-25 with its previous 20 working days." on a changed in-memory
-  database. They test rendering under real routing, not whether the model understands the original wording.
-- **No live baseline comparison.** Unlike Step 2, the previous version was not re-run on these cases. The earlier
-  failure is D35's one recorded miss, so an improvement in rate is not claimed from this gate.
+- **These are development numbers.** The renderer and prompt v10 were written with these cases in view, and the
+  fixes above were made after seeing the independent results, so those cases are now development material too. None of
+  this predicts unseen questions.
+- **The judge is not calibrated.** No person has labelled its decisions yet, so 13/13 means only that it finds nothing
+  to object to in these replies.
+- **The judge can only check its package.** It failed true statements the package omitted, and removing the sentence
+  from comparisons does not solve this for other answers. See the rubric's review rule.
+- **Our checks favour our wording.** The hard patterns came from the same contract as the renderer. In a smoke test
+  the Step 1 build's "Assembly output on 2026-03-25 was 394 pieces" is correct and still unrecognised. So a baseline
+  comparison needs its hard failures reviewed by a person, as the rubric requires.
+- **Synthetic cases in our own gate use a changed question**, because those fixtures name no stage or date. The
+  independent suite asks its questions as written.
 - **Routing stays with the model.** The renderer guarantees completeness once the route is chosen and data is
   retrieved. Questions routed elsewhere keep the general path.
 - **Period comparisons carry no verdict.** The robust-z rule is defined for one day, so a period gets a percentage

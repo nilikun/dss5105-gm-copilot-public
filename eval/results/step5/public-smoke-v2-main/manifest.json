@@ -1,0 +1,46 @@
+{
+  "scope": "PUBLIC engineering smoke test \u2014 NOT held-out or human calibration",
+  "status": "smoke_only",
+  "source_sha256": {
+    "eval/answer_contracts.py": "f7e74089b51ae673c540dcc3a7498db0de7e6445185d3b2a4e73de2ec6fb2089",
+    "eval/independent_scoring.py": "bdc40b5d1074843eee2cbeda08736f336033e628cd63e09dd190d9fcbeeae142",
+    "eval/judge.py": "1d623a09b3ac8863e6ee532f5723d1192104e278cbec155d50f84d62ddfcacbf",
+    "eval/frozen_protocol.py": "bf24dcc7fe82ec8b45d3e3161db68317167c8cecbeb7cf87731b51b8f698d53f",
+    "eval/calibrate.py": "3f033f3c32cefc7d4ee802527f12d49fff44c8561f78813973fd4a0a0a89db2f",
+    "eval/frozen_worker.py": "b25b847420ce6c9d360a0e75c620432e1150fd5334de2829342901d126d44f32",
+    "eval/run_frozen.py": "75b877378e9b59b84cb3f8cc50feb64322686df2bac94643da09f7bdb8ac4e62",
+    "eval/protocol/judge_prompt.md": "920ff4fb5e1235a1d13fe6c4214024040a0a5a6ecf93dfa894a6cd25e3d0f00b",
+    "eval/protocol/rubric.md": "11c449d4ce550488f5e6b8c8c6db4aba4dc13c1634d612013ee9c43703847035"
+  },
+  "execution": {
+    "repetitions_per_item_per_version": 1,
+    "randomization_seed": 5105,
+    "budget_usd": 1,
+    "timeout_seconds": 180,
+    "max_api_calls_per_attempt": 12
+  },
+  "agent_settings": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "low",
+    "max_output_tokens": 4000
+  },
+  "judge_settings": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "low",
+    "max_output_tokens": 4000,
+    "timeout_seconds": 60
+  },
+  "pricing": {
+    "source_and_date": "User planning assumptions / repository rates; NOT verified billing",
+    "agent": {
+      "input_per_million": 0.2,
+      "cached_input_per_million": 0.02,
+      "output_per_million": 1.2
+    },
+    "judge": {
+      "input_per_million": 10,
+      "cached_input_per_million": 10,
+      "output_per_million": 50
+    }
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "status": "provisional_not_releasable",
+  "author": null,
+  "checker": null,
+  "authored_before_outputs": null,
+  "exposure_declaration": null,
+  "frozen_at_with_timezone": null,
+  "custodian": null,
+  "private_package_location": null,
+  "questions_and_references": {
+    "filename": null,
+    "sha256": null,
+    "schema_version": 2,
+    "item_count": 20,
+    "category_counts": {
+      "lookup": 3,
+      "aggregation": 2,
+      "judgement": 2,
+      "tracing": 2,
+      "discovery": 1,
+      "feasibility": 3,
+      "action": 3,
+      "ambiguous": 2,
+      "unanswerable": 2
+    }
+  },
+  "independent_calculations": [
+    {
+      "filename": null,
+      "sha256": null,
+      "method": null,
+      "checked_by": null
+    }
+  ],
+  "data": {
+    "snapshot_sha256": "7c88b2da5a8b3401dd53be4b5c3d948bc32a5dfd502592c16c261234db0cc2da",
+    "files": [
+      {
+        "path": "data/orders.csv",
+        "sha256": "ed533a5142704a5de3592b0931f7314f0f631ddec5032b0402312b00af005c59"
+      },
+      {
+        "path": "data/production_log.csv",
+        "sha256": "e19e93a896911ce6abf325636aed492b68465354117296dfd629955307c41878"
+      },
+      {
+        "path": "data/workshops.csv",
+        "sha256": "a3c846ad29b41bac216dc8681a70f51c07995cd7521a6d7faa4aa6d2b6afa637"
+      }
+    ]
+  },
+  "clock": {
+    "simulated_now": "2026-04-01T07:00:00",
+    "convention": "timezone-naive factory simulation"
+  },
+  "versions": {
+    "baseline_commit": "36a44c7e4965154f78853526333b8219c54ad1ad",
+    "improved_commit": "c33e4af7f6c311a1eae8b45097ea27cdc065f377",
+    "scorer_commit": "c33e4af7f6c311a1eae8b45097ea27cdc065f377",
+    "rubric_sha256": "6f7fb63888a8d8b10caaf1545b6b01c4b619c20da7da8da6cf758df807979162",
+    "scoring_files_sha256": {
+      "eval/answer_contracts.py": "7cd13f71a64acd75f7f38bd9eb0add8c7d592591fc9321cbbbfbd2f2cc16829a",
+      "eval/independent_scoring.py": "cd5c8aca5fc770f0ef189264aaa31584a7aa5b6b69d1c80a85e803a0b70cf4f5",
+      "eval/judge.py": "bc69db069b5ec3e24529fa68e5768fbfc0ecafcad1917a971708cab1ce250817",
+      "eval/frozen_protocol.py": "3dd1572ed5577bf3d40171fdb881178b02aee0e121e9374391dc08cf853c9c3b",
+      "eval/calibrate.py": "8e1f9f3c614277e5578298567c8b3567b6f6cc52b02db026e629afc2518a14ac",
+      "eval/frozen_worker.py": "aca6c6bfd6a7226b4d831e5dea5b4a6cafc908995f16ebfb4ad6f589824e5900",
+      "eval/run_frozen.py": "a0b57b6060e99399fb2968ad395bea147c0debf3ce95a058c91fb61c4e4166b8",
+      "eval/protocol/judge_prompt.md": "920ff4fb5e1235a1d13fe6c4214024040a0a5a6ecf93dfa894a6cd25e3d0f00b",
+      "eval/protocol/rubric.md": "6f7fb63888a8d8b10caaf1545b6b01c4b619c20da7da8da6cf758df807979162"
+    },
+    "baseline_prompts_sha256": {
+      "briefing_narrate.md": "ea6a9ccc64ebf0112550c5d6da1d0fbc328412e928de4f1ae12d4daa936a1706",
+      "critic.md": "940dffbccfb5628aef72e17f9937ff8f8b0ebd4e02da423464ac519da334a401",
+      "repair.md": "5f95473bd61b2b3f09dfb4552a6620754b92860ec2578f03afdc77fb9edec914",
+      "respond_tool.md": "4f4ed8fca27650187174392112fd7ecc84d0453c4f10f2c53c6a8599814fcd33",
+      "system.md": "8ab0da4e72f8968b9b56cea604ced95f10be6d616887149210e748e67a58c15d"
+    },
+    "improved_prompts_sha256": {
+      "briefing_narrate.md": "ea6a9ccc64ebf0112550c5d6da1d0fbc328412e928de4f1ae12d4daa936a1706",
+      "critic.md": "940dffbccfb5628aef72e17f9937ff8f8b0ebd4e02da423464ac519da334a401",
+      "repair.md": "5f95473bd61b2b3f09dfb4552a6620754b92860ec2578f03afdc77fb9edec914",
+      "respond_tool.md": "4f4ed8fca27650187174392112fd7ecc84d0453c4f10f2c53c6a8599814fcd33",
+      "system.md": "496fb8ba5818f60b84991e906f4c16aeaf06f4294f4fd9af1c187e301f09f1e9"
+    },
+    "dependency_lock_sha256": "42a1efed39f8d8725aed29b449130be7534e3d7bc536f0518c6e2cde14e71341",
+    "python_version": "3.13.9",
+    "sdk_versions": {
+      "openai": "3.31.0",
+      "pydantic": "2.13.5",
+      "pandas": "3.0.6",
+      "PyYAML": "6.0.3"
+    },
+    "baseline_dirty": false,
+    "improved_dirty": true
+  },
+  "agent_settings": {
+    "provider": "OpenAI Responses",
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "low",
+    "temperature_or_omitted": "omitted",
+    "seed_or_unsupported": "unsupported",
+    "max_output_tokens": 4000,
+    "critic_enabled": false,
+    "max_tool_steps": 6,
+    "repair_limit": 1
+  },
+  "judge_settings": {
+    "provider": "OpenAI Responses",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "low",
+    "temperature_or_omitted": "omitted",
+    "max_output_tokens": 4000,
+    "prompt_sha256": "920ff4fb5e1235a1d13fe6c4214024040a0a5a6ecf93dfa894a6cd25e3d0f00b",
+    "rubric_sha256": "6f7fb63888a8d8b10caaf1545b6b01c4b619c20da7da8da6cf758df807979162",
+    "timeout_seconds": 60,
+    "max_retries": 0
+  },
+  "calibration": {
+    "development_labels_sha256": null,
+    "reviewers": null,
+    "agreement": null,
+    "confusion_counts": null,
+    "disagreement_log_sha256": null,
+    "acceptance_threshold": null,
+    "accepted_before_release": null,
+    "report": {
+      "filename": null,
+      "sha256": null
+    }
+  },
+  "execution": {
+    "repetitions_per_item_per_version": 3,
+    "order": "seeded shuffle of item/repeat/version",
+    "randomization_seed": 5105,
+    "concurrency": 1,
+    "fresh_database_per_item": true,
+    "reset_clock_per_item": true,
+    "context_policy": "replay prior user turns; generate each version own replies",
+    "timeout_seconds": 180,
+    "retry_policy": "no automatic retries; retain every attempt",
+    "budget_usd": null,
+    "on_budget_exhaustion": "stop; retain planned denominator",
+    "max_api_calls_per_attempt": 30
+  },
+  "reporting": {
+    "metrics": [
+      "correctness",
+      "completeness",
+      "unsupported_claims",
+      "appropriate_clarification_refusal",
+      "behavior",
+      "latency_p50_p90",
+      "actual_api_usage"
+    ],
+    "metric_definitions_sha256": "6f7fb63888a8d8b10caaf1545b6b01c4b619c20da7da8da6cf758df807979162",
+    "all_attempts_preserved": true,
+    "error_and_exclusion_policy": "retain all attempts; append adjudications separately",
+    "human_review_sampling_plan": "review every failed/unscored answer and a frozen random sample of passes",
+    "uncertainty_method": "paired bootstrap over question IDs, 2000 draws, seed 5105",
+    "usage_fields": [
+      "input_tokens",
+      "cached_input_tokens",
+      "output_tokens",
+      "reasoning_tokens_when_available"
+    ],
+    "usage_includes": [
+      "context",
+      "retries",
+      "agent",
+      "critic_if_enabled",
+      "judge"
+    ],
+    "pricing_source_and_date": null,
+    "missing_usage_policy": "report unavailable; never assume zero"
+  },
+  "release": {
+    "scorer_and_settings_frozen_before_question_release": null,
+    "operator": null,
+    "released_at": null
+  },
+  "pricing": {
+    "source_and_date": null,
+    "agent": {
+      "input_per_million": null,
+      "cached_input_per_million": null,
+      "output_per_million": null
+    },
+    "judge": {
+      "input_per_million": null,
+      "cached_input_per_million": null,
+      "output_per_million": null
+    }
+  }
+}

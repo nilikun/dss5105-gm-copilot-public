@@ -12,20 +12,28 @@
 | 4 | Independent fact/completeness scoring and human-calibrated judge | Report calibration; freeze rubric, scoring code and model settings |
 | 5 | Frozen baseline/improved held-out comparison | Preserve every result and report correctness, completeness, unsupported claims, behavior, latency and usage |
 
-Status, 1 November 2026: Steps 1–3 are done. Step 3 passed its gate at 39/39 live attempts (D35 plus twelve varied
-cases, three runs each), and zero and missing baselines are covered ([notes](STEP3_COMPARISONS.md)).
+Status, 1 November 2026:
+
+- **Steps 1–3 are done.** Step 3 passes 39/39 on our cases and 33/33 on independent cases and references, with zero
+  and missing baselines covered ([notes](STEP3_COMPARISONS.md)).
+- **Step 4 tooling is on `main`; calibration is not done.** The scorer, judge and calibration come from PR #3 by Zihao
+  Zeng. They are tested offline and on real development replies. No person has labelled the reviewer packet yet.
+- **Step 5 tooling runs end to end on a public smoke test.** It still needs the frozen held-out package.
 
 Decided on 1 November 2026, superseding §4.5 and the model-comparison row in §5: the comparison covers OpenAI models
-only, so the judge is a different OpenAI model from the system, plus human calibration. A judge from the same provider
-is less independent than one from another provider; this is disclosed as a limitation in the report.
+only, so the judge is a different OpenAI model from the system (`gpt-6-astra`), plus human calibration. A judge from
+the same provider is less independent than one from another provider; this is disclosed as a limitation in the report.
 
 Step 1 specifications: [answer requirements](../eval/answer-contracts.md),
 [author-only held-out guide](HELDOUT_GUIDE.md), [reproducibility](STEP1_REPRODUCIBILITY.md).
 Independent authoring starts after Step 1 and runs alongside Steps 2–4. Hidden questions stay
 outside the development checkout until formal evaluation; only templates/protocol are committed.
-The developer must obtain the user's approval before each next step and before the Step 1 GitHub upload.
-The current runner and historical scorer remain unchanged in Step 1; they cannot yet implement the
-new external held-out schema or independent judge. A good judge result never overrides a wrong
+The user authorized Steps 3–5 together on 20 October 2026, with immediate verification of Step 3.
+New GitHub uploads still require permission.
+The historical runner/scorer remain available. `eval/run_frozen.py` now implements the separate
+v2 external-package workflow, independent fact checks and judge. Human calibration and the formal
+held-out run remain pending until the teammate materials are ready.
+See [operator instructions](EVALUATION_OPERATOR.md). A good judge result never overrides a wrong
 required fact, missing percentage, wrong comparison window/direction or unsupported claim.
 
 > How do we know the co-pilot works? This document fixes the answer **before** the system is built

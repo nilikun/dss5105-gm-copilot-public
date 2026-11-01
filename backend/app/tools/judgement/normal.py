@@ -8,7 +8,7 @@ from datetime import date, timedelta
 from pydantic import BaseModel, Field
 
 from app.config import NORMAL_WINDOW_WORKING_DAYS
-from app.domain.normal import DEFINITION, baseline_before, judge, pct_change, working_series
+from app.domain.normal import DEFINITION, baseline_before, judge, missing_baseline_days, pct_change, working_series
 from app.tools.base import ErrorCode, ToolContext, ToolResult
 from app.tools.registry import tool
 from app.tools.retrieval.production import StageArg, log_range, stages_for
@@ -39,9 +39,15 @@ def _daily(stage: str, series: list, target: str, value: float | None, warnings:
         idx, series_ext, label = len(series), series + [("quoted", value)], "quoted value vs the latest baseline"
     else:
         idx, series_ext, label = [d for d, _ in series].index(target), series, f"output on {target}"
-    r = judge(series_ext, idx, quoted=quoted)
     observed = [] if quoted else [series[idx]]
     statistic = "quoted" if quoted else "daily"
+    missing = 0 if quoted else missing_baseline_days(series, target)
+    if missing:
+        warnings.append(f"{stage}: {missing} working days are missing from the baseline window; cannot judge")
+        row = _unavailable(stage, label, target, target, statistic, None)
+        row.update(actual=series[idx][1], observed_days=1)
+        return row, observed
+    r = judge(series_ext, idx, quoted=quoted)
     if r is None:
         warnings.append(f"{stage}: fewer than 5 prior working days; cannot judge")
         row = _unavailable(stage, label, target, target, statistic, None)
@@ -73,7 +79,7 @@ def _period(stage: str, series: list, start: str, end: str, warnings: list[str])
     row.update(actual=round(mean, 1), observed_days=len(values), pct_vs_baseline=pct,
                direction=None if pct is None else "below" if pct < 0 else "above" if pct > 0 else "within")
     if base is None:
-        warnings.append(f"{stage}: fewer than 5 working days before {start}; cannot compare")
+        warnings.append(f"{stage}: no complete baseline before {start}; cannot compare")
     return row
 
 

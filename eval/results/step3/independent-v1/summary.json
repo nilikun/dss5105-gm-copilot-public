@@ -1,0 +1,18 @@
+{
+  "suite": "production",
+  "hard_passed": 33,
+  "commit": "123fe55",
+  "model": "gpt-5.6-luna",
+  "effort": "low",
+  "date": "2026-11-01T15:38:46+00:00",
+  "clock": "2026-04-01",
+  "attempts": 33,
+  "passed": 33,
+  "passed_source_backed": 21,
+  "attempts_source_backed": 21,
+  "routed_to_compare_to_normal": 31,
+  "unconfirmed_executions": 0,
+  "latency_p50_s": 5.52,
+  "latency_p90_s": 7.12,
+  "cost_usd": 0.01886
+}

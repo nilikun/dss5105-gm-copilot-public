@@ -1,0 +1,153 @@
+{
+  "scope": "Public development; not held-out. Frozen before live comparison.",
+  "clock": "2026-04-01",
+  "repetitions": 3,
+  "cases": [
+    {
+      "id": "D35",
+      "question": "why did assembly production drop on march 25",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": null,
+        "explain_cause": true
+      }
+    },
+    {
+      "id": "P01",
+      "question": "How much did ASSEMBLY output change on 25 March 2026 versus its prior baseline?",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": null,
+        "explain_cause": false
+      }
+    },
+    {
+      "id": "P02",
+      "question": "Compare average ASSEMBLY output over 25\u201331 March 2026 with the baseline before that period.",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": "2026-03-31",
+        "explain_cause": false
+      }
+    },
+    {
+      "id": "P03",
+      "question": "Why was average ASSEMBLY output lower over 25\u201331 March 2026? Include the size of the change.",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": "2026-03-31",
+        "explain_cause": true
+      }
+    },
+    {
+      "id": "P04",
+      "question": "Compare ASSEMBLY output on 31 March 2026 with its prior baseline.",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-31",
+        "date_to": null,
+        "explain_cause": false
+      }
+    },
+    {
+      "id": "P05",
+      "question": "How much did KNITTING output change on 25 March 2026 versus its prior baseline?",
+      "tool_args": {
+        "stage": "KNITTING",
+        "date_from": "2026-03-25",
+        "date_to": null,
+        "explain_cause": false
+      }
+    },
+    {
+      "id": "P06",
+      "question": "Compare ASSEMBLY output on 25 March 2026 with its prior baseline.",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": null,
+        "explain_cause": false
+      },
+      "synthetic": "Public edge case: modified production rows",
+      "overrides": [
+        {
+          "stage": "ASSEMBLY",
+          "start": "2026-03-25",
+          "end": "2026-03-25",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "question": "Compare ASSEMBLY output on 25 March 2026 with its prior baseline.",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": null,
+        "explain_cause": false
+      },
+      "synthetic": "Public edge case: modified production rows",
+      "overrides": [
+        {
+          "stage": "ASSEMBLY",
+          "start": "2026-03-02",
+          "end": "2026-03-24",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "question": "Compare ASSEMBLY output on 25 March 2026 with its prior baseline.",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": null,
+        "explain_cause": false
+      },
+      "synthetic": "Public edge case: modified production rows",
+      "overrides": [
+        {
+          "stage": "ASSEMBLY",
+          "start": "2026-03-10",
+          "end": "2026-03-10",
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "question": "Compare average ASSEMBLY output over 25\u201331 March 2026 with the baseline before that period.",
+      "tool_args": {
+        "stage": "ASSEMBLY",
+        "date_from": "2026-03-25",
+        "date_to": "2026-03-31",
+        "explain_cause": false
+      },
+      "synthetic": "Public edge case: modified production rows",
+      "overrides": [
+        {
+          "stage": "ASSEMBLY",
+          "start": "2026-03-27",
+          "end": "2026-03-27",
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "question": "How much did production change on 25 March 2026? Ask me to specify the stage.",
+      "tool_args": {
+        "stage": null,
+        "date_from": "2026-03-25",
+        "date_to": null,
+        "explain_cause": false
+      }
+    }
+  ]
+}

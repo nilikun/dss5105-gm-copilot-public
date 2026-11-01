@@ -1,6 +1,6 @@
 # PUBLIC BLANK AUTHORING TEMPLATE — no real questions or answers.
 # Copy OUTSIDE the development checkout. See docs/HELDOUT_GUIDE.md.
-# Step 4 must validate/consume this version; current eval/run.py does not support it.
+# The external-only eval/run_frozen.py consumes completed v2 packages after release gates.
 version: 2
 status: authoring_template_not_runnable
 split: heldout
@@ -14,6 +14,9 @@ exposure_declaration: ""  # state whether author saw tuning examples/outputs
 # Fill every item; retain category coverage. Each required_facts entry should name
 # criterion_id, subject, field, expected_value, unit, dates/window, calculation,
 # and tolerance (absolute or percentage points; never erase sign/direction).
+# Also required: value_type (text/date/number/percentage), pattern with a named
+# (?P<value>...) group, optional aliases, scope_subject and scope_dates.
+# See docs/EVALUATION_OPERATOR.md for the extraction schema and validation commands.
 # Each reference_evidence entry should name source_file, row_filter, calculation,
 # result, workbook_cells_or_script, and independent_checker.
 # context_turns: only prior user messages, each a mapping with a user field.

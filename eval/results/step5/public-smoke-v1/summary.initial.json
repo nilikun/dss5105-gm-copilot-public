@@ -1,0 +1,88 @@
+{
+  "planned": 2,
+  "attempted": 2,
+  "unattempted": 0,
+  "baseline": {
+    "planned": 1,
+    "attempted": 1,
+    "passed": 0,
+    "errors": 0,
+    "correctness_count": 0,
+    "mean_completeness_attempted": 0.5,
+    "behavior_correct_count": 1,
+    "unsupported_claim_answers": 1,
+    "unsupported_unscored": 0,
+    "p50_seconds": 8.290468957973644,
+    "p90_seconds": 8.290468957973644,
+    "api_attempts": 3,
+    "unknown_usage_calls": 0,
+    "reported_usage": {
+      "input_tokens": 11272,
+      "cached_input_tokens": 8966,
+      "output_tokens": 747,
+      "reasoning_tokens": 171
+    },
+    "by_category": {
+      "judgement": {
+        "attempted": 1,
+        "passed": 0
+      }
+    },
+    "clarification_refusal": {
+      "clarify": {
+        "attempted": 0,
+        "appropriate": 0
+      },
+      "refuse": {
+        "attempted": 1,
+        "appropriate": 1
+      }
+    }
+  },
+  "improved": {
+    "planned": 1,
+    "attempted": 1,
+    "passed": 1,
+    "errors": 0,
+    "correctness_count": 1,
+    "mean_completeness_attempted": 1.0,
+    "behavior_correct_count": 1,
+    "unsupported_claim_answers": 0,
+    "unsupported_unscored": 0,
+    "p50_seconds": 6.7758013749844395,
+    "p90_seconds": 6.7758013749844395,
+    "api_attempts": 3,
+    "unknown_usage_calls": 0,
+    "reported_usage": {
+      "input_tokens": 11619,
+      "cached_input_tokens": 10221,
+      "output_tokens": 517,
+      "reasoning_tokens": 0
+    },
+    "by_category": {
+      "judgement": {
+        "attempted": 1,
+        "passed": 1
+      }
+    },
+    "clarification_refusal": {
+      "clarify": {
+        "attempted": 0,
+        "appropriate": 0
+      },
+      "refuse": {
+        "attempted": 1,
+        "appropriate": 1
+      }
+    }
+  },
+  "uncertainty": "20 independent questions; repetitions are correlated, not 60 independent samples.",
+  "paired_pass_delta_95pct_cluster_bootstrap": [
+    1,
+    1
+  ],
+  "scope": "PUBLIC engineering smoke test \u2014 NOT held-out or human calibration",
+  "cost_estimate_usd": 0.06432074,
+  "cost_note": "Frozen-rate estimate, not a bill; unknown usage is not zero. Soft cap checked between items.",
+  "completed_utc": "2026-10-20T09:49:47.588524+00:00"
+}

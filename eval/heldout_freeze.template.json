@@ -76,7 +76,9 @@
     "temperature_or_omitted": null,
     "max_output_tokens": null,
     "prompt_sha256": null,
-    "rubric_sha256": null
+    "rubric_sha256": null,
+    "timeout_seconds": null,
+    "max_retries": null
   },
   "calibration": {
     "development_labels_sha256": null,
@@ -85,7 +87,11 @@
     "confusion_counts": null,
     "disagreement_log_sha256": null,
     "acceptance_threshold": null,
-    "accepted_before_release": null
+    "accepted_before_release": null,
+    "report": {
+      "filename": null,
+      "sha256": null
+    }
   },
   "execution": {
     "repetitions_per_item_per_version": null,
@@ -98,7 +104,8 @@
     "timeout_seconds": null,
     "retry_policy": null,
     "budget_usd": null,
-    "on_budget_exhaustion": null
+    "on_budget_exhaustion": null,
+    "max_api_calls_per_attempt": null
   },
   "reporting": {
     "metrics": [
@@ -135,5 +142,18 @@
     "scorer_and_settings_frozen_before_question_release": null,
     "operator": null,
     "released_at": null
+  },
+  "pricing": {
+    "source_and_date": null,
+    "agent": {
+      "input_per_million": null,
+      "cached_input_per_million": null,
+      "output_per_million": null
+    },
+    "judge": {
+      "input_per_million": null,
+      "cached_input_per_million": null,
+      "output_per_million": null
+    }
   }
 }

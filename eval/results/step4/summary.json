@@ -1,0 +1,22 @@
+{
+  "scope": "Public development integration test; NOT human calibration",
+  "attempted": 20,
+  "valid_judge_outputs": 20,
+  "intended_good": 10,
+  "intended_bad": 10,
+  "matches_assistant_authored_engineering_intentions": 20,
+  "human_agreement": null,
+  "human_calibration_status": "Pending real reviewer labels",
+  "usage": {
+    "input_tokens": 23981,
+    "cached_input_tokens": 0,
+    "output_tokens": 6393,
+    "reasoning_tokens": 0
+  },
+  "model": "gpt-6-astra",
+  "effort": "low",
+  "max_output_tokens": 4000,
+  "max_retries": 0,
+  "freeze_eligible": false,
+  "reason": "Integration run predates final release-gate changes; rerun calibrated predictions after code is finalized."
+}

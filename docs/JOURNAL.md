@@ -21,6 +21,7 @@ mistakes. Design rationale is summarised in [DESIGN.md](DESIGN.md); every evalua
 | 13 | [Usability review: seven issues from a demo session](#13-usability-review-seven-issues-from-a-demo-session) | 29 Oct |
 | 14 | [Live regression: three regressions found and fixed](#14-live-regression-three-regressions-found-and-fixed) | 29 Oct |
 | 15 | [Comparison answers: complete, traceable, and honest about the cause](#15-comparison-answers-complete-traceable-and-honest-about-the-cause) | 1 Nov |
+| 16 | [Two implementations, and what the other one's tests found](#16-two-implementations-and-what-the-other-ones-tests-found) | 1 Nov |
 
 ---
 
@@ -214,3 +215,34 @@ confirmation. These are development numbers. The gate's limits are listed in
 
 **Lesson.** A missing fact in an answer can point to a gap in the tool rather than in the prompt. Checking whether
 each figure could be traced back found the evidence gap that a better prompt would have hidden.
+
+## 16. Two implementations, and what the other one's tests found
+
+**What.** While merging step 15 we found a remote branch with the same work already done. Zihao Zeng's pull request
+showed as merged, but its base was a branch that had reached `main` 39 seconds earlier, so the code never arrived. It
+held a second answer to step 15, and the independent scorer, judge, calibration and frozen runner we were about to
+write. We kept one comparison route and took his evaluation tools with his authorship. Then we ran his cases, his
+references and his judge against the route he had not written.
+
+**Found.** Our own gate said 39/39. His said 29/33, and the judge rejected 6 of 13 real replies:
+- With one day missing from the baseline window, the window silently moved back and still produced a percentage and
+  a verdict. That is a defect in the tool.
+- Once in three runs, the model refused a period with a missing day, which left the baseline out of the reply.
+- The judge rejected correct z-scores its reference package did not contain, and called them unclear. It was partly
+  right: a manager asking for a comparison had not asked for a z-score.
+
+We fixed the first two and showed the verdict only when the question asks about normality. One finding went the other
+way: the scorer rejected a correct reply, so we changed that rule. Another check shows the limit of all this: the
+patterns came from the same contract as our renderer, and they fail a correct sentence from the older build. So the
+rubric now requires a person to review such failures, and reports strict and reviewed scores side by side. We set this
+before any hidden answer exists.
+
+**Mistake.** Before re-running, we deleted the first failing run (30/33), which breaks our rule of keeping every
+result. We re-ran from the same commit to restore the record. That run scored 29/33, so the two differed by one
+attempt, and the results README says so.
+
+**Result.** Independent cases 33/33, judge 13/13 on real replies, development set 36/36 twice, red team 12/12 twice.
+These are still development numbers, and no person has calibrated the judge yet.
+
+**Lesson.** A test written by someone else finds what your own cannot, because you share your code's assumptions with
+your own tests. And a green "merged" badge says where a pull request went, not that it reached `main`.

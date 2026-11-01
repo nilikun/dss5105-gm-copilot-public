@@ -51,3 +51,7 @@ deploy/deploy.env
 /eval/heldout_freeze.json
 /eval/private/
 /eval/heldout_private/
+
+# Human labels and private evaluation artifacts stay outside development.
+/eval/calibration/human_labels.jsonl
+/eval/calibration/private/

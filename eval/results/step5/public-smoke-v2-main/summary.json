@@ -1,0 +1,85 @@
+{
+  "planned": 2,
+  "attempted": 2,
+  "unattempted": 0,
+  "baseline": {
+    "planned": 1,
+    "attempted": 1,
+    "passed": 0,
+    "errors": 0,
+    "correctness_count": 0,
+    "mean_completeness_attempted": 0.25,
+    "behavior_correct_count": 1,
+    "unsupported_claim_answers": 1,
+    "unsupported_unscored": 0,
+    "p50_seconds": 13.051763399969786,
+    "p90_seconds": 13.051763399969786,
+    "api_attempts": 4,
+    "unknown_usage_calls": 0,
+    "reported_usage": {
+      "input_tokens": 15666,
+      "cached_input_tokens": 8861,
+      "output_tokens": 746,
+      "reasoning_tokens": 116
+    },
+    "by_category": {
+      "judgement": {
+        "attempted": 1,
+        "passed": 0
+      }
+    },
+    "clarification_refusal": {
+      "clarify": {
+        "attempted": 0,
+        "appropriate": 0
+      },
+      "refuse": {
+        "attempted": 1,
+        "appropriate": 1
+      }
+    }
+  },
+  "improved": {
+    "planned": 1,
+    "attempted": 1,
+    "passed": 1,
+    "errors": 0,
+    "correctness_count": 1,
+    "mean_completeness_attempted": 1.0,
+    "behavior_correct_count": 1,
+    "unsupported_claim_answers": 0,
+    "unsupported_unscored": 0,
+    "p50_seconds": 6.988925999961793,
+    "p90_seconds": 6.988925999961793,
+    "api_attempts": 3,
+    "unknown_usage_calls": 0,
+    "reported_usage": {
+      "input_tokens": 12260,
+      "cached_input_tokens": 10174,
+      "output_tokens": 630,
+      "reasoning_tokens": 62
+    },
+    "by_category": {
+      "judgement": {
+        "attempted": 1,
+        "passed": 1
+      }
+    },
+    "clarification_refusal": {
+      "clarify": {
+        "attempted": 0,
+        "appropriate": 0
+      },
+      "refuse": {
+        "attempted": 1,
+        "appropriate": 1
+      }
+    }
+  },
+  "uncertainty": "1 distinct attempted questions; repetitions are correlated, not independent samples.",
+  "paired_pass_delta_95pct_cluster_bootstrap": null,
+  "scope": "PUBLIC engineering smoke test \u2014 NOT held-out or human calibration",
+  "cost_estimate_usd": 0.0644741,
+  "cost_note": "Frozen-rate estimate, not a bill; unknown usage is not zero. Soft cap checked between items.",
+  "completed_utc": "2026-11-01T15:53:37.226078+00:00"
+}

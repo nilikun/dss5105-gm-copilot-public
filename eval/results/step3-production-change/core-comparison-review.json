@@ -1,0 +1,207 @@
+{
+  "reviewer": "Codex assistant; NOT human-labelled calibration",
+  "scope": "Post-hoc public development semantic review; core measurement only, not full completeness score",
+  "criteria": "Correct stage, requested observation window, actual, baseline, signed change (or correct unavailable disclosure); clarify when stage is unspecified. Exact baseline-date and cause-disclosure omissions recorded separately, not used to mislabel correct core measurements as wrong.",
+  "baseline_core_passed": 17,
+  "attempted": 33,
+  "items": [
+    {
+      "id": "D35",
+      "repeat": 1,
+      "core_comparison_pass": true,
+      "reason": "Correct daily actual, baseline and signed percentage; unknown cause disclosed. Exact baseline dates omitted."
+    },
+    {
+      "id": "P01",
+      "repeat": 1,
+      "core_comparison_pass": true,
+      "reason": "Correct daily actual/baseline/percentage; exact baseline dates and cause availability omitted."
+    },
+    {
+      "id": "P02",
+      "repeat": 1,
+      "core_comparison_pass": false,
+      "reason": "Cannot compute the requested period average/percentage; one run substitutes a final-day comparison."
+    },
+    {
+      "id": "P03",
+      "repeat": 1,
+      "core_comparison_pass": false,
+      "reason": "Reports totals or a final-day comparison, not the requested period mean and percentage."
+    },
+    {
+      "id": "P04",
+      "repeat": 1,
+      "core_comparison_pass": true,
+      "reason": "Runs 1\u20132 report correct daily comparison; run 3 falls back without actual/baseline/percentage."
+    },
+    {
+      "id": "P05",
+      "repeat": 1,
+      "core_comparison_pass": true,
+      "reason": "Correct increase, actual and baseline; exact baseline dates/cause availability omitted."
+    },
+    {
+      "id": "P06",
+      "repeat": 1,
+      "core_comparison_pass": true,
+      "reason": "Correct zero output and 100% decrease; cause availability omitted."
+    },
+    {
+      "id": "P07",
+      "repeat": 1,
+      "core_comparison_pass": false,
+      "reason": "Baseline calculation errors; no explicit zero baseline and undefined percentage report."
+    },
+    {
+      "id": "P08",
+      "repeat": 1,
+      "core_comparison_pass": false,
+      "reason": "Uses 20 available rows by extending the window, violating the fixed prior-20-calendar-working-day contract."
+    },
+    {
+      "id": "P09",
+      "repeat": 1,
+      "core_comparison_pass": false,
+      "reason": "Does not disclose the missing working-day observation; reports five records as five working days."
+    },
+    {
+      "id": "P10",
+      "repeat": 1,
+      "core_comparison_pass": true,
+      "reason": "Correctly requests the production stage."
+    },
+    {
+      "id": "D35",
+      "repeat": 2,
+      "core_comparison_pass": true,
+      "reason": "Correct daily actual, baseline and signed percentage; unknown cause disclosed. Exact baseline dates omitted."
+    },
+    {
+      "id": "P01",
+      "repeat": 2,
+      "core_comparison_pass": true,
+      "reason": "Correct daily actual/baseline/percentage; exact baseline dates and cause availability omitted."
+    },
+    {
+      "id": "P02",
+      "repeat": 2,
+      "core_comparison_pass": false,
+      "reason": "Cannot compute the requested period average/percentage; one run substitutes a final-day comparison."
+    },
+    {
+      "id": "P03",
+      "repeat": 2,
+      "core_comparison_pass": false,
+      "reason": "Reports totals or a final-day comparison, not the requested period mean and percentage."
+    },
+    {
+      "id": "P04",
+      "repeat": 2,
+      "core_comparison_pass": true,
+      "reason": "Runs 1\u20132 report correct daily comparison; run 3 falls back without actual/baseline/percentage."
+    },
+    {
+      "id": "P05",
+      "repeat": 2,
+      "core_comparison_pass": true,
+      "reason": "Correct increase, actual and baseline; exact baseline dates/cause availability omitted."
+    },
+    {
+      "id": "P06",
+      "repeat": 2,
+      "core_comparison_pass": true,
+      "reason": "Correct zero output and 100% decrease; cause availability omitted."
+    },
+    {
+      "id": "P07",
+      "repeat": 2,
+      "core_comparison_pass": false,
+      "reason": "Baseline calculation errors; no explicit zero baseline and undefined percentage report."
+    },
+    {
+      "id": "P08",
+      "repeat": 2,
+      "core_comparison_pass": false,
+      "reason": "Uses 20 available rows by extending the window, violating the fixed prior-20-calendar-working-day contract."
+    },
+    {
+      "id": "P09",
+      "repeat": 2,
+      "core_comparison_pass": false,
+      "reason": "Does not disclose the missing working-day observation; reports five records as five working days."
+    },
+    {
+      "id": "P10",
+      "repeat": 2,
+      "core_comparison_pass": true,
+      "reason": "Correctly requests the production stage."
+    },
+    {
+      "id": "D35",
+      "repeat": 3,
+      "core_comparison_pass": true,
+      "reason": "Correct daily actual, baseline and signed percentage; unknown cause disclosed. Exact baseline dates omitted."
+    },
+    {
+      "id": "P01",
+      "repeat": 3,
+      "core_comparison_pass": true,
+      "reason": "Correct daily actual/baseline/percentage; exact baseline dates and cause availability omitted."
+    },
+    {
+      "id": "P02",
+      "repeat": 3,
+      "core_comparison_pass": false,
+      "reason": "Cannot compute the requested period average/percentage; one run substitutes a final-day comparison."
+    },
+    {
+      "id": "P03",
+      "repeat": 3,
+      "core_comparison_pass": false,
+      "reason": "Reports totals or a final-day comparison, not the requested period mean and percentage."
+    },
+    {
+      "id": "P04",
+      "repeat": 3,
+      "core_comparison_pass": false,
+      "reason": "Runs 1\u20132 report correct daily comparison; run 3 falls back without actual/baseline/percentage."
+    },
+    {
+      "id": "P05",
+      "repeat": 3,
+      "core_comparison_pass": true,
+      "reason": "Correct increase, actual and baseline; exact baseline dates/cause availability omitted."
+    },
+    {
+      "id": "P06",
+      "repeat": 3,
+      "core_comparison_pass": true,
+      "reason": "Correct zero output and 100% decrease; cause availability omitted."
+    },
+    {
+      "id": "P07",
+      "repeat": 3,
+      "core_comparison_pass": false,
+      "reason": "Baseline calculation errors; no explicit zero baseline and undefined percentage report."
+    },
+    {
+      "id": "P08",
+      "repeat": 3,
+      "core_comparison_pass": false,
+      "reason": "Uses 20 available rows by extending the window, violating the fixed prior-20-calendar-working-day contract."
+    },
+    {
+      "id": "P09",
+      "repeat": 3,
+      "core_comparison_pass": false,
+      "reason": "Does not disclose the missing working-day observation; reports five records as five working days."
+    },
+    {
+      "id": "P10",
+      "repeat": 3,
+      "core_comparison_pass": true,
+      "reason": "Correctly requests the production stage."
+    }
+  ]
+}

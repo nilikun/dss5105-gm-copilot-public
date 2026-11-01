@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import sqlite3
 import statistics
-from datetime import date
+from datetime import date, timedelta
 from typing import Any
 
 from app.config import BRIEFING_Z, INTERRUPT_Z, MAD_TO_SIGMA, NORMAL_WINDOW_WORKING_DAYS, SUSTAINED_Z
@@ -36,11 +36,28 @@ def pct_change(actual: float, baseline: float) -> float | None:
     return round(100 * (actual / baseline - 1), 1) if baseline else None
 
 
+def missing_baseline_days(series: Series, day: str) -> int:
+    """Working days with no record in the window before `day`. Days before the log begins do not count: that is a
+    short window, which is disclosed. A hole inside the log would silently move the window further back."""
+    if not series:
+        return 0
+    recorded, first = {d for d, _ in series}, date.fromisoformat(series[0][0])
+    cursor, expected = date.fromisoformat(day), []
+    while len(expected) < NORMAL_WINDOW_WORKING_DAYS:
+        cursor -= timedelta(days=1)
+        if cursor < first:
+            break
+        if cursor.weekday() != 6:
+            expected.append(cursor.isoformat())
+    return sum(d not in recorded for d in expected)
+
+
 def baseline_before(series: Series, day: str) -> dict[str, Any] | None:
     """The fixed baseline for anything observed on or after `day`: the working days strictly before it. Used when
-    there is no single observation to judge (a missing day, a period mean). None with fewer than 5 prior days."""
+    there is no single observation to judge (a missing day, a period mean). None with fewer than 5 prior days, or
+    with a working day missing from the window."""
     prior = [(d, v) for d, v in series if d < day][-NORMAL_WINDOW_WORKING_DAYS:]
-    if len(prior) < 5:
+    if len(prior) < 5 or missing_baseline_days(series, day):
         return None
     return {"baseline_median": statistics.median(v for _, v in prior), "window": [prior[0][0], prior[-1][0]],
             "window_days": len(prior)}

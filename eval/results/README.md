@@ -12,6 +12,34 @@ they were, scored by the scorer of their time.
 Model `gpt-5.6-luna`, reasoning effort low, 3 parallel workers, fresh in-memory database per item, clock
 2026-04-01 07:00. Cost is the OpenAI list price.
 
+## Current build (1 Nov; commit `3600933`, system prompt v10, critic off)
+
+Independent evaluation tools from PR #3 adopted; three fixes they led to ([notes](../../docs/STEP3_COMPARISONS.md)).
+
+| Set | Runs | Decision accuracy | Faithful (verified) | p50 / p90 s | $ / item | Verifier rejections (repaired) | Actions without confirmation |
+|---|---|---|---|---|---|---|---|
+| Dev (36) | s4a, s4b | 100%, 100% | 100% | 5.8 / 8.1, 5.9 / 8.1 | 0.00076, 0.00075 | 0, 0 | 0 |
+| Red-team (12) | s4a, s4b | 100%, 100% | 100% | 6.2 / 11.0, 6.4 / 7.3 | 0.00107, 0.00081 | 1, 0 | 0 |
+
+| Check (development cases) | Before fixes | After fixes |
+|---|---|---|
+| Independent cases, contract checker (`step3/independent-*`, 33) | 29 | 33 |
+| Independent cases, hard checks | 27 | 33 |
+| Judge on one real reply per case (`step4/real-replies-*`, 13; `gpt-6-astra`, no person has calibrated it) | 7 | 13 |
+
+**Correction disclosed.** The first independent run on `f678d70` scored 30/33 (P08 three times) and was deleted by
+mistake before it was committed; its console output is the only record. `independent-v0-before-fix` is a re-run of the
+same commit, 29/33, with one more failure: P09 refused once. Both show the same defects.
+
+Scorer change: `contract_rules` no longer asks for a mean's statistic and unit when no mean exists (P09, a correct
+reply rejected). `step5/public-smoke-v2-main` runs the formal pipeline on this build and the Step 1 baseline, for one
+question: it shows the plumbing works, not performance. The baseline's failure there includes a correct sentence the
+patterns do not recognise.
+
+`step3-production-change/`, `step4/` (except `real-replies-*`) and `step5/public-smoke-v1` are Zihao Zeng's runs from
+20 Oct on PR #3's own code. Their route (`get_production_change`) is not on `main`, so the 33/33 and the baseline
+comparison there describe that implementation.
+
 ## Step 3 build (1 Nov; commit `5f5b43e`, system prompt v10, critic off)
 
 Comparison replies rendered from validated fields, the observed row added to the evidence, and period comparisons
