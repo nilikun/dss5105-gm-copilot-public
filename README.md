@@ -5,7 +5,7 @@
 **A grounded, tool-using AI assistant for a factory's general manager — every number it states is checked
 against the data before you see it.**
 
-[Live demo](https://35.213.154.170) · [How it works](#how-it-works) · [Evaluation](#how-we-know-it-works) ·
+[Live demo](https://dss5105.fuyune.com) · [How it works](#how-it-works) · [Evaluation](#how-we-know-it-works) ·
 [Design notes](docs/DESIGN.md) · [Engineering journal](docs/JOURNAL.md)
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
@@ -115,7 +115,7 @@ cd .. && uv run --project backend python -m pytest -q eval/tests    # evaluation
 uv run --project backend python eval/run.py --set dev               # live evaluation (≈ $0.03)
 ```
 
-The [live demo](https://35.213.154.170) needs an access code, shared privately.
+The [live demo](https://dss5105.fuyune.com) needs an access code, shared privately.
 
 ## Repository
 

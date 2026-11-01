@@ -1,6 +1,6 @@
 # Deploying GM Co-Pilot on Google Cloud
 
-**Live demo: [https://35.213.154.170](https://35.213.154.170)**
+**Live demo: [https://dss5105.fuyune.com](https://dss5105.fuyune.com)**
 
 Open **Settings**, enter the access code supplied privately by the team, and ask:
 **"What is the status of order ORD-120? Cite your evidence."** Expand **Show thinking** and open an evidence
@@ -463,6 +463,20 @@ planned stop, after backing up the current state and handling SQLite WAL/SHM fil
 a running database.
 
 ## 9. Sharing the demo and troubleshooting
+
+### The public hostname
+
+`dss5105.fuyune.com` is a proxied Cloudflare `A` record pointing at the VM. Nothing on the VM changes for it: the
+Nginx `default_server` block answers any hostname.
+
+- A Cloudflare **Configuration Rule** sets SSL to **Full** for this hostname only. The VM's certificate is issued
+  for the IP, so **Full (strict)** returns error 526; **Flexible** loops, because Nginx redirects HTTP to HTTPS.
+- Nginx sets `CF-Connecting-IP` to `$remote_addr`, which behind the proxy is a Cloudflare edge address, so visitors
+  arriving through the same edge share one rate-limit window. If that causes 429s, configure Nginx's `real_ip`
+  module with Cloudflare's published ranges.
+- Streaming was checked through the proxy: events arrive step by step. The direct IP address still works.
+
+### Sharing
 
 The demo URL can be shared publicly; give the access code separately and privately. No credential belongs in a
 README, a slide or a screenshot. Check the link and the VM's availability before a demonstration.
