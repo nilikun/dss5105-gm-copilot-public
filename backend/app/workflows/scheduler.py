@@ -2,12 +2,14 @@
 
 At each day boundary (07:00 clock time) it: generates the previous day's data (advancer), runs the alert policy,
 evaluates watches and builds the structured briefing. Within a day it only evaluates watches (timed reminders).
-Sim mode advances on request; real mode is driven by a background ticker that calls `catch_up`.
+Sim mode advances on request; real mode is driven by a background ticker that calls `catch_up`. The ticker also
+writes the day's prose summary, in both modes (`narrate_if_due`).
 """
 
 from __future__ import annotations
 
 import sqlite3
+from collections.abc import Callable
 from datetime import date, datetime, timedelta
 from typing import Any
 
@@ -15,6 +17,7 @@ from app.clock import DbClock
 from app.clock.advancer import generate_day, load_scenario
 from app.config import DATASET_TODAY
 from app.db.database import get_setting, reset_in_place, set_setting
+from app.llm.base import LLMClient
 from app.workflows import briefing, notifications, watch_engine
 
 
@@ -111,6 +114,19 @@ def catch_up(db: sqlite3.Connection, clock: DbClock, target: datetime | None = N
         boundaries.append(run_boundary(db, clock, d))
         d += timedelta(days=1)
     return {"boundaries": boundaries}
+
+
+def narrate_if_due(db: sqlite3.Connection, clock: DbClock, llm: Callable[[], LLMClient]) -> bool:
+    """Write today's prose summary if it is still pending: the briefing is structured and prose on schedule.
+
+    However the day arrived (start-up, the 07:00 boundary, a clock jump), the same check picks it up, for the latest
+    day only. A rejected or failed summary is not retried, so this cannot keep spending: the structured briefing
+    stands and the manager can ask again. `llm` is a factory so that a missing key costs nothing until it is due.
+    """
+    if briefing.ensure(db, clock)["narrative_status"] != "pending":
+        return False
+    briefing.narrate(db, clock, llm())
+    return True
 
 
 def start_day(db: sqlite3.Connection) -> None:

@@ -20,6 +20,7 @@ mistakes. Design rationale is summarised in [DESIGN.md](DESIGN.md); every evalua
 | 12 | [Deploy](#12-deploy) | 27 Oct |
 | 13 | [Usability review: seven issues from a demo session](#13-usability-review-seven-issues-from-a-demo-session) | 29 Oct |
 | 14 | [Live regression: three regressions found and fixed](#14-live-regression-three-regressions-found-and-fixed) | 29 Oct |
+| 15 | [Comparison answers: complete, traceable, and honest about the cause](#15-comparison-answers-complete-traceable-and-honest-about-the-cause) | 1 Nov |
 
 ---
 
@@ -189,3 +190,27 @@ confirmation.
 
 **Lesson.** Deterministic renderers make answers reliable, but they need to know *which* question they own; and
 unit tests with a scripted model cannot replace a live regression run.
+
+## 15. Comparison answers: complete, traceable, and honest about the cause
+
+**What.** "Why did assembly drop on 25 March?" is the question the data cannot fully answer, so the reply must say
+what happened, against what baseline, and that the cause is unknown. One earlier reply gave 394 and the median of
+766.5 but not the size of the drop.
+
+**Found.** Working on it exposed two gaps beyond wording. The tool's evidence held the baseline window but not the
+observed row, so 455 pieces on 31 March could not be traced from its source chip. And a question about a period had
+no tool support, which left the model to average daily figures itself, against the rule that the LLM never does
+arithmetic.
+
+**Changed.** `compare_to_normal` now compares periods, reports missing data as unavailable, and puts the observed row
+in the evidence. Single-stage comparison replies are rendered from its fields, like order status and estimates. A
+period with a missing working day gets no mean, because a missing day is not a zero. The briefing summary is now
+written on schedule too, and a failed one is not retried, so it cannot keep spending.
+
+**Result.** D35 and twelve variations, three runs each on the live model: 39/39, including zero and missing baselines.
+Full regression: development set 36/36 twice, red team 12/12 twice, every reply verified, no action executed without
+confirmation. These are development numbers. The gate's limits are listed in
+[STEP3_COMPARISONS.md](STEP3_COMPARISONS.md).
+
+**Lesson.** A missing fact in an answer can point to a gap in the tool rather than in the prompt. Checking whether
+each figure could be traced back found the evidence gap that a better prompt would have hidden.

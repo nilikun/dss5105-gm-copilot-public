@@ -18,27 +18,36 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api import chat, routes
+from app.api.deps import app_llm
 from app.clock import DbClock
 from app.config import REPO_DIR, SETTINGS
 from app.db.database import open_db
+from app.llm.base import LLMError
 from app.observability.logging_setup import configure
 from app.workflows import scheduler
 
 log = logging.getLogger("gm.app")
 FRONTEND_DIST = REPO_DIR / "frontend" / "dist"
+TICK_SECONDS = 10
 
 
-def _real_clock_ticker(app: FastAPI, stop: threading.Event) -> None:
-    """In real mode, run the 07:00 boundaries as wall-clock time passes them."""
-    while not stop.wait(30):
+def _ticker(app: FastAPI, stop: threading.Event) -> None:
+    """In real mode, run the 07:00 boundaries as wall-clock time passes them; in any mode, write the day's summary."""
+    while not stop.wait(TICK_SECONDS):
+        db = None
         try:
             db = open_db(app.state.db_path)
             clock = DbClock(db)
             if clock.state()["mode"] == "real":
                 scheduler.catch_up(db, clock)
-            db.close()
+            scheduler.narrate_if_due(db, clock, lambda: app_llm(app))
+        except LLMError as e:  # e.g. no API key: the structured briefing stands
+            log.debug("briefing summary not written: %s", e)
         except Exception:  # never kill the ticker
             log.exception("clock ticker failed")
+        finally:
+            if db is not None:
+                db.close()
 
 
 def create_app(db_path: str | None = None, llm=None, access_code: str | None = None,
@@ -52,7 +61,7 @@ def create_app(db_path: str | None = None, llm=None, access_code: str | None = N
         scheduler.start_day(db)
         db.close()
         if start_ticker:
-            threading.Thread(target=_real_clock_ticker, args=(app, stop), daemon=True).start()
+            threading.Thread(target=_ticker, args=(app, stop), daemon=True).start()
         log.info("GM Co-Pilot API ready · model %s · db %s", SETTINGS.llm_model, app.state.db_path)
         yield
         stop.set()

@@ -6,11 +6,26 @@ is kept as `summary.original.json`. Earlier debugging runs (`…-0228-…`, `…
 they were, scored by the scorer of their time.
 
 > **Dev numbers are tuning numbers.** Prompts v4–v6 were changed after looking at dev failures, so the dev score
-> overstates what an unseen question gets. The held-out set (written by the team, frozen 28 Oct, run once) is the
-> number we stand behind.
+> overstates what an unseen question gets. The held-out set (written by the team, frozen before the run, run once)
+> is the number we stand behind.
 
 Model `gpt-5.6-luna`, reasoning effort low, 3 parallel workers, fresh in-memory database per item, clock
 2026-04-01 07:00. Cost is the OpenAI list price.
+
+## Step 3 build (1 Nov; commit `5f5b43e`, system prompt v10, critic off)
+
+Comparison replies rendered from validated fields, the observed row added to the evidence, and period comparisons
+([notes](../../docs/STEP3_COMPARISONS.md)).
+
+| Set | Runs | Decision accuracy | Faithful (verified) | p50 / p90 s | $ / item | Verifier rejections (repaired) | Actions without confirmation |
+|---|---|---|---|---|---|---|---|
+| Dev (36) | s3a, s3b | 100%, 100% | 100% | 5.6 / 9.4, 5.7 / 8.8 | 0.00076, 0.00075 | 0, 0 | 0 |
+| Red-team (12) | s3a, s3b | 100%, 100% | 100% | 7.0 / 8.8, 6.7 / 10.4 | 0.00099, 0.00091 | 0, 1 | 0 |
+
+**Step 3 gate** (`step3/live-v1/`, commit `8a662e9`, which adds only the runner): D35 and twelve variations, three
+runs each, scored by the bounded answer-contract checker: **39/39**, 21/21 on questions as written and 18/18 on
+synthetic edge cases, p50 5.3 s, $0.023 in total. Same caveat as below: these are development cases, and the
+renderer and prompt v10 were written with them in view.
 
 ## Demo-feedback build (29 Oct; commits `5d17d4f` → `b52acad`, system prompt v8 → v9)
 

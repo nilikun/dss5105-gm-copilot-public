@@ -49,7 +49,7 @@ export function BriefingView({ briefing, onReload, onEvidence, onAsk }: { briefi
               {s.suppressed_findings > 0 && ` · ${s.suppressed_findings} lower-priority findings not shown`}</p>
           </div>
           <Button variant="outline" onClick={rebuild} disabled={rebuilding}
-            title="Rebuild today's briefing from the current data (the written summary is cleared)">
+            title="Rebuild today's briefing from the current data; the written summary is then rewritten">
             <RefreshCw size={16} className={rebuilding ? "gem-spin" : undefined} /> {rebuilding ? "Rebuilding…" : "Refresh"}
           </Button>
         </div>
@@ -67,7 +67,7 @@ export function BriefingView({ briefing, onReload, onEvidence, onAsk }: { briefi
           ) : (
             <div>
               <p className="text-[15px] text-ink-2">
-                {briefing.narrative_status === "pending" ? "The structured briefing below is ready. A short written summary can be generated from it — every figure is checked against the briefing data."
+                {briefing.narrative_status === "pending" ? "The structured briefing below is ready, and its written summary is being prepared — every figure is checked against the briefing data."
                   : briefing.narrative_status === "rejected" ? "The written summary was rejected because it stated a figure not in the briefing data; the structured briefing below stands."
                     : "The written summary is unavailable; the structured briefing below stands."}
               </p>

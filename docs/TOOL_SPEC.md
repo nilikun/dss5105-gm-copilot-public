@@ -181,12 +181,12 @@ clock / data advancer. They are specified in `docs/PLAN.md` §6–§7.
 
 | | |
 |---|---|
-| **Input** | `stage` (one / all), `date` (default: last working day), optional `value` (to judge a number the manager quotes) |
-| **Output** | `actual`, `baseline_median`, `robust_sigma`, `z`, `pct_vs_baseline`, `tier`: normal / briefing / interrupt, `consecutive_low_days`, `window: [dates]` |
+| **Input** | `stage` (one / all), `on_date` (default: last working day), optional `through_date` (last day of a period; `on_date` is then its first day), optional `value` (to judge a number the manager quotes; not with `on_date`) |
+| **Output** | `statistic`: daily / mean / quoted, `start`, `end`, `observed_days`, `actual`, `baseline_median`, `robust_sigma`, `z`, `pct_vs_baseline`, `tier`: normal / briefing / interrupt, `consecutive_low_days`, `window: [dates]`. Unavailable fields are null. Evidence rows carry `role`: baseline / observed. |
 | **Definition returned** | Baseline = median of the previous 20 working days (Sundays excluded); σ = 1.4826 × MAD; briefing tier z < −1.75; interrupt tier z < −3 or 2 of the last 3 working days z < −2 (`analysis/threshold_backtest.py`). Upward deviations are reported, not alerted. |
 | **Purpose** | Make "is this normal?" an auditable rule instead of a model's opinion. |
 | **Non-goals** | Does not explain causes; does not judge orders. |
-| **Failure modes** | Sunday → returns "factory closed", never "0 is abnormal". Fewer than 20 prior working days → shorter window with a warning. A quoted `value` with no date → judged against the latest baseline and labelled so. |
+| **Failure modes** | Sunday → returns "factory closed", never "0 is abnormal". Fewer than 20 prior working days → shorter window with a warning. A quoted `value` with no date → judged against the latest baseline and labelled so. Zero or absent baseline → `pct_vs_baseline` null, never a division by zero. No row for the day → `actual` null with a warning. A period with a missing working day → warning and no mean (a missing day is not a zero). A period gets a mean and a percentage, no `z` or `tier`. |
 
 ### 10. `assess_order_risk` — Judgement
 
@@ -354,3 +354,4 @@ definition and its remaining time is reported as unknown rather than invented.
 | 2026-10-29 | Demo feedback: `propose_outsourcing` (tool 19); manager cancels watches from the UI through the gateway; estimate answers' details are rendered from the `estimate_feasibility` result (`app/agent/feasibility_view.py`) so every estimate has one layout |
 | 2026-10-15 | `get_workshops` and `estimate_feasibility` also return `defect_rate_pct` (display-ready, so the model never converts a fraction) |
 | 2026-10-15 | `estimate_feasibility`: `due_date` optional (fastest workshop and subcontract cost without a deadline) — found by dev items D23 and D36; `scan_exceptions` overdue text states the total pieces separately from the most overdue order |
+| 2026-11-01 | Step 3: `compare_to_normal` gains `through_date` (period mean) and returns `statistic`, `start`, `end`, `observed_days`; nullable fields for missing data; evidence includes the observed row. Single-stage comparison replies are rendered from these fields (`app/agent/comparison_view.py`, `STEP3_COMPARISONS.md`) |

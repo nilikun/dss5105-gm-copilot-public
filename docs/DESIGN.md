@@ -47,8 +47,9 @@ model doing arithmetic or "remembering" a figure. Everything below follows from 
 One **ReAct** agent (Yao et al., 2023) runs a tool loop of at most six steps and ends every turn with a
 structured `respond` call (answer · estimate · clarify · refuse · propose · reject). A **verifier** in plain code
 checks the reply; one repair attempt is allowed, after which the user sees the raw tool output instead of an
-unverified sentence. For two question types the reply body is rendered from validated tool fields rather than
-model prose (order status and feasibility estimates), so a fact the tools returned cannot be dropped.
+unverified sentence. For three question types the reply body is rendered from validated tool fields rather than
+model prose (order status, feasibility estimates and single-stage comparisons), so a fact the tools returned cannot
+be dropped.
 
 ## 4. Key decisions and their evidence
 
@@ -78,7 +79,7 @@ once. Scoring rules are code with unit tests; any correction is re-applied to ev
 
 - Dev scores are tuning scores: prompts were adjusted after reading dev failures. The held-out set is the test.
 - A reply can still leave out a fact the tools returned (e.g. the size of a drop); the verifier checks that what
-  is said is supported, not that everything relevant is said. Two question types are protected by rendering.
+  is said is supported, not that everything relevant is said. Three question types are protected by rendering.
 - Spelled-out numbers ("six") are not extracted by the verifier.
 - The data has no causes, prices or people, so "why did assembly drop?" can only be answered with what happened.
-- One model provider has been measured so far.
+- Only one model provider (OpenAI) is measured.

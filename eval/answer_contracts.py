@@ -229,7 +229,8 @@ def check_production(ref: dict, text: str, kind: str) -> list[str]:
     # harmless, but this bounded checker needs a human to establish that.
     recognized = observations + [part for part in parts if (
         ("baseline" in part and ("median" in part or "unavailable" in part or "missing" in part))
-        or "percentage change" in part or "output is unavailable" in part or part in unknown_forms)]
+        or "percentage change" in part or "output is unavailable" in part or part in unknown_forms
+        or re.match(r"judged (?:not normal|normal|unusually high)\b", part))]
     if set(parts) - set(recognized):
         errors.append("unreviewed_claim")
     return errors

@@ -31,6 +31,21 @@ def working_series(db: sqlite3.Connection, stage: str) -> Series:
         if date.fromisoformat(r[0]).weekday() != 6]
 
 
+def pct_change(actual: float, baseline: float) -> float | None:
+    """100 x (actual / baseline - 1), rounded for display; undefined (None) against a zero baseline."""
+    return round(100 * (actual / baseline - 1), 1) if baseline else None
+
+
+def baseline_before(series: Series, day: str) -> dict[str, Any] | None:
+    """The fixed baseline for anything observed on or after `day`: the working days strictly before it. Used when
+    there is no single observation to judge (a missing day, a period mean). None with fewer than 5 prior days."""
+    prior = [(d, v) for d, v in series if d < day][-NORMAL_WINDOW_WORKING_DAYS:]
+    if len(prior) < 5:
+        return None
+    return {"baseline_median": statistics.median(v for _, v in prior), "window": [prior[0][0], prior[-1][0]],
+            "window_days": len(prior)}
+
+
 def robust_z(series: Series, idx: int) -> dict[str, Any] | None:
     """z of series[idx] against the working days strictly before it; None with fewer than 5 prior days."""
     hist = [v for _, v in series[max(0, idx - NORMAL_WINDOW_WORKING_DAYS):idx]]
@@ -62,4 +77,4 @@ def judge(series: Series, idx: int, quoted: bool = False) -> dict[str, Any] | No
                 break
             consecutive += 1
     return {**zr, "tier": tier, "direction": direction, "consecutive_low_days": consecutive,
-            "pct_vs_baseline": round(100 * (zr["actual"] / zr["baseline_median"] - 1), 1)}
+            "pct_vs_baseline": pct_change(zr["actual"], zr["baseline_median"])}

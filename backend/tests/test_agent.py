@@ -32,6 +32,13 @@ ASSEMBLY_STEPS = [
 ]
 
 
+# Several stages: this reply stays with the model, so the verifier and the repair path are what protect it
+ALL_STAGE_STEPS = [
+    [("resolve_time", {"expression": "yesterday"})],
+    [("compare_to_normal", {"stage": "ALL", "on_date": "2026-03-31"})],
+]
+
+
 def grounded_reply(inp):
     return [("respond", {"kind": "answer",
                          "headline": "Not normal: 455 pieces on 31 Mar, 40.2% below the usual 761.5 — the 6th low "
@@ -53,8 +60,8 @@ def test_happy_path_and_trace(env):
 def test_unsupported_number_is_repaired(env):
     db, clock = env
     bad = [("respond", {"kind": "answer", "headline": "Assembly made about 300 fewer pieces than normal."})]
-    llm = ScriptedLLM(ASSEMBLY_STEPS + [bad, grounded_reply])
-    r = Agent(db, clock, llm).run("Was assembly's output yesterday normal?")
+    llm = ScriptedLLM(ALL_STAGE_STEPS + [bad, grounded_reply])
+    r = Agent(db, clock, llm).run("How were the stages yesterday?")
     assert r.kind == "answer" and r.verifier_rejections == 1
     rejection = llm.requests[3]["input"][0]["output"]
     assert "REJECTED" in rejection and "300" in rejection
@@ -63,8 +70,8 @@ def test_unsupported_number_is_repaired(env):
 def test_two_bad_drafts_fall_back_to_tool_output(env):
     db, clock = env
     bad = [("respond", {"kind": "answer", "headline": "Assembly made about 300 fewer pieces than normal."})]
-    llm = ScriptedLLM(ASSEMBLY_STEPS + [bad, bad])
-    r = Agent(db, clock, llm).run("Was assembly's output yesterday normal?")
+    llm = ScriptedLLM(ALL_STAGE_STEPS + [bad, bad])
+    r = Agent(db, clock, llm).run("How were the stages yesterday?")
     assert r.kind == "fallback" and "compare_to_normal" in r.details and "300" not in r.headline
 
 

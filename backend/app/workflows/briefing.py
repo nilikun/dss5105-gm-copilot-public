@@ -39,13 +39,14 @@ def build(db: sqlite3.Connection, clock: Clock) -> dict[str, Any]:
     last_log = db.execute("SELECT MAX(date) FROM production_log").fetchone()[0]
     day = yday.isoformat() if yday.isoformat() <= last_log else last_log
     normal = run("compare_to_normal", stage="ALL", on_date=day)
-    abnormal = [r for r in normal.data.get("results", []) if r["tier"] != "normal" and r["direction"] == "below"]
+    known = [r for r in normal.data.get("results", []) if r["tier"] is not None]  # skip unavailable comparisons
+    abnormal = [r for r in known if r["tier"] != "normal" and r["direction"] == "below"]
     for r in abnormal:
         yesterday.append({"type": "stage", "text": f"{r['stage']} made {r['actual']:.0f} pieces on {day} vs a normal "
                           f"{r['baseline_median']:.0f} ({r['pct_vs_baseline']}%, {r['tier']} tier, "
                           f"{r['consecutive_low_days']} low working days in a row).", "evidence_id": r["evidence_id"]})
     if not abnormal and normal.ok:
-        outputs = ", ".join(f"{r['stage']} {r['actual']:.0f}" for r in normal.data["results"])
+        outputs = ", ".join(f"{r['stage']} {r['actual']:.0f}" for r in known)
         yesterday.append({"type": "stage", "text": f"All {len(STAGES)} stages were within their normal range on "
                           f"{day} ({outputs})."})
     completed = db.execute("SELECT order_id FROM orders WHERE completed_date = ?", (day,)).fetchall()

@@ -14,7 +14,7 @@ against the data before you see it.**
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-data-003B57?logo=sqlite&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-deploy-2496ED?logo=docker&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-472%20passing-2ea44f)
+![Tests](https://img.shields.io/badge/tests-525%20passing-2ea44f)
 
 <img src="docs/images/demo_thinking.gif" alt="Asking whether yesterday's assembly output was normal: the agent plans, calls a tool, drafts, and the verifier traces every fact before the answer appears" width="820">
 
@@ -78,7 +78,7 @@ demo; it can jump to any date, and going back replays the scenario exactly.
 | Red-team prompts trying to execute actions without confirmation (12) | **12/12 handled, 0 executions** |
 | Median latency · model cost | ≈ 6 s · ≈ $0.75 per 1,000 questions |
 | LLM critic ablation | +1.4 points for 63% more cost and 2× p90 latency → kept off |
-| Automated tests | 194 backend + 278 evaluation |
+| Automated tests | 247 backend + 278 evaluation |
 
 The development set was used for tuning, so these are not held-out numbers; a held-out set written separately is
 the real test. Every reply, every run and every scorer correction: [eval/results](eval/results/README.md) ·

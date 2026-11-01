@@ -7,7 +7,7 @@ import time
 from collections import defaultdict, deque
 from collections.abc import Iterator
 
-from fastapi import Depends, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Request
 
 from app.config import SETTINGS
 from app.db.database import open_db
@@ -26,13 +26,17 @@ def get_db(request: Request) -> Iterator:
         conn.close()
 
 
-def get_llm(request: Request) -> LLMClient:
-    llm = getattr(request.app.state, "llm", None)
+def app_llm(app: FastAPI) -> LLMClient:
+    llm = getattr(app.state, "llm", None)
     if llm is None:
         from app.llm.openai_responses import OpenAIResponsesClient
 
-        llm = request.app.state.llm = OpenAIResponsesClient()
+        llm = app.state.llm = OpenAIResponsesClient()
     return llm
+
+
+def get_llm(request: Request) -> LLMClient:
+    return app_llm(request.app)
 
 
 def require_access(request: Request) -> None:

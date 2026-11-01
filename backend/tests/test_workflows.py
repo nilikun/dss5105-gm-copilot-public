@@ -85,3 +85,24 @@ def test_interrupt_cap_downgrades_system_alerts(cap):
     sys_p1 = db.execute("SELECT COUNT(*) FROM notifications WHERE priority = 'P1' AND kind != 'watch'").fetchone()[0]
     assert sys_p1 == 0
     assert db.execute("SELECT COUNT(*) FROM notifications WHERE body LIKE '%cap%'").fetchone()[0] > 0
+
+
+def test_the_summary_is_written_once_on_schedule_and_never_retried():
+    from app.clock import DbClock
+    from app.llm.fake import ScriptedLLM
+    from app.workflows import briefing
+
+    db = connect()
+    scheduler.start_day(db)
+    clock = DbClock(db)
+    good = "ASSEMBLY made 455 pieces on 2026-03-31."
+    llm = ScriptedLLM([good])
+    assert scheduler.narrate_if_due(db, clock, lambda: llm) is True
+    assert briefing.ensure(db, clock)["narrative"] == good
+    assert scheduler.narrate_if_due(db, clock, lambda: llm) is False and len(llm.requests) == 1
+
+    scheduler.advance(db, days=1)                                  # a new day is due again
+    bad = ScriptedLLM(["Assembly lost 999999 pieces."])
+    assert scheduler.narrate_if_due(db, clock, lambda: bad) is True
+    assert briefing.ensure(db, clock)["narrative_status"] == "rejected"
+    assert scheduler.narrate_if_due(db, clock, lambda: bad) is False and len(bad.requests) == 1
