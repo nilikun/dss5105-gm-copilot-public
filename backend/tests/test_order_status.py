@@ -215,3 +215,12 @@ def test_status_lookup_does_not_override_an_action_rejection(draft):
     reply = Agent(db, SimClock.at(SUITE["clock"]), llm).run("Email TrendCart that ORD-120 ships tomorrow.")
     assert reply.kind == "reject" and reply.headline == draft["headline"]
     db.close()
+
+
+def test_status_reply_names_the_customer_the_manager_may_have_asked_for():
+    """Held-out H01: the rendered reply dropped a client name the question asked for."""
+    llm = ScriptedLLM([[("get_order_status", {"order_id": "ORD-041"})],
+                       [("respond", {"kind": "answer", "headline": "In washing."})]])
+    reply = Agent(connect(DATA_DIR), SimClock.at("2026-04-01"), llm).run(
+        "Please check the current production progress, target due date, and client name for order ORD-041.")
+    assert reply.headline.startswith("ORD-041 (Harbor Knits) is in washing.") and "2026-04-21" in reply.headline

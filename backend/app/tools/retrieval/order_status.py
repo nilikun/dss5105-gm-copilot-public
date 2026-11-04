@@ -17,6 +17,7 @@ from app.tools.retrieval.orders import normalize_order_id
 
 class StatusFacts(BaseModel):
     order_id: str = Field(pattern=r"^ORD-\d{3}$")
+    customer: str | None = None
     status: Literal["IN_PROGRESS", "COMPLETE"]
     stage: Literal["KNITTING", "ASSEMBLY", "WASHING", "PACKING", "COMPLETE"] | None
     due_date: date | None
@@ -58,8 +59,9 @@ def status_facts(row: dict, today: date) -> StatusFacts:
         days = abs(delta)
         timing = ("late" if delta > 0 else "early" if delta < 0 else "on_time") if complete else (
             "overdue" if delta > 0 else "remaining" if delta < 0 else "due_today")
-    return StatusFacts(order_id=row["order_id"], status=row["status"], stage=stage, due_date=due,
-                       completed_date=completed, as_of=today, timing=timing, days=days, unavailable=unavailable)
+    return StatusFacts(order_id=row["order_id"], customer=row.get("customer") or None, status=row["status"],
+                       stage=stage, due_date=due, completed_date=completed, as_of=today, timing=timing, days=days,
+                       unavailable=unavailable)
 
 
 class OrderStatusParams(BaseModel):

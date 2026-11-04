@@ -111,9 +111,9 @@ clock / data advancer. They are specified in `docs/PLAN.md` §6–§7.
 | | |
 |---|---|
 | **Input** | Optional `order_id`, `customer`, `product`, `status`; at least one identifier/description is required. Provided filters must all match. |
-| **Output** | Validated `status_facts`: ID, status/stage, due date, completion date, dataset date, timing direction and calendar-day count, unavailable fields; source-row evidence. |
+| **Output** | Validated `status_facts`: ID, customer, status/stage, due date, completion date, dataset date, timing direction and calendar-day count, unavailable fields; source-row evidence. |
 | **Purpose** | Complete order-status answers rendered by code, including deadline and timing. See `STEP2_ORDER_STATUS.md`. |
-| **Non-goals** | No risk judgement (→ `assess_order_risk`); no fields beyond status. The rendered reply does not include the customer, which the held-out run showed is a gap (H01). |
+| **Non-goals** | No risk judgement (→ `assess_order_risk`); no fields beyond status and the customer. |
 | **Resolution** | Descriptions prefer open matches when status is unspecified, matching the existing convention. Multiple matches require clarification; no urgency-based selection. |
 | **Failure modes** | Missing/invalid dates or stage are disclosed. No match → request an identifier. Ambiguity → real candidates. Completed orders use their completion date, never current overdue time. |
 | **Scope** | Status-only replies and order/time lookup support. Other analytical/action tools retain the general response path; model routing needs live evaluation. |

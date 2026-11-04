@@ -1,8 +1,8 @@
 # Independent evaluation operator guide (Steps 4–5)
 
-Status: implementation and public tests prepared; **human calibration and the formal held-out run are
-pending**. The user confirmed that teammate materials are not ready and requested author/reviewer packets.
-Do not describe public fixtures, the judge integration check, or the pipeline smoke test as held-out.
+Status: calibration accepted and the formal run completed on 4 November 2026 (`eval/results/heldout-v1`).
+This guide is for repeating them with a new set. Do not describe public fixtures, the judge integration check, or the
+pipeline smoke test as held-out.
 
 The commands below use `backend/.venv/bin/python`. On Windows use `backend/.venv/Scripts/python.exe`, or
 `uv run --project backend python`. Text files are read and written as UTF-8 on every platform. Take the hashes on one

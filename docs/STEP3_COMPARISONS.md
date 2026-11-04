@@ -1,10 +1,9 @@
 # Step 3: comparison replies
 
 Step 3 of the [evaluation plan](EVAL_PLAN.md), on system prompt v10. Development cases only; no held-out question was
-opened. Two implementations of this step exist: the one on `main`, described here, and one by Zihao Zeng in PR #3
-(`get_production_change`), whose pull request landed on a side branch and never reached `main`. We keep the first
-because it has no second tool for the same question and has been through the full regression. We use the second's
-cases, independent references and scorer to check it, and they found a real defect (below). Its own results are in
+opened. Two implementations of this step were built: the one described here, and one by Zihao Zeng
+(`get_production_change`). We kept this one because it needs no second tool for the same question, and used his cases,
+independent references and scorer to cross-check it, which found a real defect (below). His results are in
 [`eval/results/step3-production-change/`](../eval/results/step3-production-change/README.md).
 
 ## The problem
@@ -64,7 +63,7 @@ The current build is commit `3600933`. Every attempt, reply and failure code is 
 | Check | Build | Result |
 |---|---|---|
 | Our cases: D35 and twelve variations, three runs each (`live-*`) | `8a662e9`, `123fe55`, `3600933` | 39/39 each |
-| Independent cases and references from PR #3, three runs each (`independent-*`) | `f678d70`, before the fixes | **29/33; hard checks 27/33** |
+| Independent cases and references, three runs each (`independent-*`) | `f678d70`, before the fixes | **29/33; hard checks 27/33** |
 | The same | `123fe55`, hole fixed | 33/33; hard checks 33/33 |
 | The same | `3600933`, current | **33/33; hard checks 33/33** |
 | Independent judge on one real reply per case (`../step4/real-replies-*`) | `123fe55` | **7/13** |

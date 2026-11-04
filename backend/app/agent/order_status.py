@@ -51,11 +51,12 @@ def render(results: list[tuple[str, dict]], user_text: str, today: date) -> Resp
     resolved = {r["data"]["status_facts"]["order_id"] for r in status_results if r.get("ok")}
     if facts.as_of != today or len(resolved) != 1 or (explicit and explicit != {facts.order_id}):
         return clarification([])
+    order = f"{facts.order_id} ({facts.customer})" if facts.customer else facts.order_id
     if facts.status == "COMPLETE":
-        parts = [f"{facts.order_id} is complete."]
+        parts = [f"{order} is complete."]
     else:
-        parts = [f"{facts.order_id} is in {facts.stage.lower()}." if facts.stage
-                 else f"{facts.order_id} is in progress; stage is unavailable."]
+        parts = [f"{order} is in {facts.stage.lower()}." if facts.stage
+                 else f"{order} is in progress; stage is unavailable."]
     parts.append(f"Due date {facts.due_date.isoformat()}." if facts.due_date else "Due date is unavailable.")
     if facts.status == "COMPLETE":
         parts.append(f"Completed on {facts.completed_date.isoformat()}." if facts.completed_date

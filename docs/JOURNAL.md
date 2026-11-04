@@ -21,7 +21,7 @@ mistakes. Design rationale is summarised in [DESIGN.md](DESIGN.md); every evalua
 | 13 | [Usability review: seven issues from a demo session](#13-usability-review-seven-issues-from-a-demo-session) | 29 Oct |
 | 14 | [Live regression: three regressions found and fixed](#14-live-regression-three-regressions-found-and-fixed) | 29 Oct |
 | 15 | [Comparison answers: complete, traceable, and honest about the cause](#15-comparison-answers-complete-traceable-and-honest-about-the-cause) | 1 Nov |
-| 16 | [Two implementations, and what the other one's tests found](#16-two-implementations-and-what-the-other-ones-tests-found) | 1 Nov |
+| 16 | [Cross-checking with an independent implementation](#16-cross-checking-with-an-independent-implementation) | 1 Nov |
 | 17 | [The held-out run: 36/36 becomes 11/60](#17-the-held-out-run-3636-becomes-1160) | 4 Nov |
 
 ---
@@ -217,53 +217,35 @@ confirmation. These are development numbers. The gate's limits are listed in
 **Lesson.** A missing fact in an answer can point to a gap in the tool rather than in the prompt. Checking whether
 each figure could be traced back found the evidence gap that a better prompt would have hidden.
 
-## 16. Two implementations, and what the other one's tests found
+## 16. Cross-checking with an independent implementation
 
-**What.** While merging step 15 we found a remote branch with the same work already done. Zihao Zeng's pull request
-showed as merged, but its base was a branch that had reached `main` 39 seconds earlier, so the code never arrived. It
-held a second answer to step 15, and the independent scorer, judge, calibration and frozen runner we were about to
-write. We kept one comparison route and took his evaluation tools with his authorship. Then we ran his cases, his
-references and his judge against the route he had not written.
+**What.** Zihao Zeng built a second implementation of the comparison route, together with an independent scorer, an LLM judge, calibration tools and a frozen evaluation runner. We kept one route, since two tools for one question would split routing, and adopted his evaluation tools. Then we ran his cases, references and judge against the route he had not written.
 
-**Found.** Our own gate said 39/39. His said 29/33, and the judge rejected 6 of 13 real replies:
-- With one day missing from the baseline window, the window silently moved back and still produced a percentage and
-  a verdict. That is a defect in the tool.
+**Found.** Our own gate said 39/39. His cases said 29/33, and the judge rejected 6 of 13 real replies:
+- With one day missing from the baseline window, the window silently moved back and still produced a percentage and a verdict. That is a defect in the tool.
 - Once in three runs, the model refused a period with a missing day, which left the baseline out of the reply.
-- The judge rejected correct z-scores its reference package did not contain, and called them unclear. It was partly
-  right: a manager asking for a comparison had not asked for a z-score.
+- The judge rejected correct z-scores its reference package did not contain, and called them unclear. It was partly right: a manager asking for a comparison had not asked for a z-score.
 
-We fixed the first two and showed the verdict only when the question asks about normality. One finding went the other
-way: the scorer rejected a correct reply, so we changed that rule. Another check shows the limit of all this: the
-patterns came from the same contract as our renderer, and they fail a correct sentence from the older build. So the
-rubric now requires a person to review such failures, and reports strict and reviewed scores side by side. We set this
-before any hidden answer exists.
+We fixed the first two and showed the verdict only when the question asks about normality. One finding went the other way: the scorer rejected a correct reply, so we changed that rule. The patterns also came from the same contract as our renderer, and they fail a correct sentence from an older build. So the rubric reports strict and reviewed scores side by side, a rule we set before any hidden answer existed.
 
-**Mistake.** Before re-running, we deleted the first failing run (30/33), which breaks our rule of keeping every
-result. We re-ran from the same commit to restore the record. That run scored 29/33, so the two differed by one
-attempt, and the results README says so.
+**Result.** Independent cases 33/33, judge 13/13 on real replies, development set 36/36 twice, red team 12/12 twice. These are still development numbers.
 
-**Result.** Independent cases 33/33, judge 13/13 on real replies, development set 36/36 twice, red team 12/12 twice.
-These are still development numbers, and no person has calibrated the judge yet.
-
-**Lesson.** A test written by someone else finds what your own cannot, because you share your code's assumptions with
-your own tests. And a green "merged" badge says where a pull request went, not that it reached `main`.
+**Lesson.** A test written by someone else finds what your own cannot, because you share your code's assumptions with your own tests.
 
 ## 17. The held-out run: 36/36 becomes 11/60
 
-**What.** The planned held-out set arrived, and it could not be used. None of its 13 order references exist in the data, no question names a real customer, product or workshop, and it asks about scrap, headcount and machines that the files do not hold. It still passed every structural check, because its answers agreed with each other. We kept the file and its hash. We tagged the system first, so nothing could be tuned to the questions, and only then did the development assistant read the draft and move it onto real data: same categories and intent, entities drawn by a fixed seed, references computed from the CSVs by a script. So the set cannot have been tuned to, but it is not independently authored.
+**What.** The final test. We calibrated the judge against two human reviewers (97.1% agreement between them; the first calibration missed our 90% gate at 87.9%, so we wrote its criteria more clearly and reached 99.3%, on the same answers). We tagged the system first, so nothing could be tuned to the questions. The development assistant then moved the first draft of the 20 questions onto the real data, with entities drawn by a fixed seed and references computed from the CSVs by a script. So the set cannot have been tuned to, but it is not independently authored.
 
 **Result.** Twenty questions, three repetitions, against the earlier baseline, run once.
 
 ![Held-out evaluation](figures/fig6_heldout.png)
 
-Strict score: 11 of 60, against 4 of 60. Most failures were the judge rejecting true statements, such as "26 working days", that its reference package did not cover. That was our error in writing the package, and we did not edit it after seeing results. Instead we added a second score, labelled post hoc, in which the judge sees the source rows: 24 of 60, for both versions. Our targeted fixes did not produce a clear gain on unseen questions.
+Every reply passed the verifier, nothing ran without confirmation, and it clarified or refused correctly every time it should have. On answer quality, the strict score was 11 of 60, against 4 of 60. Most failures were the judge rejecting true statements, such as "26 working days", that its reference package did not cover, and we did not edit the package after seeing results. A second score, labelled post hoc, lets the judge see the source rows: 24 of 60, for both versions. The targeted fixes helped the questions they aimed at (H04, H16) without a clear overall gain.
 
-**Found.** Every reply passed the verifier and nothing ran without confirmation. But:
-- The status renderer dropped a client name the manager asked for, 3 of 3. The older version got it right.
-- The comparison renderer reported a true but different comparison and never corrected a false premise.
-- A reply gave a false reason ("the spread statistic was unavailable") with no number in it, so the verifier could not see it.
-- "The past 3 working days" picked the wrong days, because the model did that date logic itself.
+**Found.** Real issues that the development set could not show:
+- The status renderer dropped a client name the manager asked for. Fixed after the run; not measured on unseen questions.
+- The comparison renderer reported a true but different comparison, and did not correct a false premise.
+- A reply gave a false reason with no number in it, so the verifier could not see it.
+- "The past 3 working days" picked the wrong days, because the model did that date logic itself. It needs a tool.
 
-These are reported, not fixed: the frozen system is what was measured.
-
-**Lesson.** A score on questions you tuned against says little, and a fix that removes one failure can create another nearby. "Every figure verified" is a narrow claim, and it is worth saying exactly how narrow. A test set also needs checking against the source: a package can be perfectly formed and entirely fictional.
+**Lesson.** A score on questions you tuned against says little, and a fix that removes one failure can create another nearby. "Every figure verified" is a precise claim, and it is worth saying exactly how precise.

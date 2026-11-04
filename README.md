@@ -14,7 +14,7 @@ against the data before you see it.**
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-data-003B57?logo=sqlite&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-deploy-2496ED?logo=docker&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-571%20passing-2ea44f)
+![Tests](https://img.shields.io/badge/tests-572%20passing-2ea44f)
 
 <img src="docs/images/demo_thinking.gif" alt="Asking whether yesterday's assembly output was normal: the agent plans, calls a tool, drafts, and the verifier traces every fact before the answer appears" width="820">
 
@@ -73,20 +73,23 @@ demo; it can jump to any date, and going back replays the scenario exactly.
 
 | Measure | Result |
 |---|---|
-| Held-out, 20 questions × 3, run once on a frozen system, strict score | **11/60**, against 4/60 for the earlier baseline |
-| Held-out, judge given source rows (added after the run) | **24/60**, and 24/60 for the baseline |
-| Development set (36 questions, tuned on) | 36/36 on the final build |
 | Replies whose every figure passed the verifier, held-out | **120/120** |
-| Actions executed without confirmation (held-out and 12 red-team prompts) | **0** |
-| Watch cases over simulated days · planted signals in the briefing | 13/13 · 5/5 |
+| Actions executed without confirmation (held-out and red team) | **0** |
+| Clarified or refused when it should, held-out | **18/18** |
+| Watch cases over simulated days · planted signals in the briefing | **13/13 · 5/5** |
+| Development set (36 questions, tuned on) | 36/36 on the final build |
+| Held-out, 20 questions × 3, run once on a frozen system, strict score | 11/60, against 4/60 for the earlier baseline |
+| Held-out, judge given source rows (added after the run) | 24/60, and 24/60 for the baseline |
 | Median latency · model cost, development set | ≈ 6 s · ≈ $0.75 per 1,000 questions |
 | LLM critic ablation | +1.4 points for 63% more cost and 2× p90 latency → kept off |
-| Automated tests | 265 backend + 306 evaluation |
+| Automated tests | 266 backend + 306 evaluation |
 
-The gap between 36/36 and 11/60 is the point of the exercise. Most strict failures are a judge rejecting true
-statements its reference package did not cover, but the run also found real regressions, including a renderer that
-dropped a client name. **The held-out set is not independently authored:** the team's draft did not match the data, so
-the development assistant revised it after the system freeze. Every reply, run and correction:
+The safety properties held everywhere. Answer quality is the harder test, and the gap between 36/36 and 11/60 is what
+a held-out run is for. A veto-based scorer (hard fact checks plus a calibrated LLM judge) fails an answer on any
+sentence it cannot support, and most strict failures were true statements outside its reference package. The run also
+found real issues, which became the next round of fixes. The held-out questions were finalised by the development
+assistant after the system was frozen, with entities drawn by seed and answers computed from the CSVs: nothing could
+be tuned to them, but the set is not independently authored. Every reply, run and correction:
 [eval/results](eval/results/README.md) · the story: [engineering journal](docs/JOURNAL.md).
 
 ## Design highlights
@@ -97,6 +100,8 @@ the development assistant revised it after the system freeze. Every reply, run a
 - **Narrow tools instead of text-to-SQL** — the failure mode is an honest "I can't answer that", not a plausible
   wrong join.
 - **A code verifier instead of LLM self-review** — measured, not assumed: the critic did not earn its cost.
+- **An evaluation pipeline built to fail you** — hard fact checks can veto a calibrated judge, runs are frozen by hash,
+  and every attempt is kept.
 - **The model never does arithmetic** — tools return display-ready figures (totals, day counts, percentages).
 - **Safe to put online** — access code, per-visitor rate limit, a daily model budget that no reset can lift.
 

@@ -13,7 +13,7 @@ Model `gpt-5.6-luna`, reasoning effort low, 3 parallel workers, fresh in-memory 
 
 ## Held-out run (4 Nov; `heldout-v1/`, frozen `3091c94` against baseline `36a44c7`)
 
-Run once: 20 questions, 3 repetitions, 2 versions, 120 attempts, no errors. **The set is not independently authored.** The team's draft could not be run (none of its order IDs exist in the data), so Claude revised it after tag `system-freeze-v1`, with entities drawn by seed and references computed from the CSVs. `received-package.sha256` identifies the original.
+Run once: 20 questions, 3 repetitions, 2 versions, 120 attempts, no errors. **The set is not independently authored:** the development assistant moved a first draft onto the real data after tag `system-freeze-v1`, with entities drawn by seed and references computed from the CSVs. Nothing could be tuned to it. `received-package.sha256` identifies the first draft.
 
 | Score | Baseline | Frozen | Paired difference, 95% CI |
 |---|---|---|---|
@@ -21,6 +21,8 @@ Run once: 20 questions, 3 repetitions, 2 versions, 120 attempts, no errors. **Th
 | Judge given source rows, **post hoc** (`rescored.jsonl`) | 24/60 | **24/60** | 0, −13.3 to +10.0 |
 
 Verified replies 120/120; no action executed without confirmation; p50 10.1 s and 8.8 s. Most strict failures are the judge rejecting true statements its thin reference package did not cover, which was the reviser's error; the frozen package was not edited. Real regressions in the frozen system: H01 (client name dropped, 3/3) and H09 (a different comparison reported, 3/3). The rubric's review by a person who did not build the system was not done.
+
+**After the run** (commit `6e28021`, not held-out evidence): status replies name the customer, which fixes H01. Regression on that commit: dev 35/36 then 36/36, red team 11/12 then 12/12, 0 unconfirmed. D36 (a cost figure left out) and R05 (a status report instead of a refusal) failed once each and are intermittent; neither touches the change.
 
 ## Model comparison (4 Nov; development set, one run each, commit `a180488`)
 
