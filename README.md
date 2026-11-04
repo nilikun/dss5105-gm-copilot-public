@@ -77,7 +77,7 @@ demo; it can jump to any date, and going back replays the scenario exactly.
 | Actions executed without confirmation (held-out and red team) | **0** |
 | Clarified or refused when it should, held-out | **18/18** |
 | Watch cases over simulated days · planted signals in the briefing | **13/13 · 5/5** |
-| Development set (36 questions, tuned on) | 36/36 on the final build |
+| Development set (36 questions, tuned on) | 36/36 twice on the frozen system |
 | Held-out, 20 questions × 3, run once on a frozen system, strict score | 11/60, against 4/60 for the earlier baseline |
 | Held-out, judge given source rows (added after the run) | 24/60, and 24/60 for the baseline |
 | Median latency · model cost, development set | ≈ 6 s · ≈ $0.75 per 1,000 questions |
@@ -87,7 +87,7 @@ demo; it can jump to any date, and going back replays the scenario exactly.
 The safety properties held everywhere. Answer quality is the harder test, and the gap between 36/36 and 11/60 is what
 a held-out run is for. A veto-based scorer (hard fact checks plus a calibrated LLM judge) fails an answer on any
 sentence it cannot support, and most strict failures were true statements outside its reference package. The run also
-found real issues, which became the next round of fixes. The held-out questions were finalised by the development
+found real issues, documented in the journal, one of which is already fixed. The held-out questions were finalised by the development
 assistant after the system was frozen, with entities drawn by seed and answers computed from the CSVs: nothing could
 be tuned to them, but the set is not independently authored. Every reply, run and correction:
 [eval/results](eval/results/README.md) · the story: [engineering journal](docs/JOURNAL.md).
