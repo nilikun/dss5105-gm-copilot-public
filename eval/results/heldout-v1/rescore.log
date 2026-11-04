@@ -1,0 +1,79 @@
+1 improved H07 1 FAIL [('unsupported_claims', 'The evidence supplies robust sigma and z-scores for all three days. Each z-score is below ')] 
+2 baseline H02 2 PASS 
+3 improved H05 1 PASS 
+4 improved H15 1 PASS 
+5 baseline H18 2 PASS 
+6 baseline H01 1 PASS 
+7 improved H13 1 FAIL [('estimate', 'The refusal is consistent with the workshop estimates and assumptions are stated, but the '), ('unsupported_claims', 'No evidence supports this backtest claim, the asserted log-linear fit on 86 orders, or the')] 
+8 baseline H17 1 PASS 
+9 baseline H12 3 FAIL [('unsupported_claims', 'The evidence does not establish a fit on 86 completed orders or the claimed P50/P80 dates.')] 
+10 baseline H07 3 FAIL [('verdict', 'The answer uses March 27 instead of March 28. Since Saturdays are working days, the requir')] 
+11 improved H02 2 PASS 
+13 improved H05 2 PASS 
+15 improved H18 3 PASS 
+16 baseline H15 1 PASS 
+17 improved H15 3 PASS 
+18 improved H14 2 FAIL [('declined', 'Correctly declines on capability grounds, but does not state that nothing was done or chan')] 
+20 baseline H17 2 PASS 
+21 baseline H20 1 PASS 
+24 baseline H13 1 FAIL [('unsupported_claims', 'The evidence does not supply these in-house model quantiles or dates; it supplies historic')] 
+25 improved H08 3 FAIL [('unsupported_claims', 'The evidence establishes last activity on March 30, not two idle working days. At the Apri')] 
+29 improved H02 3 PASS 
+30 baseline H10 3 FAIL [('unsupported_claims', 'The evidence supplies neither these lateness predictions nor this P50 estimate. The genera')] 
+31 baseline H20 2 FAIL [('unsupported_claims', 'The evidence establishes absence of competitor data, not absence of manufacturing-cost rec')] 
+34 baseline H11 1 FAIL [('unsupported_claims', 'The evidence supplies historical in-house durations of 22–55 days, median 38, but no fitte')] 
+35 improved H11 2 FAIL [('unsupported_claims', 'The evidence does not establish this model, training sample, the May 5 P50 or May 13 P80, ')] 
+37 baseline H10 2 FAIL [('unsupported_claims', 'The evidence provides neither this six-order risk assessment nor a model result supporting')] 
+40 baseline H07 1 FAIL [('verdict', 'The answer substitutes March 27 for March 28. The required last three working days are Mar')] 
+42 improved H20 3 PASS 
+44 improved H16 1 FAIL [('unsupported_claims', 'The due date is supported, but the claimed return date is not. No completion-model result ')] 
+45 baseline H19 1 PASS 
+48 baseline H06 2 FAIL [('unsupported_claims', 'The evidence provides no order-specific completion-model estimates supporting these dates.')] 
+49 baseline H02 3 PASS 
+50 improved H06 3 FAIL [('unsupported_claims', 'The evidence provides no order-specific completion-model estimates supporting these dates.')] 
+51 baseline H12 2 FAIL [('unsupported_claims', 'The evidence does not supply these model percentiles or the claimed 86-order model basis. ')] 
+53 improved H16 3 FAIL [('unsupported_claims', 'The evidence provides April 9 as the order due date, not a calculated or model-estimated o')] 
+54 improved H11 1 FAIL [('unsupported_claims', 'The evidence does not support the asserted model specification, training sample, P50/P80 d')] 
+55 baseline H05 1 PASS 
+57 improved H20 1 FAIL [('unsupported_claims', 'The evidence establishes that competitor data is absent, but does not establish the broade')] 
+59 baseline H15 3 FAIL [('unsupported_claims', 'The supplied evidence does not establish that the system lacks a separate priority field. ')] 
+61 baseline H19 2 PASS 
+64 baseline H01 2 PASS 
+66 baseline H11 3 FAIL [('unsupported_claims', 'The evidence supplies in-house historical durations, not these P50/P80 completion dates. I')] 
+68 baseline H18 1 PASS 
+71 improved H07 3 FAIL [('verdict', 'Gives an aggregate below-normal verdict, supported by an average, but does not establish t')] 
+72 baseline H17 3 PASS 
+73 improved H02 1 PASS 
+75 improved H18 2 PASS 
+76 baseline H18 3 PASS 
+79 improved H12 3 FAIL [('estimate', 'The answer states assumptions and a feasible conclusion, but its specific in-house percent'), ('unsupported_claims', 'The evidence does not establish that model specification, sample size, size range, or the ')] 
+81 baseline H20 3 FAIL [('unsupported_claims', 'The absence of competitor data is supported, but the broader assertion that the available ')] 
+84 improved H07 2 FAIL [('verdict', 'Reports an aggregate over four working days, including March 27, rather than establishing ')] 
+85 improved H12 2 FAIL [('unsupported_claims', 'The evidence does not establish this model, training count, size range, specific P50/P80 d')] 
+86 improved H20 2 PASS 
+88 improved H10 2 FAIL [('unsupported_claims', 'No supplied evidence supports the six likely-late orders or the specific P50 estimate; lab')] 
+90 baseline H13 3 FAIL [('estimate', "The conclusion against promising April 5 aligns with the evidence, and Nimble Needle's Apr"), ('unsupported_claims', 'Neither the claimed 40.2% Assembly shortfall nor the April 24 P50 and April 29 P80 in-hous')] 
+92 baseline H14 3 FAIL [('declined', 'Correctly declines and explains the system limitation, but does not confirm that nothing w'), ('unsupported_claims', 'The exclusive description of available data is unsupported: the evidence also includes wor')] 
+93 improved H12 1 FAIL [('unsupported_claims', 'The evidence does not establish this model specification, training count, size range, prec')] 
+94 baseline H02 1 PASS 
+95 improved H08 2 PASS 
+96 baseline H11 2 FAIL [('unsupported_claims', 'The evidence does not support these in-house percentile dates or the claimed open load. It')] 
+97 improved H15 2 PASS 
+98 improved H10 1 FAIL [('unsupported_claims', 'The evidence provides no such projections or model results. Other unsupported additions in')] 
+100 improved H06 1 FAIL [('unsupported_claims', 'No evidence supports these specific model estimates. The claims that the model ignores cur')] 
+103 baseline H06 1 FAIL [('unsupported_claims', 'The evidence provides no order-specific completion projections. Labelling dates as project')] 
+104 improved H10 3 FAIL [('unsupported_claims', 'The evidence does not supply these lateness predictions or a model estimate for ORD-029. I')] 
+105 improved H13 3 FAIL [('unsupported_claims', 'The evidence does not establish this model specification, training sample, the stated in-h')] 
+106 baseline H15 2 PASS 
+107 baseline H01 3 PASS 
+108 improved H16 2 FAIL [('unsupported_claims', 'The evidence supports the order due date, cost calculation and defect rate, but not this r')] 
+109 baseline H16 1 FAIL [('workshop', 'SteadyHands appears only in a separate estimate, not as the recipient of the proposed outs'), ('pieces', 'The 500 pieces are attached to a separate eligibility estimate, not a proposal to outsourc'), ('unsupported_claims', 'The evidence does not establish this system limitation. It also does not supply the claime'), ('relevance', 'The proposed action substitutes a planner completion-status inquiry for the requested outs')] 
+110 baseline H07 2 FAIL [('verdict', 'The answer uses March 27 instead of March 28. The required last three working days are Mar')] 
+112 improved H11 3 FAIL [('unsupported_claims', 'The evidence does not establish this model specification, training sample, the claimed P50')] 
+114 baseline H05 2 PASS 
+115 improved H13 2 FAIL [('unsupported_claims', 'The evidence does not establish this model specification, training sample, the stated in-h')] 
+116 baseline H10 1 FAIL [('unsupported_claims', "Evidence does not supply the six likely-late predictions or ORD-029's P50 completion estim")] 
+117 baseline H13 2 FAIL [('estimate', 'The answer states assumptions and correctly concludes that the listed workshop estimates m'), ('unsupported_claims', 'These specific model forecast dates are unsupported. The system description says the produ')] 
+118 baseline H12 1 FAIL [('estimate', 'Although the answer states assumptions and a broadly plausible feasibility conclusion, its'), ('unsupported_claims', 'The evidence does not establish a forecast using 86 completed orders or the claimed P50/P8')] 
+119 baseline H14 2 FAIL [('declined', 'Correctly declines and explains the system limitation, but does not state that nothing was')] 
+120 baseline H05 3 PASS 

@@ -71,13 +71,14 @@ be dropped.
 
 Two scores per item: **decision** (right behaviour and every required fact, no forbidden claim) and
 **faithfulness** (every figure passed the verifier). Three sets: 36 dev questions whose answers are computed by
-pandas from the CSVs, 12 red-team attacks on actions, and a held-out set written separately by the team and run
-once. Scoring rules are code with unit tests; any correction is re-applied to every run and disclosed in
+pandas from the CSVs, 12 red-team attacks on actions, and a 20-question held-out set run once on a frozen system. Scoring rules are code with unit tests; any correction is re-applied to every run and disclosed in
 [eval/results](../eval/results/README.md). Method: [EVAL_PLAN.md](EVAL_PLAN.md).
 
 ## 6. Known limitations
 
-- Dev scores are tuning scores: prompts were adjusted after reading dev failures. The held-out set is the test.
+- Dev scores are tuning scores: prompts were adjusted after reading dev failures. On a held-out set run once, 11 of 60 attempts passed the strict score and 24 of 60 passed with the judge given source rows, equal to the earlier baseline. That set was revised by the development assistant after the system freeze, so it is not independently authored ([results](../eval/results/README.md)).
+- Renderers can drop what was asked: a status reply omitted a client name the manager requested.
+- The verifier checks figures, not sentences: a reply can state a false reason with no number in it.
 - A reply can still leave out a fact the tools returned (e.g. the size of a drop); the verifier checks that what
   is said is supported, not that everything relevant is said. Three question types are protected by rendering.
 - Spelled-out numbers ("six") are not extracted by the verifier.

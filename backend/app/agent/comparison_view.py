@@ -46,6 +46,11 @@ def _verdict(r: dict[str, Any]) -> str:
     return f" Judged normal: {z}."
 
 
+def _judged_normal(r: dict[str, Any]) -> bool:
+    """The rule ran and found nothing unusual. A period, a flat baseline or missing data has no such finding."""
+    return r["tier"] == "normal" and r["direction"] == "within" and bool(r["robust_sigma"])
+
+
 def _single_comparison(results: list[tuple[str, dict[str, Any]]]) -> dict[str, Any] | None:
     """The one recorded comparison of this turn, or None if the turn did anything else."""
     if any(name not in SUPPORT_TOOLS for name, _ in results):
@@ -82,7 +87,8 @@ def apply(draft: RespondArgs, results: list[tuple[str, dict[str, Any]]], user_te
                      f"{r['window'][1]}: {_num(r['baseline_median'])} pieces/day.")
     if r["pct_vs_baseline"] is None:
         parts.append("Percentage change cannot be computed.")
-    parts.append(CAUSE_UNKNOWN)
+    if asks_cause or not _judged_normal(r):  # "cause unknown" only helps when there is something to explain
+        parts.append(CAUSE_UNKNOWN)
     verdict = _verdict(r) if NORMAL_QUESTION.search(user_text) else ""
     return RespondArgs(kind="refuse" if asks_cause else "answer", headline=head + verdict,
                        details=" ".join(parts), evidence_ids=[e["id"] for e in result.get("evidence", [])])

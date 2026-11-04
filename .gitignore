@@ -55,3 +55,9 @@ deploy/deploy.env
 # Human labels and private evaluation artifacts stay outside development.
 /eval/calibration/human_labels.jsonl
 /eval/calibration/private/
+
+# A held-out package or label workbook must never sit in the development checkout, even by accident.
+/questions_heldout*
+/heldout_freeze*
+/human_labels*
+deliverables/final/out/

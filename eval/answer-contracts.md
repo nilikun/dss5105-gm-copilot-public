@@ -68,6 +68,7 @@ required. The historical any-of acceptance of −44% or −48.6% is insufficient
 | Actual missing / incomplete window | Disclose missing observation/coverage; no invented output, no implicit missing-as-zero, no percentage for an incomplete requested window |
 | Actual zero, positive baseline | Report zero and −100% if the zero is observed; distinguish closed Sundays |
 | Stage or period ambiguous | Ask for clarification before attaching a percentage to a guessed scope |
+| Output judged normal, no cause asked | The cause sentence is not required: there is nothing to explain (changed 4 Nov 2026) |
 | Cause unavailable | Explicitly say the records do not establish it; do not guess staffing, breakdowns, or other causes, even with “probably” |
 | Cause supported in future data | Require separate causal evidence tied to this stage/window; correlation alone is insufficient |
 

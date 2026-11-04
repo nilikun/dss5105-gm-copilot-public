@@ -1,0 +1,98 @@
+{
+  "scope": "human calibration on public development answers",
+  "sample_count": 20,
+  "human_reviewers": [
+    "He Wenxin + IAO NGAN CHUN (adjudicated)"
+  ],
+  "agreement": 0.9928571428571429,
+  "confusion_counts": {
+    "human_True_judge_True": 123,
+    "human_False_judge_False": 16,
+    "human_True_judge_False": 1
+  },
+  "disagreements": [
+    {
+      "id": "C17",
+      "criterion_id": "clarity",
+      "human": true,
+      "judge": false,
+      "human_reason": "The response is readable and understandable, even if a factual detail is wrong."
+    }
+  ],
+  "hard_disagreements": [
+    {
+      "id": "C10",
+      "criterion_id": "stage",
+      "human": false,
+      "hard": true,
+      "resolution": {
+        "id": "C10",
+        "criterion_id": "stage",
+        "resolution": "The pattern does not bind the value to the order across sentences. The candidate still fails its identity check, so no false pass.",
+        "decided_by": "Claude; to be confirmed with the adjudication"
+      }
+    },
+    {
+      "id": "C10",
+      "criterion_id": "deadline",
+      "human": false,
+      "hard": true,
+      "resolution": {
+        "id": "C10",
+        "criterion_id": "deadline",
+        "resolution": "As for C10 stage: the candidate fails its identity check, so no false pass.",
+        "decided_by": "Claude; to be confirmed with the adjudication"
+      }
+    },
+    {
+      "id": "C10",
+      "criterion_id": "timing",
+      "human": false,
+      "hard": true,
+      "resolution": {
+        "id": "C10",
+        "criterion_id": "timing",
+        "resolution": "As for C10 stage: the candidate fails its identity check, so no false pass.",
+        "decided_by": "Claude; to be confirmed with the adjudication"
+      }
+    },
+    {
+      "id": "C17",
+      "criterion_id": "cause_disclosure",
+      "human": false,
+      "hard": true,
+      "resolution": {
+        "id": "C17",
+        "criterion_id": "cause_disclosure",
+        "resolution": "The cause sentence is present, so the pattern matches, while the answer also asserts a cause. The prohibited-claim check fails the candidate, so no false pass.",
+        "decided_by": "Claude; to be confirmed with the adjudication"
+      }
+    }
+  ],
+  "critical_false_passes": [],
+  "unresolved_hard_disagreements": [],
+  "accepted": true,
+  "acceptance_threshold": ">=0.90 criterion agreement; zero critical false passes; both labels present; no unresolved hard disagreements",
+  "packet_sha256": "215654a0d905ff1d3a08f5e484309792ca72039d9fa301cd31efe98306f414cd",
+  "labels_sha256": "58a6ca8fba09ead4f902065ba9ae3d60c46f2facc3b7170eb943ee2c941a2e8c",
+  "judgments_sha256": "c80d5c9097a15bd52b7b93d598399f2ff9acd0ecc376e240702167a77e43bf80",
+  "scoring_files_sha256": {
+    "eval/answer_contracts.py": "f7e74089b51ae673c540dcc3a7498db0de7e6445185d3b2a4e73de2ec6fb2089",
+    "eval/independent_scoring.py": "be3cc7038d03a87fc904639be4cb3e43408936d9a11243e1abf63c7b2d847c82",
+    "eval/judge.py": "1d623a09b3ac8863e6ee532f5723d1192104e278cbec155d50f84d62ddfcacbf",
+    "eval/frozen_protocol.py": "bf24dcc7fe82ec8b45d3e3161db68317167c8cecbeb7cf87731b51b8f698d53f",
+    "eval/calibrate.py": "fe292a0090b783c5976867cd9cfd63e9e124528118ca01aaf6a7563c13f585dd",
+    "eval/frozen_worker.py": "b25b847420ce6c9d360a0e75c620432e1150fd5334de2829342901d126d44f32",
+    "eval/run_frozen.py": "75b877378e9b59b84cb3f8cc50feb64322686df2bac94643da09f7bdb8ac4e62",
+    "eval/protocol/judge_prompt.md": "95f7047f84fce11f348efa46a7076146f4940ab16c8a46d2cb1b2565ed8877f8",
+    "eval/protocol/rubric.md": "4c613258db3ef19705b17fd4ab240540b51b10d906ec9fdfab02d548af34c01c"
+  },
+  "judge_settings": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "low",
+    "max_output_tokens": 4000,
+    "timeout_seconds": 60,
+    "max_retries": 0
+  },
+  "completed_utc": "2026-11-04T09:07:35.141356+00:00"
+}

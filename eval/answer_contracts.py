@@ -221,7 +221,7 @@ def check_production(ref: dict, text: str, kind: str) -> list[str]:
     cause_parts = [part for part in parts if re.search(
         r"\b(?:cause\w*|because|why|due to|result of|driven by|explains?|shortage|breakdown|"
         r"absen\w*|staff\w*|machine\w*|equipment|maintenance|supplier\w*)\b", part)]
-    if not any(part in unknown_forms for part in cause_parts):
+    if ref.get("cause_required", True) and not any(part in unknown_forms for part in cause_parts):
         errors.append("cause_disclosure")
     if any(part not in unknown_forms for part in cause_parts):
         errors.append("unsupported_cause")

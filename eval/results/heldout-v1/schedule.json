@@ -1,0 +1,602 @@
+[
+  {
+    "id": "H07",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H02",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H05",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H15",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H18",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H01",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H13",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H17",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H12",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H07",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H02",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H03",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H05",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H19",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H18",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H15",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H15",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H14",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H08",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H17",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H20",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H09",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H14",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H13",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H08",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H04",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H18",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H16",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H02",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H10",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H20",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H03",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H03",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H11",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H11",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H17",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H10",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H01",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H17",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H07",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H05",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H20",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H17",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H16",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H19",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H09",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H06",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H06",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H02",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H06",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H12",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H04",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H16",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H11",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H05",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H19",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H20",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H06",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H15",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H16",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H19",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H14",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H04",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H01",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H01",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H11",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H03",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H18",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H01",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H09",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H07",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H17",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H02",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H09",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H18",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H18",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H09",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H08",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H12",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H08",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H20",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H04",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H09",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H07",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H12",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H20",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H03",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H10",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H04",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H13",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H19",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H14",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H12",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H02",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H08",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H11",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H15",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H10",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H08",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H06",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H19",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H14",
+    "repeat": 1,
+    "version": "improved"
+  },
+  {
+    "id": "H06",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H10",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H13",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H15",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H01",
+    "repeat": 3,
+    "version": "baseline"
+  },
+  {
+    "id": "H16",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H16",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H07",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H04",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H11",
+    "repeat": 3,
+    "version": "improved"
+  },
+  {
+    "id": "H03",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H05",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H13",
+    "repeat": 2,
+    "version": "improved"
+  },
+  {
+    "id": "H10",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H13",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H12",
+    "repeat": 1,
+    "version": "baseline"
+  },
+  {
+    "id": "H14",
+    "repeat": 2,
+    "version": "baseline"
+  },
+  {
+    "id": "H05",
+    "repeat": 3,
+    "version": "baseline"
+  }
+]

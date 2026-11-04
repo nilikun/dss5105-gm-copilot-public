@@ -94,6 +94,22 @@ def test_verdict_only_when_the_question_asks_for_one():
     assert "455 pieces" in r.headline and "z =" not in r.headline and "Judged" not in r.headline
 
 
+@pytest.mark.parametrize("question,day,stated", [
+    ("Compare packing output on 2026-03-25 with its baseline.", "2026-03-25", False),     # judged normal
+    ("Why was packing output different on 2026-03-25?", "2026-03-25", True),              # the question asks
+])
+def test_the_cause_sentence_answers_a_question_or_an_abnormal_day(question, day, stated):
+    llm = ScriptedLLM([[("compare_to_normal", {"stage": "PACKING", "on_date": day})],
+                       [("respond", {"kind": "answer", "headline": "Close to normal."})]])
+    r = Agent(connect(), SimClock.at(CLOCK), llm).run(question)
+    assert ("The cause is unknown from these data." in r.details) is stated
+
+
+def test_an_abnormal_day_keeps_the_cause_sentence():
+    reply, _ = ask("P02")
+    assert "The cause is unknown from these data." in reply.details
+
+
 def test_a_refusal_because_data_is_missing_still_gets_the_known_facts():
     db = connect()
     db.execute("DELETE FROM production_log WHERE stage = 'ASSEMBLY' AND date = '2026-03-27'")

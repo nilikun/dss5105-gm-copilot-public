@@ -6,11 +6,25 @@ is kept as `summary.original.json`. Earlier debugging runs (`…-0228-…`, `…
 they were, scored by the scorer of their time.
 
 > **Dev numbers are tuning numbers.** Prompts v4–v6 were changed after looking at dev failures, so the dev score
-> overstates what an unseen question gets. The held-out set (written by the team, frozen before the run, run once)
-> is the number we stand behind.
+> overstates what an unseen question gets. See the held-out result directly below.
 
 Model `gpt-5.6-luna`, reasoning effort low, 3 parallel workers, fresh in-memory database per item, clock
 2026-04-01 07:00. Cost is the OpenAI list price.
+
+## Held-out run (4 Nov; `heldout-v1/`, frozen `3091c94` against baseline `36a44c7`)
+
+Run once: 20 questions, 3 repetitions, 2 versions, 120 attempts, no errors. **The set is not independently authored.** The team's draft could not be run (none of its order IDs exist in the data), so Claude revised it after tag `system-freeze-v1`, with entities drawn by seed and references computed from the CSVs. `received-package.sha256` identifies the original.
+
+| Score | Baseline | Frozen | Paired difference, 95% CI |
+|---|---|---|---|
+| Strict, fixed before the run | 4/60 | **11/60** | +11.7 points, +1.7 to +25.0 |
+| Judge given source rows, **post hoc** (`rescored.jsonl`) | 24/60 | **24/60** | 0, −13.3 to +10.0 |
+
+Verified replies 120/120; no action executed without confirmation; p50 10.1 s and 8.8 s. Most strict failures are the judge rejecting true statements its thin reference package did not cover, which was the reviser's error; the frozen package was not edited. Real regressions in the frozen system: H01 (client name dropped, 3/3) and H09 (a different comparison reported, 3/3). The rubric's review by a person who did not build the system was not done.
+
+## Model comparison (4 Nov; development set, one run each, commit `a180488`)
+
+`gpt-5.1` 35/36 (p50 7.9 s), `gpt-5-mini` 36/36 (p50 10.5 s, 3 verifier repairs), against `gpt-5.6-luna` 36/36 (p50 6.3 s). Prompts were tuned on `gpt-5.6-luna`. Their `$ / item` figures use that model's rates, so they are not costs.
 
 ## Current build (1 Nov; commit `3600933`, system prompt v10, critic off)
 

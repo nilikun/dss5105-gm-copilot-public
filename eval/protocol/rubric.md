@@ -25,6 +25,9 @@ receives the question, independent reference evidence and candidate answer, and 
 boolean decisions, exact short supporting excerpts and reasons. Empty excerpts are allowed for omissions.
 Invalid output, missing criteria or fabricated quotations are unscored, never an automatic pass.
 Unknown cause must coexist with available observed production magnitude. Unsupported assertions fail.
+Each criterion is scored on its own: a wrong required fact fails that fact, not unsupported_claims, relevance or clarity
+as well. This wording was added after the first calibration run (`eval/calibration/results-v1`), where the judge and
+the reviewers read those criteria differently.
 
 Final pass requires **every hard fact, expected behavior, absence of prohibited claims, and every judge
 criterion** to pass. A favourable judge cannot override a failed deadline, percentage, sign or window

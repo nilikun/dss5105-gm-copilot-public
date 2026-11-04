@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "status": "frozen",
+  "author": "CAI Ruixin (original draft); revised by Claude after the system freeze",
+  "checker": "None. References are computed by build_package.py; no person has checked this revision.",
+  "authored_before_outputs": true,
+  "exposure_declaration": "The first package (sha256 ab942d01...) could not be run: its order IDs, customers and workshops are not in the data. Claude, the development assistant, read it and wrote this revision after tag system-freeze-v1, keeping categories and intent, with entities drawn by a fixed seed. The system could not be tuned to it. The reviser knows the system, so this set is not independently authored.",
+  "frozen_at_with_timezone": "2026-11-04T17:48:46+08:00",
+  "custodian": "NI Likun (project lead)",
+  "private_package_location": "Outside the development checkout, on the operator's machine",
+  "questions_and_references": {
+    "filename": "heldout.yaml",
+    "sha256": "f4b6f16c7814fa1970e1d43c012d6c6cebe30acb085befecf7fc9b7b6860f749",
+    "schema_version": 2,
+    "item_count": 20,
+    "category_counts": {
+      "lookup": 3,
+      "aggregation": 2,
+      "judgement": 2,
+      "tracing": 2,
+      "discovery": 1,
+      "feasibility": 3,
+      "action": 3,
+      "ambiguous": 2,
+      "unanswerable": 2
+    }
+  },
+  "independent_calculations": [
+    {
+      "filename": "build_package.py",
+      "sha256": "f1a98f489eb0c3691fdda8d76d9d82a07c54d940df3f5edf3b1d35504ed191b9",
+      "method": "pandas over the CSVs, no agent imports",
+      "checked_by": "No person. Claude wrote it after the system freeze."
+    },
+    {
+      "filename": "reference-verification.json",
+      "sha256": "025ad616a46f19721b803cc378d7d68bd5d67f6454acca2748d21d5ec0d7441e",
+      "method": "eval/verify_references.py recomputed stated values: {'recomputed': 16, 'not_recomputed': 19}",
+      "checked_by": "Script, separate from the one that wrote the references"
+    }
+  ],
+  "data": {
+    "snapshot_sha256": "7c88b2da5a8b3401dd53be4b5c3d948bc32a5dfd502592c16c261234db0cc2da",
+    "files": [
+      {
+        "path": "data/orders.csv",
+        "sha256": "ed533a5142704a5de3592b0931f7314f0f631ddec5032b0402312b00af005c59"
+      },
+      {
+        "path": "data/production_log.csv",
+        "sha256": "e19e93a896911ce6abf325636aed492b68465354117296dfd629955307c41878"
+      },
+      {
+        "path": "data/workshops.csv",
+        "sha256": "a3c846ad29b41bac216dc8681a70f51c07995cd7521a6d7faa4aa6d2b6afa637"
+      }
+    ]
+  },
+  "clock": {
+    "simulated_now": "2026-04-01T07:00:00",
+    "convention": "timezone-naive factory simulation"
+  },
+  "versions": {
+    "baseline_commit": "36a44c7e4965154f78853526333b8219c54ad1ad",
+    "improved_commit": "3091c9407001080094e57d7cdff79c28a0f30d01",
+    "scorer_commit": "3091c9407001080094e57d7cdff79c28a0f30d01",
+    "rubric_sha256": "4c613258db3ef19705b17fd4ab240540b51b10d906ec9fdfab02d548af34c01c",
+    "scoring_files_sha256": {
+      "eval/answer_contracts.py": "19149afc66c930a4490f273d250e0158b74db3030d94142997b9ed018f1abc1f",
+      "eval/independent_scoring.py": "9c1e656c8bf4b278b2529815c9af1438bd17f0017107d76bd082e909fd291551",
+      "eval/judge.py": "1d623a09b3ac8863e6ee532f5723d1192104e278cbec155d50f84d62ddfcacbf",
+      "eval/frozen_protocol.py": "bf24dcc7fe82ec8b45d3e3161db68317167c8cecbeb7cf87731b51b8f698d53f",
+      "eval/calibrate.py": "fe292a0090b783c5976867cd9cfd63e9e124528118ca01aaf6a7563c13f585dd",
+      "eval/frozen_worker.py": "b25b847420ce6c9d360a0e75c620432e1150fd5334de2829342901d126d44f32",
+      "eval/run_frozen.py": "75b877378e9b59b84cb3f8cc50feb64322686df2bac94643da09f7bdb8ac4e62",
+      "eval/protocol/judge_prompt.md": "95f7047f84fce11f348efa46a7076146f4940ab16c8a46d2cb1b2565ed8877f8",
+      "eval/protocol/rubric.md": "4c613258db3ef19705b17fd4ab240540b51b10d906ec9fdfab02d548af34c01c"
+    },
+    "baseline_prompts_sha256": {
+      "briefing_narrate.md": "ea6a9ccc64ebf0112550c5d6da1d0fbc328412e928de4f1ae12d4daa936a1706",
+      "critic.md": "940dffbccfb5628aef72e17f9937ff8f8b0ebd4e02da423464ac519da334a401",
+      "repair.md": "5f95473bd61b2b3f09dfb4552a6620754b92860ec2578f03afdc77fb9edec914",
+      "respond_tool.md": "4f4ed8fca27650187174392112fd7ecc84d0453c4f10f2c53c6a8599814fcd33",
+      "system.md": "8ab0da4e72f8968b9b56cea604ced95f10be6d616887149210e748e67a58c15d"
+    },
+    "improved_prompts_sha256": {
+      "briefing_narrate.md": "ea6a9ccc64ebf0112550c5d6da1d0fbc328412e928de4f1ae12d4daa936a1706",
+      "critic.md": "940dffbccfb5628aef72e17f9937ff8f8b0ebd4e02da423464ac519da334a401",
+      "repair.md": "5f95473bd61b2b3f09dfb4552a6620754b92860ec2578f03afdc77fb9edec914",
+      "respond_tool.md": "4e1a62ba5f4b6ddc91f4e89ee0ad4e96f7090424e1f08bed32ce8ab0727cdca8",
+      "system.md": "730fe6e9ad8f6131fc862d4e7f3a34d663672ea26c61b5e41eda834d10f73805"
+    },
+    "dependency_lock_sha256": "42a1efed39f8d8725aed29b449130be7534e3d7bc536f0518c6e2cde14e71341",
+    "python_version": "3.11.9",
+    "sdk_versions": {
+      "openai": "3.31.0",
+      "pydantic": "2.13.5",
+      "pandas": "3.0.6",
+      "PyYAML": "6.0.3"
+    },
+    "baseline_dirty": false,
+    "improved_dirty": false
+  },
+  "agent_settings": {
+    "provider": "OpenAI Responses",
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "low",
+    "temperature_or_omitted": "omitted",
+    "seed_or_unsupported": "unsupported",
+    "max_output_tokens": 4000,
+    "critic_enabled": false,
+    "max_tool_steps": 6,
+    "repair_limit": 1
+  },
+  "judge_settings": {
+    "provider": "OpenAI Responses",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "low",
+    "temperature_or_omitted": "omitted",
+    "max_output_tokens": 4000,
+    "prompt_sha256": "95f7047f84fce11f348efa46a7076146f4940ab16c8a46d2cb1b2565ed8877f8",
+    "rubric_sha256": "4c613258db3ef19705b17fd4ab240540b51b10d906ec9fdfab02d548af34c01c",
+    "timeout_seconds": 60,
+    "max_retries": 0
+  },
+  "calibration": {
+    "development_labels_sha256": "0b5d89a45d3b14fba7e2902cc36e5c65b5d2d682d20c169a51f0f5724db0611a",
+    "reviewers": [
+      "IAO NGAN CHUN"
+    ],
+    "agreement": 0.9928571428571429,
+    "confusion_counts": {
+      "human_True_judge_True": 123,
+      "human_False_judge_False": 16,
+      "human_True_judge_False": 1
+    },
+    "disagreement_log_sha256": "3a8d9bef06a44a52a291fce5da6dce6554466884fca0cc602b6a30374db8aa72",
+    "acceptance_threshold": ">=0.90 criterion agreement; zero critical false passes; both labels present; no unresolved hard disagreements",
+    "accepted_before_release": true,
+    "report": {
+      "filename": "calibration-report.json",
+      "sha256": "f3d62c36ebcb78132455a63a1ae14d4efd756e871518bc66678a8558ce36d69a"
+    }
+  },
+  "execution": {
+    "repetitions_per_item_per_version": 3,
+    "order": "seeded shuffle of item/repeat/version",
+    "randomization_seed": 5105,
+    "concurrency": 1,
+    "fresh_database_per_item": true,
+    "reset_clock_per_item": true,
+    "context_policy": "replay prior user turns; generate each version own replies",
+    "timeout_seconds": 180,
+    "retry_policy": "no automatic retries; retain every attempt",
+    "budget_usd": 8,
+    "on_budget_exhaustion": "stop; retain planned denominator",
+    "max_api_calls_per_attempt": 30
+  },
+  "reporting": {
+    "metrics": [
+      "correctness",
+      "completeness",
+      "unsupported_claims",
+      "appropriate_clarification_refusal",
+      "behavior",
+      "latency_p50_p90",
+      "actual_api_usage"
+    ],
+    "metric_definitions_sha256": "4c613258db3ef19705b17fd4ab240540b51b10d906ec9fdfab02d548af34c01c",
+    "all_attempts_preserved": true,
+    "error_and_exclusion_policy": "retain all attempts; append adjudications separately",
+    "human_review_sampling_plan": "review every failed/unscored answer and a frozen random sample of passes",
+    "uncertainty_method": "paired bootstrap over question IDs, 2000 draws, seed 5105",
+    "usage_fields": [
+      "input_tokens",
+      "cached_input_tokens",
+      "output_tokens",
+      "reasoning_tokens_when_available"
+    ],
+    "usage_includes": [
+      "context",
+      "retries",
+      "agent",
+      "critic_if_enabled",
+      "judge"
+    ],
+    "pricing_source_and_date": null,
+    "missing_usage_policy": "report unavailable; never assume zero"
+  },
+  "release": {
+    "scorer_and_settings_frozen_before_question_release": true,
+    "operator": "Claude, for NI Likun",
+    "released_at": "2026-11-04T17:48:47+08:00"
+  },
+  "pricing": {
+    "source_and_date": "Agent: backend/app/config.py list rates. Judge: planning assumption from PR #3, not checked against a bill. 4 Nov 2026.",
+    "agent": {
+      "input_per_million": 0.2,
+      "cached_input_per_million": 0.02,
+      "output_per_million": 1.2
+    },
+    "judge": {
+      "input_per_million": 10,
+      "cached_input_per_million": 10,
+      "output_per_million": 50
+    }
+  }
+}

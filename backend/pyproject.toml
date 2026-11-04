@@ -23,6 +23,7 @@ dev = [
 ]
 
 [tool.ruff]
+extend-exclude = ["**/results/heldout-v1/*"]  # a frozen record: its hash is in the manifest
 line-length = 120
 target-version = "py311"
 

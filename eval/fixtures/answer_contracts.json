@@ -1288,7 +1288,8 @@
         "pct_change": 4.631217838765012,
         "cause": "unknown",
         "expected_kind": "answer",
-        "pct_tolerance_pp": 0.05
+        "pct_tolerance_pp": 0.05,
+        "cause_required": false
       },
       "accepted": [
         {
@@ -1298,6 +1299,10 @@
         {
           "kind": "answer",
           "text": "Knitting produced 915 pieces on March 25, 2026, a increase of 4.6% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 874.5 pieces/day. These records do not explain why."
+        },
+        {
+          "kind": "answer",
+          "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day."
         }
       ],
       "rejected": [
@@ -1348,14 +1353,6 @@
             "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
           },
           "must_fail": "unsupported_cause"
-        },
-        {
-          "label": "cause qualification missing",
-          "answer": {
-            "kind": "answer",
-            "text": "Knitting output was 915 pieces on 2026-03-25, 4.6% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 874.5 pieces/day. "
-          },
-          "must_fail": "cause_disclosure"
         },
         {
           "label": "missing percentage",
@@ -1412,7 +1409,8 @@
         "pct_change": 11.871508379888262,
         "cause": "unknown",
         "expected_kind": "answer",
-        "pct_tolerance_pp": 0.05
+        "pct_tolerance_pp": 0.05,
+        "cause_required": false
       },
       "accepted": [
         {
@@ -1422,6 +1420,10 @@
         {
           "kind": "answer",
           "text": "Washing produced 801 pieces on March 25, 2026, a increase of 11.9% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 716 pieces/day. These records do not explain why."
+        },
+        {
+          "kind": "answer",
+          "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day."
         }
       ],
       "rejected": [
@@ -1472,14 +1474,6 @@
             "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
           },
           "must_fail": "unsupported_cause"
-        },
-        {
-          "label": "cause qualification missing",
-          "answer": {
-            "kind": "answer",
-            "text": "Washing output was 801 pieces on 2026-03-25, 11.9% above baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 716 pieces/day. "
-          },
-          "must_fail": "cause_disclosure"
         },
         {
           "label": "missing percentage",
@@ -1536,7 +1530,8 @@
         "pct_change": -2.3014105419450592,
         "cause": "unknown",
         "expected_kind": "answer",
-        "pct_tolerance_pp": 0.05
+        "pct_tolerance_pp": 0.05,
+        "cause_required": false
       },
       "accepted": [
         {
@@ -1546,6 +1541,10 @@
         {
           "kind": "answer",
           "text": "Packing produced 658 pieces on March 25, 2026, a decrease of 2.3% relative to baseline. The baseline was the median of 20 working days from March 2, 2026 to March 24, 2026: 673.5 pieces/day. These records do not explain why."
+        },
+        {
+          "kind": "answer",
+          "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day."
         }
       ],
       "rejected": [
@@ -1596,14 +1595,6 @@
             "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. The cause is unknown from these data. The drop was probably due to staffing shortages."
           },
           "must_fail": "unsupported_cause"
-        },
-        {
-          "label": "cause qualification missing",
-          "answer": {
-            "kind": "answer",
-            "text": "Packing output was 658 pieces on 2026-03-25, 2.3% below baseline. The baseline was the median of 20 working days from 2026-03-02 to 2026-03-24: 673.5 pieces/day. "
-          },
-          "must_fail": "cause_disclosure"
         },
         {
           "label": "missing percentage",

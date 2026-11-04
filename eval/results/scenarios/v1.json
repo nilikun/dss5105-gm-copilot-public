@@ -1,0 +1,208 @@
+{
+  "commit": "19a7dd6",
+  "days_simulated": 14,
+  "watch_cases": [
+    {
+      "case": "Stuck order: fires on the stated date, once",
+      "pass": true,
+      "expected": [
+        "2026-04-03"
+      ],
+      "observed": [
+        "2026-04-03"
+      ]
+    },
+    {
+      "case": "Moving order (ORD-008): stays silent",
+      "pass": true,
+      "expected": [],
+      "observed": []
+    },
+    {
+      "case": "Order not complete by the date: fires then, once",
+      "pass": true,
+      "expected": [
+        "2026-04-04"
+      ],
+      "observed": [
+        "2026-04-04"
+      ]
+    },
+    {
+      "case": "packing_drop: PACKING watch fires once per low day, on the morning its data arrives",
+      "pass": true,
+      "expected": [
+        "2026-04-03",
+        "2026-04-04",
+        "2026-04-05",
+        "2026-04-08",
+        "2026-04-12"
+      ],
+      "observed": [
+        "2026-04-03",
+        "2026-04-04",
+        "2026-04-05",
+        "2026-04-08",
+        "2026-04-12"
+      ]
+    },
+    {
+      "case": "baseline: ASSEMBLY watch fires once per low day, on the morning its data arrives",
+      "pass": true,
+      "expected": [
+        "2026-04-02",
+        "2026-04-03"
+      ],
+      "observed": [
+        "2026-04-02",
+        "2026-04-03"
+      ]
+    },
+    {
+      "case": "assembly_recovers: ASSEMBLY watch fires once per low day, on the morning its data arrives",
+      "pass": true,
+      "expected": [
+        "2026-04-02",
+        "2026-04-03"
+      ],
+      "observed": [
+        "2026-04-02",
+        "2026-04-03"
+      ]
+    },
+    {
+      "case": "Timed reminder: not before its time, then once",
+      "pass": true,
+      "expected": {
+        "before": [],
+        "after": [
+          "2026-04-02"
+        ]
+      },
+      "observed": {
+        "before": [],
+        "after": [
+          "2026-04-02"
+        ]
+      }
+    },
+    {
+      "case": "Reminder 'if PACKING is still behind' in packing_drop: fires",
+      "pass": true,
+      "expected": true,
+      "observed": [
+        "2026-04-03"
+      ]
+    },
+    {
+      "case": "Reminder 'if PACKING is still behind' in baseline: stays silent",
+      "pass": true,
+      "expected": false,
+      "observed": []
+    },
+    {
+      "case": "Watch on a completed order (ORD-058): refused at the proposal",
+      "pass": true,
+      "expected": {
+        "ok": false,
+        "watches": 0
+      },
+      "observed": {
+        "ok": false,
+        "watches": 0
+      }
+    },
+    {
+      "case": "Proposed but not confirmed: never fires",
+      "pass": true,
+      "expected": 0,
+      "observed": 0
+    },
+    {
+      "case": "Cancelled before its date: never fires",
+      "pass": true,
+      "expected": [],
+      "observed": []
+    },
+    {
+      "case": "Rewind then replay: a watch set 'in the future' does not fire again",
+      "pass": true,
+      "expected": {
+        "watch_after_rewind": 0,
+        "alerts_after_replay": 0
+      },
+      "observed": {
+        "watch_after_rewind": 0,
+        "alerts_after_replay": 0
+      }
+    }
+  ],
+  "watch_cases_passed": "13/13",
+  "alert_load": [
+    {
+      "scenario": "baseline",
+      "days": 14,
+      "interrupts": 6,
+      "to_the_briefing": 5,
+      "days_interrupted": 6,
+      "most_interrupts_in_one_day": 1
+    },
+    {
+      "scenario": "assembly_recovers",
+      "days": 14,
+      "interrupts": 6,
+      "to_the_briefing": 9,
+      "days_interrupted": 6,
+      "most_interrupts_in_one_day": 1
+    },
+    {
+      "scenario": "packing_drop",
+      "days": 14,
+      "interrupts": 7,
+      "to_the_briefing": 14,
+      "days_interrupted": 7,
+      "most_interrupts_in_one_day": 1
+    },
+    {
+      "scenario": "trendcart_reorder",
+      "days": 14,
+      "interrupts": 8,
+      "to_the_briefing": 11,
+      "days_interrupted": 7,
+      "most_interrupts_in_one_day": 2
+    }
+  ],
+  "briefing_day_0": {
+    "found": {
+      "ASSEMBLY output drop": true,
+      "Overdue orders, worst first (ORD-107)": true,
+      "Due today and likely late (ORD-029)": true,
+      "Customer slipping (TrendCart)": true,
+      "Orders gone quiet (ORD-002, ORD-005)": true
+    },
+    "recall": "5/5",
+    "items_on_the_page": 5,
+    "items_tied_to_a_planted_signal": 5,
+    "suppressed": 4
+  },
+  "briefing_scenarios": [
+    {
+      "case": "PACKING drop reported the next morning",
+      "scenario": "packing_drop",
+      "briefing_date": "2026-04-02",
+      "pass": true
+    },
+    {
+      "case": "New TrendCart reorder (ORD-121) among the risks",
+      "scenario": "trendcart_reorder",
+      "briefing_date": "2026-04-04",
+      "pass": true
+    },
+    {
+      "case": "ASSEMBLY drop no longer reported after recovery",
+      "scenario": "assembly_recovers",
+      "briefing_date": "2026-04-07",
+      "pass": true
+    }
+  ]
+}

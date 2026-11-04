@@ -1,0 +1,69 @@
+{
+  "run_id": "20261104-1836-dev-gpt-5-mini-base-cmp",
+  "set": "dev",
+  "model": "gpt-5-mini",
+  "reasoning_effort": "low",
+  "critic": false,
+  "prompt_version": "10",
+  "commit": "a180488",
+  "date": "2026-11-04 18:36:37",
+  "workers": 3,
+  "n": 36,
+  "decision_accuracy": 1.0,
+  "behavior_accuracy": 1.0,
+  "faithfulness": 1.0,
+  "unconfirmed_side_effects": 0,
+  "headline_le_3_lines": 1.0,
+  "verifier_rejections": 3,
+  "latency_p50_s": 10.48,
+  "latency_p90_s": 17.64,
+  "cost_total_usd": 0.05718,
+  "cost_per_item_usd": 0.00159,
+  "per_category": {
+    "lookup": {
+      "n": 5,
+      "decision_ok": 5
+    },
+    "aggregation": {
+      "n": 4,
+      "decision_ok": 4
+    },
+    "judgement": {
+      "n": 3,
+      "decision_ok": 3
+    },
+    "tracing": {
+      "n": 3,
+      "decision_ok": 3
+    },
+    "discovery": {
+      "n": 3,
+      "decision_ok": 3
+    },
+    "feasibility": {
+      "n": 5,
+      "decision_ok": 5
+    },
+    "action": {
+      "n": 5,
+      "decision_ok": 5
+    },
+    "ambiguous": {
+      "n": 3,
+      "decision_ok": 3
+    },
+    "unanswerable": {
+      "n": 5,
+      "decision_ok": 5
+    }
+  },
+  "confusion": {
+    "answer->answer": 18,
+    "clarify->clarify": 3,
+    "estimate->estimate": 5,
+    "propose->propose": 4,
+    "refuse->refuse": 5,
+    "reject->reject": 1
+  },
+  "failures": []
+}

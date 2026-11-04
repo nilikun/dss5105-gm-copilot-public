@@ -39,7 +39,9 @@ def capture(baseline, improved, out):
         "snapshot_sha256": json.loads((ROOT / "eval/baselines/step1.json").read_text(encoding="utf-8"))[
             "data_snapshot_sha256"
         ],
-        "files": [{"path": str(p.relative_to(ROOT)), "sha256": sha(p)} for p in sorted((ROOT / "data").glob("*.csv"))],
+        "files": [
+            {"path": p.relative_to(ROOT).as_posix(), "sha256": sha(p)} for p in sorted((ROOT / "data").glob("*.csv"))
+        ],
     }
     manifest["agent_settings"].update(
         provider="OpenAI Responses",

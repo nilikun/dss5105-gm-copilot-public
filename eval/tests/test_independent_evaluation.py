@@ -369,3 +369,101 @@ def test_invalid_criterion_set_is_unscored_not_no_unsupported_claims():
     hard = hard_score(production_item(), GOOD, "2026-04-01")
     result = combine(hard, {"valid": True, "decisions": [{"criterion_id": "unsupported_claims", "pass": True}]})
     assert not result["pass"] and result["judge_status"] == "unscored" and result["unsupported_claims"] is None
+
+
+# ---------------------------------------------------------------- facts checked by rule, or by the judge alone
+
+
+def _fact(**kw):
+    return {"criterion_id": "c", "subject": "s", "field": "f", "unit": "", "calculation": "x", **kw}
+
+
+def _item(fact, answer):
+    return {"id": "P", "category": "lookup", "expected_behavior": "answer", "reference_answer": answer,
+            "required_facts": [fact]}
+
+
+def test_prepare_uses_literal_checks_only_where_a_rule_allows():
+    from prepare_heldout import convert_fact
+
+    answer = "ORD-999 is due on 2026-05-10; 1200 pieces, on time."
+    assert convert_fact(_fact(expected_value=1200, tolerance=0), answer)[1] == "number"
+    assert convert_fact(_fact(expected_value="2026-05-10", tolerance=0), answer)[1] == "date"
+    assert convert_fact(_fact(expected_value="ORD-999", tolerance=0), answer)[1] == "token"
+    for expected in (True, "on time, with margin", "ORD-123", -25.0):  # yes/no, a phrase, absent, a signed number
+        fact, how = convert_fact(_fact(expected_value=expected, tolerance=0), answer)
+        assert how == "judge" and "pattern" not in fact and fact["value_type"] == "judge"
+    assert convert_fact(_fact(expected_value=12.5, tolerance=0.5), answer)[1] == "judge"
+
+
+def test_a_literal_number_is_not_found_inside_another_number():
+    from prepare_heldout import convert_fact
+
+    fact, _ = convert_fact(_fact(expected_value=120, tolerance=0), "120")
+    item = _item(fact, "120")
+    for text, ok in (("120 pieces", True), ("120.0 pieces", True), ("1,200 pieces", False), ("1120 pieces", False),
+                     ("120.5 pieces", False), ("Total: 120.", True)):
+        assert hard_score(item, {"kind": "answer", "text": text}, "2026-04-01")["pass"] is ok, text
+
+
+def test_prepare_never_prints_or_needs_the_content_and_fixes_feasibility_behavior(capsys, tmp_path):
+    import prepare_heldout
+
+    secret = "SECRETWORD"
+    item = _item(_fact(expected_value=f"{secret} phrase", tolerance=0), f"{secret} 1")
+    item.update(category="feasibility", question=f"{secret}?")
+    path = tmp_path / "authored.yaml"
+    path.write_text(yaml.safe_dump({"version": 2, "as_of": "2026-04-01T07:00:00", "items": [item]}), encoding="utf-8")
+    argv = sys.argv
+    sys.argv = ["prepare_heldout.py", "--input", str(path), "--check-only"]
+    try:
+        prepare_heldout.main()
+    finally:
+        sys.argv = argv
+    out = capsys.readouterr().out
+    assert secret not in out and "feasibility_behavior_set_to_estimate" in out and "['P']" in out
+
+
+def test_judge_only_fact_needs_the_judge_to_pass_and_counts_as_absent_otherwise():
+    fact = _fact(expected_value="a reason", value_type="judge", tolerance=0)
+    item = _item(fact, "x")
+    hard = hard_score(item, {"kind": "answer", "text": "anything"}, "2026-04-01")
+    assert hard["pass"]  # the scorer cannot veto it, so the decision is the judge's alone
+
+    def verdict(ok):
+        return {"valid": True, "decisions": [{"criterion_id": c, "pass": ok or c != "c", "excerpt": "", "reason": "r"}
+                                             for c in ("c", *SEMANTIC)]}
+
+    good, bad = combine(hard, verdict(True)), combine(hard, verdict(False))
+    assert good["pass"] and good["correctness"] and good["completeness"] == 1
+    assert not bad["pass"] and not bad["correctness"] and bad["completeness"] == 0
+    missing = combine(hard, None)
+    assert not missing["pass"] and not missing["correctness"] and missing["judge_status"] == "unscored"
+
+
+def test_merging_reviewers_needs_a_record_for_every_disagreement():
+    from import_labels import merge
+
+    def row(who, ok):
+        return [{"id": "C1", "reviewer": who, "reviewed_at": "2026-11-02T00:00:00", "decisions": [
+            {"criterion_id": "a", "pass": True, "excerpt": "", "reason": "same"},
+            {"criterion_id": "b", "pass": ok, "excerpt": "", "reason": who}]}]
+
+    with pytest.raises(ValueError, match="no adjudication"):
+        merge(row("X", True), row("Y", False), {"decisions": []})
+    done = merge(row("X", True), row("Y", False),
+                 {"decisions": [{"id": "C1", "criterion_id": "b", "pass": False, "rule": "the rule"}]})
+    decisions = {d["criterion_id"]: d for d in done[0]["decisions"]}
+    assert decisions["a"]["pass"] is True and decisions["b"]["pass"] is False
+    assert "the rule" in decisions["b"]["reason"] and done[0]["reviewer"] == "X + Y (adjudicated)"
+
+
+def test_a_literal_decimal_allows_trailing_zeros_only_and_text_tolerance_is_read():
+    from prepare_heldout import convert_fact
+
+    fact, how = convert_fact(_fact(expected_value=12.5, tolerance="exact"), "12.50")
+    assert how == "number" and fact["tolerance"] == 0
+    item = _item(fact, "12.50")
+    for text, ok in (("12.5 each", True), ("12.50 each", True), ("12.55 each", False), ("112.5 each", False)):
+        assert hard_score(item, {"kind": "answer", "text": text}, "2026-04-01")["pass"] is ok, text
+    assert convert_fact(_fact(expected_value=12.5, tolerance="+/- 0.5 pieces"), "12.5")[1] == "judge"

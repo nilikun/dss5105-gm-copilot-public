@@ -1,0 +1,16 @@
+{
+  "status": "Applied from the written rule by Claude and approved by the project team on 4 Nov 2026. No reviewer re-examined these items. The calibration's primary label set is IAO NGAN CHUN's own, which already follows the rule; He Wenxin's is reported beside it.",
+  "rule_source": "eval/protocol/judge_prompt.md: 'A correct number attached to the wrong order/date/period is wrong.'",
+  "decisions": [
+    {"id": "C10", "criterion_id": "stage", "pass": false, "rule": "The stated stage is attached to ORD-999, not ORD-107."},
+    {"id": "C10", "criterion_id": "deadline", "pass": false, "rule": "The stated deadline is attached to ORD-999, not ORD-107."},
+    {"id": "C10", "criterion_id": "timing", "pass": false, "rule": "The stated timing is attached to ORD-999, not ORD-107."},
+    {"id": "C16", "criterion_id": "percentage", "pass": false, "rule": "The stated 48.6% is attached to 2026-03-24, not 2026-03-25."}
+  ],
+  "hard_check_resolutions": [
+    {"id": "C10", "criterion_id": "stage", "resolution": "The pattern does not bind the value to the order across sentences. The candidate still fails its identity check, so no false pass.", "decided_by": "Claude, from the written rule; approved by the project team"},
+    {"id": "C10", "criterion_id": "deadline", "resolution": "As for C10 stage: the candidate fails its identity check, so no false pass.", "decided_by": "Claude, from the written rule; approved by the project team"},
+    {"id": "C10", "criterion_id": "timing", "resolution": "As for C10 stage: the candidate fails its identity check, so no false pass.", "decided_by": "Claude, from the written rule; approved by the project team"},
+    {"id": "C17", "criterion_id": "cause_disclosure", "resolution": "The cause sentence is present, so the pattern matches, while the answer also asserts a cause. The prohibited-claim check fails the candidate, so no false pass.", "decided_by": "Claude, from the written rule; approved by the project team"}
+  ]
+}

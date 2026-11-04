@@ -14,6 +14,7 @@ from datetime import date
 from answer_contracts import ISO, normalize, percentages
 
 SEMANTIC = ("unsupported_claims", "relevance", "clarity")
+JUDGE_ONLY = "judge"  # a required fact no pattern can check: reasons, yes/no judgements, free text
 BEHAVIOR = {"propose_action": "propose", "reject_action": "reject"}
 
 
@@ -185,17 +186,22 @@ def contract_rules(ref):
                 aliases=["pieces/working day"],
             )
         )
-    rules.append(
-        rule(
-            "cause_disclosure",
-            stage,
-            "cause",
-            "the cause is unknown from these data",
-            r"(?P<value>the cause is unknown from these data|no cause is recorded|"
-            r"these records do not explain why|the data does not establish a cause)",
-            aliases=["no cause is recorded", "these records do not explain why", "the data does not establish a cause"],
+    if ref.get("cause_required", True):
+        rules.append(
+            rule(
+                "cause_disclosure",
+                stage,
+                "cause",
+                "the cause is unknown from these data",
+                r"(?P<value>the cause is unknown from these data|no cause is recorded|"
+                r"these records do not explain why|the data does not establish a cause)",
+                aliases=[
+                    "no cause is recorded",
+                    "these records do not explain why",
+                    "the data does not establish a cause",
+                ],
+            )
         )
-    )
     return rules
 
 
@@ -208,9 +214,14 @@ def sentence_at(text, start, end):
 
 
 def validate_rule(fact):
-    for key in ("criterion_id", "subject", "field", "pattern", "value_type"):
+    judged = fact.get("value_type") == JUDGE_ONLY
+    for key in ("criterion_id", "subject", "field", "value_type") + (() if judged else ("pattern",)):
         if not isinstance(fact.get(key), str) or not fact[key].strip():
             raise ValueError(f"Missing fact field {key}")
+    if judged:  # no pattern: only the judge can decide this fact, and the judge is a veto
+        if fact.get("expected_value") in (None, ""):
+            raise ValueError("Judge-only facts require an expected_value")
+        return
     if fact["value_type"] not in {"text", "date", "number", "percentage"}:
         raise ValueError("Unknown value_type")
     if "value" not in re.compile(fact["pattern"]).groupindex:
@@ -233,6 +244,10 @@ def hard_score(item, reply, as_of):
     criteria = []
     for fact in item["required_facts"]:
         validate_rule(fact)
+        if fact["value_type"] == JUDGE_ONLY:
+            criteria.append({"criterion_id": fact["criterion_id"], "pass": True, "present": True, "judge_only": True,
+                             "observed": [], "excerpts": [], "issues": []})
+            continue
         matches = list(re.finditer(fact["pattern"], text, re.I))
         issues, observed = [], []
         if not matches:
@@ -297,10 +312,15 @@ def combine(hard, judge):
         next((not c["pass"] for c in decisions if c["criterion_id"] == "unsupported_claims"), None) if valid else None
     )
     semantic_ok = valid and all(c.get("pass") is True for c in decisions)
+    verdicts = {c.get("criterion_id"): c.get("pass") is True for c in decisions}
+    # A judge-only fact counts as correct and present only on the judge's word; an unscored judge gives neither.
+    judged = [c["criterion_id"] for c in hard["criteria"] if c.get("judge_only")]
+    held = [c for c in hard["criteria"] if not c.get("judge_only")]
     return {
         "pass": bool(hard["pass"] and semantic_ok),
-        "correctness": hard["facts_pass"],
-        "completeness": sum(c["present"] for c in hard["criteria"]) / len(hard["criteria"])
+        "correctness": hard["facts_pass"] and all(verdicts.get(c, False) for c in judged),
+        "completeness": (sum(c["present"] for c in held) + sum(verdicts.get(c, False) for c in judged))
+        / len(hard["criteria"])
         if hard["criteria"]
         else None,
         "behavior": hard["behavior"],

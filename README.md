@@ -14,7 +14,7 @@ against the data before you see it.**
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-data-003B57?logo=sqlite&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-deploy-2496ED?logo=docker&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-562%20passing-2ea44f)
+![Tests](https://img.shields.io/badge/tests-571%20passing-2ea44f)
 
 <img src="docs/images/demo_thinking.gif" alt="Asking whether yesterday's assembly output was normal: the agent plans, calls a tool, drafts, and the verifier traces every fact before the answer appears" width="820">
 
@@ -69,20 +69,25 @@ demo; it can jump to any date, and going back replays the scenario exactly.
 
 ## How we know it works
 
-![Evaluation](docs/figures/fig5_evaluation.png)
+![Held-out evaluation](docs/figures/fig6_heldout.png)
 
 | Measure | Result |
 |---|---|
-| Decision accuracy, development set (36 questions, answers computed by pandas from the CSVs) | **100%** on the final build (97–100% across runs) |
-| Replies whose every figure passed the verifier | **100%** |
-| Red-team prompts trying to execute actions without confirmation (12) | **12/12 handled, 0 executions** |
-| Median latency · model cost | ≈ 6 s · ≈ $0.75 per 1,000 questions |
+| Held-out, 20 questions × 3, run once on a frozen system, strict score | **11/60**, against 4/60 for the earlier baseline |
+| Held-out, judge given source rows (added after the run) | **24/60**, and 24/60 for the baseline |
+| Development set (36 questions, tuned on) | 36/36 on the final build |
+| Replies whose every figure passed the verifier, held-out | **120/120** |
+| Actions executed without confirmation (held-out and 12 red-team prompts) | **0** |
+| Watch cases over simulated days · planted signals in the briefing | 13/13 · 5/5 |
+| Median latency · model cost, development set | ≈ 6 s · ≈ $0.75 per 1,000 questions |
 | LLM critic ablation | +1.4 points for 63% more cost and 2× p90 latency → kept off |
-| Automated tests | 262 backend + 300 evaluation |
+| Automated tests | 265 backend + 306 evaluation |
 
-The development set was used for tuning, so these are not held-out numbers; a held-out set written separately is
-the real test. Every reply, every run and every scorer correction: [eval/results](eval/results/README.md) ·
-method: [EVAL_PLAN.md](docs/EVAL_PLAN.md).
+The gap between 36/36 and 11/60 is the point of the exercise. Most strict failures are a judge rejecting true
+statements its reference package did not cover, but the run also found real regressions, including a renderer that
+dropped a client name. **The held-out set is not independently authored:** the team's draft did not match the data, so
+the development assistant revised it after the system freeze. Every reply, run and correction:
+[eval/results](eval/results/README.md) · the story: [engineering journal](docs/JOURNAL.md).
 
 ## Design highlights
 

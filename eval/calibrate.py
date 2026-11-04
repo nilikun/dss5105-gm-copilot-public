@@ -92,7 +92,9 @@ def make_packet(out):
     )
 
 
-def compare(packet, labels, judgments, out):
+def compare(packet, labels, judgments, out, resolutions=None):
+    """`resolutions`: recorded decisions on hard-check disagreements. A disagreement without a record still blocks."""
+    resolved = {(r["id"], r["criterion_id"]): r for r in resolutions or []}
     examples, human, machine = rows(packet), rows(labels), rows(judgments)
     require(len(examples) >= 20, "At least 20 human-labelled examples required")
     expected = {e["id"] for e in examples}
@@ -151,6 +153,9 @@ def compare(packet, labels, judgments, out):
         d for d in disagreements if not d["human"] and d["judge"] and d["criterion_id"] not in ("clarity", "relevance")
     ]
     both_labels = all(any(k.startswith(f"human_{value}_") and n for k, n in counts.items()) for value in (True, False))
+    for d in hard_disagreements:
+        d["resolution"] = resolved.get((d["id"], d["criterion_id"]))
+    unresolved = [d for d in hard_disagreements if not d["resolution"]]
     report = {
         "scope": "human calibration on public development answers",
         "sample_count": len(examples),
@@ -160,7 +165,8 @@ def compare(packet, labels, judgments, out):
         "disagreements": disagreements,
         "hard_disagreements": hard_disagreements,
         "critical_false_passes": critical_false_passes,
-        "accepted": agreement >= 0.9 and not critical_false_passes and both_labels and not hard_disagreements,
+        "unresolved_hard_disagreements": unresolved,
+        "accepted": agreement >= 0.9 and not critical_false_passes and both_labels and not unresolved,
         "acceptance_threshold": (
             ">=0.90 criterion agreement; zero critical false passes; "
             "both labels present; no unresolved hard disagreements"
@@ -192,11 +198,13 @@ def main():
     p = sub.add_parser("compare")
     for arg in ("packet", "labels", "judgments", "output"):
         p.add_argument("--" + arg, type=Path, required=True)
+    p.add_argument("--adjudication", type=Path, help="JSON holding hard_check_resolutions")
     args = parser.parse_args()
     if args.command == "packet":
         make_packet(args.output_dir)
     elif args.command == "compare":
-        compare(args.packet, args.labels, args.judgments, args.output)
+        records = json.loads(args.adjudication.read_text(encoding="utf-8")) if args.adjudication else {}
+        compare(args.packet, args.labels, args.judgments, args.output, records.get("hard_check_resolutions"))
     else:
         import os
 

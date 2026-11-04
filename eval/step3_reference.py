@@ -12,6 +12,37 @@ from answer_contracts import check_answer
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def _z(values, day):
+    """Robust z of one day against the 20 Monday-Saturday days before it; None if any of them is missing or flat."""
+    history = []
+    cursor = day
+    while len(history) < 20:
+        cursor -= timedelta(days=1)
+        if cursor.isoweekday() != 7:
+            history.append(cursor.isoformat())
+    if day.isoformat() not in values or any(h not in values for h in history):
+        return None
+    window = [values[h] for h in history]
+    center = median(window)
+    sigma = 1.4826 * median(abs(v - center) for v in window)
+    return (values[day.isoformat()] - center) / sigma if sigma else None
+
+
+def judged_normal(values, start, end):
+    """One day, within 1.75 sigma either way, and not 2 of the last 3 working days below -2 (the published rule)."""
+    if start != end:
+        return False
+    z = _z(values, start)
+    if z is None or abs(z) >= 1.75:
+        return False
+    recent, cursor = [], start
+    while len(recent) < 3:
+        if cursor.isoweekday() != 7:
+            recent.append(_z(values, cursor))
+        cursor -= timedelta(days=1)
+    return sum(r is not None and r < -2 for r in recent) < 2
+
+
 def reference(case, as_of):
     args = case["tool_args"]
     if not args.get("stage") or not args.get("date_from"):
@@ -45,6 +76,7 @@ def reference(case, as_of):
     actual = mean(values[d.isoformat()] for d in days) if days and all(d.isoformat() in values for d in days) else None
     baseline = median(values[d.isoformat()] for d in history) if all(d.isoformat() in values for d in history) else None
     return {
+        "cause_required": bool(args.get("explain_cause")) or not judged_normal(values, start, end),
         "type": "production",
         "as_of": as_of,
         "stage": args["stage"],

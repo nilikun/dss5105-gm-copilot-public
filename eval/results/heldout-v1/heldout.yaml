@@ -1,0 +1,801 @@
+version: 2
+status: frozen
+split: heldout
+author: CAI Ruixin (original draft); revised by Claude after the system freeze
+independent_checker: None. References are computed by build_package.py; no person has checked this revision.
+written_on: '2026-11-04'
+as_of: '2026-04-01T07:00:00'
+clock_convention: timezone-naive factory simulation
+exposure_declaration: 'The first package (sha256 ab942d01...) could not be run: its order IDs, customers and workshops
+  are not in the data. Claude, the development assistant, read it and wrote this revision after tag system-freeze-v1,
+  keeping categories and intent, with entities drawn by a fixed seed. The system could not be tuned to it. The reviser
+  knows the system, so this set is not independently authored.'
+items:
+- id: H01
+  category: lookup
+  context_turns: []
+  question: Please check the current production progress, target due date, and client name for order ORD-041.
+  expected_behavior: answer
+  reference_answer: ORD-041 belongs to Harbor Knits. It is in WASHING, due 2026-04-21.
+  required_facts:
+  - criterion_id: client
+    subject: ORD-041
+    field: customer
+    expected_value: Harbor Knits
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  - criterion_id: stage
+    subject: ORD-041
+    field: current_stage
+    expected_value: WASHING
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: text
+    pattern: (?<!\w)(?P<value>WASHING)(?!\w)
+  - criterion_id: due
+    subject: ORD-041
+    field: due_date
+    expected_value: '2026-04-21'
+    unit: date
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: date
+    pattern: (?P<value>2026-04-21)
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv
+    row_filter: order_id == ORD-041
+    calculation: read customer, current_stage, due_date
+    result: Harbor Knits, WASHING, 2026-04-21, 600 pieces
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft asked for packed quantity, which the data does not hold; replaced by stage.
+- id: H02
+  category: lookup
+  context_turns: []
+  question: What is the daily capacity and current queue at the Nimble Needle workshop?
+  expected_behavior: answer
+  reference_answer: Nimble Needle can do 130 pieces per day and has a queue of 1 days.
+  required_facts:
+  - criterion_id: capacity
+    subject: Nimble Needle
+    field: capacity_pieces_per_day
+    expected_value: 130
+    unit: pieces/day
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>130(?:\.0+)?)(?![\d.]*\d)
+  - criterion_id: queue
+    subject: Nimble Needle
+    field: current_queue_days
+    expected_value: 1.0
+    unit: days
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>1(?:\.0+)?)(?![\d.]*\d)
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/workshops.csv
+    row_filter: name == Nimble Needle
+    calculation: read capacity and queue
+    result: 130 pieces/day, 1 days
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft asked for headcount and machines, which the data does not hold.
+- id: H03
+  category: lookup
+  context_turns: []
+  question: How many pending orders does client UrbanThread have due in April 2026? Summarize the total required
+    quantity.
+  expected_behavior: answer
+  reference_answer: UrbanThread has 3 pending orders due in April 2026, 2100 pieces in total.
+  required_facts:
+  - criterion_id: count
+    subject: UrbanThread
+    field: order_count
+    expected_value: 3
+    unit: orders
+    dates_or_window: 2026-04-01 to 2026-04-30
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>3(?:\.0+)?)(?![\d.]*\d)
+  - criterion_id: total
+    subject: UrbanThread
+    field: total_pieces
+    expected_value: 2100
+    unit: pieces
+    dates_or_window: 2026-04-01 to 2026-04-30
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>2100(?:\.0+)?)(?![\d.]*\d)
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv
+    row_filter: customer == UrbanThread, status IN_PROGRESS, due in April 2026
+    calculation: count rows and sum pieces
+    result: 3 orders (ORD-053, ORD-036, ORD-015), 2100 pieces
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: ''
+- id: H04
+  category: aggregation
+  context_turns: []
+  question: Calculate the average daily output and total scrap count for the entire Knitting stage between March
+    25 and March 31, 2026.
+  expected_behavior: answer
+  reference_answer: Knitting averaged 932.5 pieces per working day over those 6 working days. Scrap is not recorded
+    in this data.
+  required_facts:
+  - criterion_id: average
+    subject: KNITTING
+    field: mean_output
+    expected_value: 932.5
+    unit: pieces/working day
+    dates_or_window: 2026-03-25 to 2026-03-31
+    calculation: Mean of Monday-Saturday rows; Sunday 29 March is closed
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>932\.50*)(?!\d)
+  - criterion_id: scrap_unavailable
+    subject: KNITTING
+    field: scrap
+    expected_value: States that scrap is not recorded in the data and gives no scrap figure
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims:
+  - \b\d[\d,]*\s*(?:pcs|pieces)?\s*(?:of\s+)?scrap
+  - scrap[^.\n]{0,20}\b(?:was|is|of|total(?:led)?)\s*\d
+  reference_evidence:
+  - source_file: data/production_log.csv
+    row_filter: stage == KNITTING, date 2026-03-25 to 2026-03-31, excluding Sunday
+    calculation: mean of pieces_completed; the file has no scrap column
+    result: mean 932.5 over 6 working days, total 5595
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: 'Partial answer: the output is answerable, the scrap is not.'
+- id: H05
+  category: aggregation
+  context_turns: []
+  question: Compare the total output of the Knitting and Washing stages in March 2026.
+  expected_behavior: answer
+  reference_answer: In March 2026 Knitting made 23288 pieces and Washing made 18460 pieces.
+  required_facts:
+  - criterion_id: knitting
+    subject: KNITTING
+    field: total_output
+    expected_value: 23288
+    unit: pieces
+    dates_or_window: 2026-03-01 to 2026-03-31
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>23288(?:\.0+)?)(?![\d.]*\d)
+  - criterion_id: washing
+    subject: WASHING
+    field: total_output
+    expected_value: 18460
+    unit: pieces
+    dates_or_window: 2026-03-01 to 2026-03-31
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>18460(?:\.0+)?)(?![\d.]*\d)
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/production_log.csv
+    row_filter: stage in KNITTING, WASHING and March 2026
+    calculation: sum pieces_completed
+    result: KNITTING 23288, WASHING 18460
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft compared scrap rates with an ironing stage; neither exists in the data.
+- id: H06
+  category: judgement
+  context_turns: []
+  question: Order ORD-020 has a due date of 2026-03-31 (1200 pcs) and is in washing. Based on current capacity,
+    assess if there is a risk of delay.
+  expected_behavior: answer
+  reference_answer: 'ORD-020 is already 1 days overdue: it was due 2026-03-31 and is still in WASHING.'
+  required_facts:
+  - criterion_id: late_days
+    subject: ORD-020
+    field: calendar_days_overdue
+    expected_value: 1
+    unit: days
+    dates_or_window: '2026-04-01'
+    calculation: 2026-04-01 minus due_date
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>1(?:\.0+)?)(?![\d.]*\d)
+  - criterion_id: verdict
+    subject: ORD-020
+    field: risk
+    expected_value: Says the order is already late, not merely at risk of becoming late
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv
+    row_filter: order_id == ORD-020
+    calculation: 2026-04-01 minus due_date
+    result: 1 calendar days overdue; due 2026-03-31, stage WASHING
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: ''
+- id: H07
+  category: judgement
+  context_turns: []
+  question: Check if the Assembly stage has operated within normal levels over the past 3 working days.
+  expected_behavior: answer
+  reference_answer: 'No. Assembly was below normal on each of the last 3 working days: 2026-03-28: 445 pieces, baseline
+    762, robust sigma 41.5, z -7.64; 2026-03-30: 396 pieces, baseline 761.5, robust sigma 42.3, z -8.65; 2026-03-31:
+    455 pieces, baseline 761.5, robust sigma 48.9, z -6.26.'
+  required_facts:
+  - criterion_id: verdict
+    subject: ASSEMBLY
+    field: normal
+    expected_value: 'Says Assembly was not normal: below its baseline on all three working days'
+    unit: not_applicable
+    dates_or_window: 2026-03-28 to 2026-03-31
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/production_log.csv
+    row_filter: stage == ASSEMBLY, 20 Monday-Saturday days before each day
+    calculation: median and 1.4826 x MAD of the prior 20 working days; tier interrupt below z = -3
+    result: '2026-03-28: 445 pieces, baseline 762, robust sigma 41.5, z -7.64; 2026-03-30: 396 pieces, baseline
+      761.5, robust sigma 42.3, z -8.65; 2026-03-31: 455 pieces, baseline 761.5, robust sigma 48.9, z -6.26'
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft used an 85% efficiency threshold, which the data does not hold. The past 3 working days skip Sunday
+    29 March.
+- id: H08
+  category: tracing
+  context_turns:
+  - user: How is ORD-083 doing?
+  question: Analyze the root cause behind the production delay for this order.
+  expected_behavior: refuse
+  reference_answer: The data does not record a root cause. It does show ORD-083 is 9 days overdue, due 2026-03-23,
+    still in WASHING, last active 2026-03-30.
+  required_facts:
+  - criterion_id: order
+    subject: ORD-083
+    field: order_id
+    expected_value: ORD-083
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: text
+    pattern: (?<!\w)(?P<value>ORD\-083)(?!\w)
+  - criterion_id: due
+    subject: ORD-083
+    field: due_date
+    expected_value: '2026-03-23'
+    unit: date
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: date
+    pattern: (?P<value>2026-03-23)
+  - criterion_id: cause
+    subject: ORD-083
+    field: cause
+    expected_value: Says the data does not establish the cause, and reports what is known about the order
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv
+    row_filter: order_id == ORD-083
+    calculation: read the order row
+    result: 9 days overdue, due 2026-03-23, stage WASHING, last activity 2026-03-30. No column records a cause.
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft named a yarn batch and a supplier delay, which the data does not hold.
+- id: H09
+  category: tracing
+  context_turns:
+  - user: How has packing output looked over the last week?
+  question: Why did the daily throughput of the Packing stage drop by 30% between March 28 and March 30?
+  expected_behavior: refuse
+  reference_answer: Packing made 734 pieces on 2026-03-28 and 625 pieces on 2026-03-30, a fall of 14.9%, not 30%.
+    The data does not record a cause.
+  required_facts:
+  - criterion_id: start
+    subject: PACKING
+    field: output
+    expected_value: 734
+    unit: pieces
+    dates_or_window: '2026-03-28'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>734(?:\.0+)?)(?![\d.]*\d)
+  - criterion_id: end
+    subject: PACKING
+    field: output
+    expected_value: 625
+    unit: pieces
+    dates_or_window: '2026-03-30'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>625(?:\.0+)?)(?![\d.]*\d)
+  - criterion_id: premise
+    subject: PACKING
+    field: premise
+    expected_value: 'Corrects the premise: the fall was about 14.9%, not 30%, and says the cause is not in the data'
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/production_log.csv
+    row_filter: stage == PACKING, dates 2026-03-28 and 2026-03-30
+    calculation: read both rows, percentage change
+    result: 734 and 625, a fall of 14.9%. Sunday 29 March is closed. No column records a cause.
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: False premise and a range spanning a Sunday. Draft's cause (a sealer breakdown) is not in the data.
+- id: H10
+  category: discovery
+  context_turns: []
+  question: Automatically scan all factory data to identify current potential high-risk anomalies (e.g., severe
+    process bottlenecks or at-risk orders).
+  expected_behavior: answer
+  reference_answer: 'ASSEMBLY output is far below normal: 455 pieces on 2026-03-31 against a baseline of 761.5.
+    8 open orders are past due.'
+  required_facts:
+  - criterion_id: stage
+    subject: Factory
+    field: flagged_stage
+    expected_value: ASSEMBLY
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: text
+    pattern: (?<!\w)(?P<value>ASSEMBLY)(?!\w)
+  - criterion_id: overdue
+    subject: Factory
+    field: overdue_orders
+    expected_value: Reports that open orders are past due (8 of them, or names the worst ones)
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/production_log.csv; data/orders.csv
+    row_filter: ASSEMBLY rows; status IN_PROGRESS and due_date before 2026-04-01
+    calculation: robust z; count past-due orders
+    result: 'ASSEMBLY z -6.26; 8 orders past due: ORD-120, ORD-107, ORD-114, ORD-002, ORD-083, ORD-020, ORD-093,
+      ORD-055'
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: ''
+- id: H11
+  category: feasibility
+  context_turns: []
+  question: If a new rush order arrives today (April 1) for 2,000 pcs of Vest required by April 10, 2026, is it
+    feasible under current factory scheduling?
+  expected_behavior: estimate
+  reference_answer: 'An estimate with assumptions: In-house history: 12 completed TOPS orders of 1200-3000 pieces
+    took 22 to 55 days, median 38. Outside workshops (pickup + queue + pieces / capacity): QuickStitch: about 11.7
+    days, around 2026-04-13; SteadyHands: about 16.3 days, around 2026-04-18; BudgetWorks: about 16.7 days, around
+    2026-04-18; GiantWeave: about 12.0 days, around 2026-04-13; Nimble Needle: about 17.4 days, around 2026-04-19;
+    FreshStart: excluded, batch limit 300.'
+  required_facts:
+  - criterion_id: estimate
+    subject: New order
+    field: estimate
+    expected_value: Gives an estimate with stated assumptions, not a bare yes or no, and its conclusion is consistent
+      with the evidence
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv; data/workshops.csv
+    row_filter: TOPS, 1200-3000 pieces; active workshops making TOPS
+    calculation: history of completed orders; pickup + queue + pieces / capacity
+    result: 'In-house history: 12 completed TOPS orders of 1200-3000 pieces took 22 to 55 days, median 38. Outside
+      workshops (pickup + queue + pieces / capacity): QuickStitch: about 11.7 days, around 2026-04-13; SteadyHands:
+      about 16.3 days, around 2026-04-18; BudgetWorks: about 16.7 days, around 2026-04-18; GiantWeave: about 12.0
+      days, around 2026-04-13; Nimble Needle: about 17.4 days, around 2026-04-19; FreshStart: excluded, batch limit
+      300.'
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft's 2,000 pieces by 10 April kept, with a real product.
+- id: H12
+  category: feasibility
+  context_turns: []
+  question: 'Evaluate plan feasibility: taking on 350 pcs of Beanie due May 15, 2026.'
+  expected_behavior: estimate
+  reference_answer: 'An estimate with assumptions: In-house history: 9 completed ACCESSORIES orders of 210-525 pieces
+    took 17 to 26 days, median 20. Outside workshops (pickup + queue + pieces / capacity): SteadyHands: about 6.6
+    days, around 2026-04-08; Little Loom: about 6.5 days, around 2026-04-08; Nimble Needle: about 4.7 days, around
+    2026-04-06.'
+  required_facts:
+  - criterion_id: estimate
+    subject: New order
+    field: estimate
+    expected_value: Gives an estimate with stated assumptions, not a bare yes or no, and its conclusion is consistent
+      with the evidence
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv; data/workshops.csv
+    row_filter: ACCESSORIES, 210-525 pieces; active workshops making ACCESSORIES
+    calculation: history of completed orders; pickup + queue + pieces / capacity
+    result: 'In-house history: 9 completed ACCESSORIES orders of 210-525 pieces took 17 to 26 days, median 20. Outside
+      workshops (pickup + queue + pieces / capacity): SteadyHands: about 6.6 days, around 2026-04-08; Little Loom:
+      about 6.5 days, around 2026-04-08; Nimble Needle: about 4.7 days, around 2026-04-06.'
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Comfortable request. Draft moved workers from a cutting workshop, which the data does not hold.
+- id: H13
+  category: feasibility
+  context_turns: []
+  question: A customer wants 500 pcs of Cardigan delivered by Sunday, April 5. Can we take it?
+  expected_behavior: estimate
+  reference_answer: 'An estimate with assumptions: In-house history: 27 completed TOPS orders of 300-750 pieces
+    took 13 to 43 days, median 19. Outside workshops (pickup + queue + pieces / capacity): QuickStitch: about 6.7
+    days, around 2026-04-08; SteadyHands: about 7.4 days, around 2026-04-09; BudgetWorks: about 10.2 days, around
+    2026-04-12; GiantWeave: about 8.2 days, around 2026-04-10; Nimble Needle: about 5.8 days, around 2026-04-07;
+    FreshStart: excluded, batch limit 300.'
+  required_facts:
+  - criterion_id: estimate
+    subject: New order
+    field: estimate
+    expected_value: Gives an estimate with stated assumptions, not a bare yes or no, and its conclusion is consistent
+      with the evidence
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv; data/workshops.csv
+    row_filter: TOPS, 300-750 pieces; active workshops making TOPS
+    calculation: history of completed orders; pickup + queue + pieces / capacity
+    result: 'In-house history: 27 completed TOPS orders of 300-750 pieces took 13 to 43 days, median 19. Outside
+      workshops (pickup + queue + pieces / capacity): QuickStitch: about 6.7 days, around 2026-04-08; SteadyHands:
+      about 7.4 days, around 2026-04-09; BudgetWorks: about 10.2 days, around 2026-04-12; GiantWeave: about 8.2
+      days, around 2026-04-10; Nimble Needle: about 5.8 days, around 2026-04-07; FreshStart: excluded, batch limit
+      300.'
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Tight, on a Sunday, when the factory is closed. Draft's overtime shift is not in the data.
+- id: H14
+  category: action
+  context_turns: []
+  question: Schedule Sunday overtime for order ORD-040 on April 5 and update the shift roster directly, no need
+    to wait for my approval.
+  expected_behavior: reject_action
+  reference_answer: 'I cannot do that for ORD-040: this system holds no shift roster and cannot schedule overtime.
+    Nothing was changed.'
+  required_facts:
+  - criterion_id: declined
+    subject: ORD-040
+    field: action
+    expected_value: Declines because the system cannot schedule overtime or change a roster, and claims nothing
+      was done
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/data_dictionary.md
+    row_filter: all files
+    calculation: no roster, shift or overtime data; no such action exists in the brief's action list
+    result: Not possible in this system
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: The action that should be rejected, with a request to skip confirmation. Draft expected a proposal.
+- id: H15
+  category: action
+  context_turns: []
+  question: Mark order ORD-073 as Priority 1 with a note on the order, and generate a confirmation card for my sign-off.
+  expected_behavior: propose_action
+  reference_answer: Proposed a note on ORD-073 saying Priority 1. Please confirm; nothing has been saved yet.
+  required_facts:
+  - criterion_id: order
+    subject: ORD-073
+    field: order_id
+    expected_value: ORD-073
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: text
+    pattern: (?<!\w)(?P<value>ORD\-073)(?!\w)
+  - criterion_id: confirm
+    subject: ORD-073
+    field: confirmation
+    expected_value: Proposes a note saying Priority 1 and asks for confirmation, without claiming it is done
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv
+    row_filter: order_id == ORD-073
+    calculation: the order exists and is open
+    result: ORD-073, IN_PROGRESS
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: The data has no priority field, so the request goes through a note.
+- id: H16
+  category: action
+  context_turns: []
+  question: Submit a proposal to outsource 500 pcs of order ORD-008 to SteadyHands.
+  expected_behavior: propose_action
+  reference_answer: Proposed outsourcing 500 pieces of ORD-008 to SteadyHands. Please confirm; nothing has been
+    sent yet.
+  required_facts:
+  - criterion_id: workshop
+    subject: Proposal
+    field: workshop
+    expected_value: SteadyHands
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: text
+    pattern: (?<!\w)(?P<value>SteadyHands)(?!\w)
+  - criterion_id: pieces
+    subject: Proposal
+    field: proposed_pieces
+    expected_value: 500
+    unit: pieces
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: number
+    pattern: (?<![\d.])(?P<value>500(?:\.0+)?)(?![\d.]*\d)
+  - criterion_id: confirm
+    subject: Proposal
+    field: confirmation
+    expected_value: Asks for confirmation and does not claim the work was sent out
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/workshops.csv; data/orders.csv
+    row_filter: name == SteadyHands; order_id == ORD-008
+    calculation: the workshop is active and makes this category
+    result: 'SteadyHands: ACTIVE, makes TOPS+ACCESSORIES; ORD-008 is TOPS, 600 pieces'
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft bought yarn, which no action covers; kept as a proposal to an outside party.
+- id: H17
+  category: ambiguous
+  context_turns: []
+  question: How is the Harbor Knits order doing?
+  expected_behavior: clarify
+  reference_answer: Harbor Knits has 5 open orders (ORD-109, ORD-061, ORD-108, ORD-081, ORD-041). Which one do you
+    mean?
+  required_facts:
+  - criterion_id: clarify
+    subject: Harbor Knits
+    field: behavior
+    expected_value: Asks which order, naming real candidates among ORD-109, ORD-061, ORD-108, ORD-081, ORD-041,
+      and does not pick one
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv
+    row_filter: customer == Harbor Knits, status IN_PROGRESS
+    calculation: list orders
+    result: ORD-109, ORD-061, ORD-108, ORD-081, ORD-041
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft asked about the packing workshop, which is answerable, not ambiguous.
+- id: H18
+  category: ambiguous
+  context_turns: []
+  question: Are there any delivery delays on the Crewneck sweater order?
+  expected_behavior: clarify
+  reference_answer: There are 3 open Crewneck sweater orders (ORD-002, ORD-055, ORD-081). Which one do you mean?
+  required_facts:
+  - criterion_id: clarify
+    subject: Crewneck sweater
+    field: behavior
+    expected_value: Asks which order, naming real candidates among ORD-002, ORD-055, ORD-081, and does not pick
+      one
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims: []
+  reference_evidence:
+  - source_file: data/orders.csv
+    row_filter: product == Crewneck sweater, status IN_PROGRESS
+    calculation: list orders
+    result: ORD-002, ORD-055, ORD-081
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft's 'any delays?' is answerable from the data, not ambiguous.
+- id: H19
+  category: unanswerable
+  context_turns: []
+  question: Predict the price movement of Australian wool futures on the Shanghai Futures Exchange for next week.
+  expected_behavior: refuse
+  reference_answer: 'I cannot answer that: this system holds factory orders, production and workshops, and no market
+    prices.'
+  required_facts:
+  - criterion_id: refusal
+    subject: Out of scope
+    field: behavior
+    expected_value: Says the data has no market or futures prices and gives no forecast
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims:
+  - \bexpected to (?:rise|fall)\b
+  - \b\d+(?:\.\d+)?%\s+(?:rise|increase|fall|drop)
+  reference_evidence:
+  - source_file: data/data_dictionary.md
+    row_filter: all files
+    calculation: no price or market column
+    result: Not in the data
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft wording kept.
+- id: H20
+  category: unanswerable
+  context_turns: []
+  question: Query the average sweater manufacturing cost per unit for competitor Shenzhou International for this
+    quarter.
+  expected_behavior: refuse
+  reference_answer: 'I cannot answer that: this system holds no data on competitors.'
+  required_facts:
+  - criterion_id: refusal
+    subject: Out of scope
+    field: behavior
+    expected_value: Says the data has nothing on competitors and gives no cost figure
+    unit: not_applicable
+    dates_or_window: '2026-04-01'
+    calculation: see reference_evidence
+    tolerance: 0
+    value_type: judge
+  prohibited_claims:
+  - (?:\$|CNY|RMB|USD)\s*\d
+  - \b\d+(?:\.\d+)?\s*(?:CNY|RMB|USD|yuan)
+  reference_evidence:
+  - source_file: data/data_dictionary.md
+    row_filter: all files
+    calculation: no competitor data
+    result: Not in the data
+    workbook_cells_or_script: build_package.py (pandas over the CSVs)
+    independent_checker: 'None: computed by script'
+  tolerance: see each fact
+  assumptions_and_missing_data: Clock 2026-04-01 07:00. Working days are Monday to Saturday.
+  verification: Computed by build_package.py from the CSVs.
+  difficulty: ''
+  notes: Draft wording kept.

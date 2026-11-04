@@ -1,0 +1,152 @@
+{
+  "planned": 120,
+  "attempted": 120,
+  "unattempted": 0,
+  "baseline": {
+    "planned": 60,
+    "attempted": 60,
+    "passed": 4,
+    "errors": 0,
+    "correctness_count": 37,
+    "mean_completeness_attempted": 0.7194444444444446,
+    "behavior_correct_count": 53,
+    "unsupported_claim_answers": 53,
+    "unsupported_unscored": 0,
+    "p50_seconds": 10.075676499982364,
+    "p90_seconds": 16.1809101998806,
+    "api_attempts": 222,
+    "unknown_usage_calls": 0,
+    "reported_usage": {
+      "input_tokens": 856805,
+      "cached_input_tokens": 702467,
+      "output_tokens": 38236,
+      "reasoning_tokens": 6415
+    },
+    "by_category": {
+      "action": {
+        "attempted": 9,
+        "passed": 0
+      },
+      "aggregation": {
+        "attempted": 6,
+        "passed": 0
+      },
+      "ambiguous": {
+        "attempted": 6,
+        "passed": 0
+      },
+      "discovery": {
+        "attempted": 3,
+        "passed": 0
+      },
+      "feasibility": {
+        "attempted": 9,
+        "passed": 0
+      },
+      "judgement": {
+        "attempted": 6,
+        "passed": 0
+      },
+      "lookup": {
+        "attempted": 9,
+        "passed": 3
+      },
+      "tracing": {
+        "attempted": 6,
+        "passed": 0
+      },
+      "unanswerable": {
+        "attempted": 6,
+        "passed": 1
+      }
+    },
+    "clarification_refusal": {
+      "clarify": {
+        "attempted": 6,
+        "appropriate": 6
+      },
+      "refuse": {
+        "attempted": 12,
+        "appropriate": 12
+      }
+    }
+  },
+  "improved": {
+    "planned": 60,
+    "attempted": 60,
+    "passed": 11,
+    "errors": 0,
+    "correctness_count": 46,
+    "mean_completeness_attempted": 0.8194444444444444,
+    "behavior_correct_count": 55,
+    "unsupported_claim_answers": 43,
+    "unsupported_unscored": 0,
+    "p50_seconds": 8.843236799933948,
+    "p90_seconds": 16.74513199995272,
+    "api_attempts": 221,
+    "unknown_usage_calls": 0,
+    "reported_usage": {
+      "input_tokens": 984622,
+      "cached_input_tokens": 837338,
+      "output_tokens": 35899,
+      "reasoning_tokens": 5927
+    },
+    "by_category": {
+      "action": {
+        "attempted": 9,
+        "passed": 0
+      },
+      "aggregation": {
+        "attempted": 6,
+        "passed": 1
+      },
+      "ambiguous": {
+        "attempted": 6,
+        "passed": 4
+      },
+      "discovery": {
+        "attempted": 3,
+        "passed": 0
+      },
+      "feasibility": {
+        "attempted": 9,
+        "passed": 0
+      },
+      "judgement": {
+        "attempted": 6,
+        "passed": 0
+      },
+      "lookup": {
+        "attempted": 9,
+        "passed": 3
+      },
+      "tracing": {
+        "attempted": 6,
+        "passed": 0
+      },
+      "unanswerable": {
+        "attempted": 6,
+        "passed": 3
+      }
+    },
+    "clarification_refusal": {
+      "clarify": {
+        "attempted": 6,
+        "appropriate": 6
+      },
+      "refuse": {
+        "attempted": 12,
+        "appropriate": 12
+      }
+    }
+  },
+  "uncertainty": "20 distinct attempted questions; repetitions are correlated, not independent samples.",
+  "paired_pass_delta_95pct_cluster_bootstrap": [
+    0.016666666666666666,
+    0.25
+  ],
+  "scope": "frozen held-out comparison",
+  "cost_estimate_usd": 3.0947433400000004,
+  "cost_note": "Frozen-rate estimate, not a bill; unknown usage is not zero. Soft cap checked between items.",
+  "completed_utc": "2026-11-04T10:24:08.365461+00:00"
+}

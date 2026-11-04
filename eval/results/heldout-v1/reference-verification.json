@@ -1,0 +1,289 @@
+{
+  "summary": {
+    "facts": 35,
+    "verdicts": {
+      "recomputed": 16,
+      "not_recomputed": 19
+    },
+    "by_category": {
+      "action": {
+        "not_recomputed": 5,
+        "recomputed": 1
+      },
+      "aggregation": {
+        "recomputed": 3,
+        "not_recomputed": 1
+      },
+      "ambiguous": {
+        "not_recomputed": 2
+      },
+      "discovery": {
+        "not_recomputed": 2
+      },
+      "feasibility": {
+        "not_recomputed": 3
+      },
+      "judgement": {
+        "recomputed": 1,
+        "not_recomputed": 2
+      },
+      "lookup": {
+        "recomputed": 7
+      },
+      "tracing": {
+        "recomputed": 4,
+        "not_recomputed": 2
+      },
+      "unanswerable": {
+        "not_recomputed": 2
+      }
+    }
+  },
+  "facts": [
+    {
+      "item": "H01",
+      "category": "lookup",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "lookup:customer"
+    },
+    {
+      "item": "H01",
+      "category": "lookup",
+      "fact": 1,
+      "verdict": "recomputed",
+      "method": "lookup:current_stage"
+    },
+    {
+      "item": "H01",
+      "category": "lookup",
+      "fact": 2,
+      "verdict": "recomputed",
+      "method": "lookup:due_date"
+    },
+    {
+      "item": "H02",
+      "category": "lookup",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "lookup:capacity_pieces_per_day"
+    },
+    {
+      "item": "H02",
+      "category": "lookup",
+      "fact": 1,
+      "verdict": "recomputed",
+      "method": "lookup:current_queue_days"
+    },
+    {
+      "item": "H03",
+      "category": "lookup",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "filter:count"
+    },
+    {
+      "item": "H03",
+      "category": "lookup",
+      "fact": 1,
+      "verdict": "recomputed",
+      "method": "filter:sum:pieces"
+    },
+    {
+      "item": "H04",
+      "category": "aggregation",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "production:actual"
+    },
+    {
+      "item": "H04",
+      "category": "aggregation",
+      "fact": 1,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H05",
+      "category": "aggregation",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "production:total"
+    },
+    {
+      "item": "H05",
+      "category": "aggregation",
+      "fact": 1,
+      "verdict": "recomputed",
+      "method": "production:total"
+    },
+    {
+      "item": "H06",
+      "category": "judgement",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "derived:days_to_due"
+    },
+    {
+      "item": "H06",
+      "category": "judgement",
+      "fact": 1,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H07",
+      "category": "judgement",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H08",
+      "category": "tracing",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "lookup:order_id"
+    },
+    {
+      "item": "H08",
+      "category": "tracing",
+      "fact": 1,
+      "verdict": "recomputed",
+      "method": "lookup:due_date"
+    },
+    {
+      "item": "H08",
+      "category": "tracing",
+      "fact": 2,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H09",
+      "category": "tracing",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "production:actual"
+    },
+    {
+      "item": "H09",
+      "category": "tracing",
+      "fact": 1,
+      "verdict": "recomputed",
+      "method": "production:actual"
+    },
+    {
+      "item": "H09",
+      "category": "tracing",
+      "fact": 2,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H10",
+      "category": "discovery",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H10",
+      "category": "discovery",
+      "fact": 1,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H11",
+      "category": "feasibility",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H12",
+      "category": "feasibility",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H13",
+      "category": "feasibility",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H14",
+      "category": "action",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H15",
+      "category": "action",
+      "fact": 0,
+      "verdict": "recomputed",
+      "method": "lookup:order_id"
+    },
+    {
+      "item": "H15",
+      "category": "action",
+      "fact": 1,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H16",
+      "category": "action",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H16",
+      "category": "action",
+      "fact": 1,
+      "verdict": "not_recomputed",
+      "method": "no_computation_matched"
+    },
+    {
+      "item": "H16",
+      "category": "action",
+      "fact": 2,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H17",
+      "category": "ambiguous",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H18",
+      "category": "ambiguous",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H19",
+      "category": "unanswerable",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    },
+    {
+      "item": "H20",
+      "category": "unanswerable",
+      "fact": 0,
+      "verdict": "not_recomputed",
+      "method": "text"
+    }
+  ]
+}
