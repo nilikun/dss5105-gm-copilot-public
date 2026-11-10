@@ -148,5 +148,10 @@ CAI Ruixin · HE Wenxin · IAO Ngan Chun · LIU Boxuan · NI Likun · ZENG Zihao
 The step-by-step story — including what went wrong and how it was fixed — is in the
 [engineering journal](docs/JOURNAL.md).
 
+## License
+
+The code is released under the [MIT License](LICENSE). The factory dataset in [`data/`](data) is course material
+provided for the capstone and is not covered by it.
+
 <sub>The factory dataset is course material provided for the capstone. Screenshots show the real application
 running against it.</sub>
