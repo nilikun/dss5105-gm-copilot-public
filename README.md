@@ -127,6 +127,31 @@ uv run --project backend python eval/run.py --set dev               # live evalu
 
 The [live demo](https://dss5105.fuyune.com) needs an access code, shared privately.
 
+## Try it
+
+Once the page is open, ask:
+
+1. "Did anything go wrong yesterday?" Then click a figure to see the rows behind it.
+2. "How is the TrendCart order doing?" It asks which of the open orders you mean.
+3. "A customer wants 800 hoodies by the 25th. Can we take it?"
+4. "ORD-002 hasn't moved in a week. Chase it up." Confirm the proposal on the card; nothing runs until you do.
+5. "Tell me if ORD-120 hasn't moved by Friday." Confirm it, then use the clock menu to jump to Friday. Choose the
+   *packing_drop* scenario to see the watch fire.
+6. "What is our revenue this quarter?" It refuses, because the data holds no prices.
+
+Morning briefing, alerts, actions, watches and the thinking logs are in the left menu. To see every step of one
+question in the terminal: `cd backend && uv run python -m app.cli --fresh "Was assembly's output yesterday normal?"`.
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| The page shows a raw API response or "Not found" | The web app was not built | Run `npm run build` in `frontend/`, then restart the server |
+| Answers fail with an authentication error | The key is missing or invalid | Check `OPENAI_API_KEY` in `backend/.env` and restart |
+| HTTP 429 | The daily model budget ($1 by default) was reached | Raise `DAILY_BUDGET_USD` in `backend/.env` and restart |
+| HTTP 401 on every request | `ACCESS_CODE` is set | Enter the code in the web app, or leave it empty locally |
+| Demo data looks wrong after experiments | The local database has changed | Stop the server and delete `backend/var/gm.db` |
+
 ## Repository
 
 | Path | Contents |
@@ -140,6 +165,24 @@ The [live demo](https://dss5105.fuyune.com) needs an access code, shared private
 | [`eval/`](eval) | Development and red-team sets, ground truth, runner, scorer, every result |
 | [`analysis/`](analysis) | Backtests behind the alert thresholds and the completion forecast |
 | [`docs/`](docs) | [Design notes](docs/DESIGN.md) · [engineering journal](docs/JOURNAL.md) · [tool specification](docs/TOOL_SPEC.md) · [evaluation plan](docs/EVAL_PLAN.md) · [deployment](docs/DEPLOY.md) |
+
+## Development history
+
+The system was developed in a private repository: more than 80 commits and 17 merged feature branches and pull
+requests between 8 October and 11 November 2026. This repository is exported from it at milestones; each commit
+here is titled `Publish from private repo @ <hash>`, naming the private commit it was built from, and credits the
+team as co-authors. The held-out questions, plans and slides stay private.
+
+| Date | Milestone | Journal |
+|---|---|---|
+| 8 Oct | Data study; alert thresholds and completion forecast chosen by backtest; tool specification; 36-question development set with independent ground truth | [§1–5](docs/JOURNAL.md#1-read-the-data-before-designing-anything) |
+| 14–15 Oct | 17 tools, each tested against pandas; ReAct agent with the code verifier; clock, scenarios, watches and briefing; web app; first evaluation, critic ablation and red team | [§6–10](docs/JOURNAL.md#6-build-the-tools-each-against-an-independent-computation) |
+| 20 Oct | Answer contracts; order status rendered from validated fields (pull requests #1 and #2) | [§11](docs/JOURNAL.md#11-answer-contracts-and-deterministic-order-status) |
+| 26–27 Oct | Public repository; cloud deployment | [§12](docs/JOURNAL.md#12-deploy) |
+| 29 Oct | Seven usability issues from a demo session fixed; a live regression run found and fixed three more | [§13–14](docs/JOURNAL.md#13-usability-review-seven-issues-from-a-demo-session) |
+| 1 Nov | Comparison answers rendered from validated fields; independent evaluation tools ported from a teammate's implementation | [§15–16](docs/JOURNAL.md#15-comparison-answers-complete-traceable-and-honest-about-the-cause) |
+| 4 Nov | Scorer calibrated against human labels; system frozen; held-out run; first fix after it (H01) | [§17](docs/JOURNAL.md#17-the-held-out-run-3636-becomes-1160) |
+| 10–11 Nov | Final reports and license | |
 
 ## Team
 
